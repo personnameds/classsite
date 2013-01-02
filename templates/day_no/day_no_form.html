@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+
+{% block main_content %}
+	<div class="main">
+		<div class="main_h1">Change Day {{day_no_text}}</div>
+		<div class="clearer"></div>		
+		<form action"." method="POST">{%csrf_token%}
+			{{form.as_ul}}
+			<input type="submit" value="Change">
+			<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/schedule/'">
+		</form>	
+
+	</div>
+
+	
+{% endblock %}

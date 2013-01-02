@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	
+	<!-- fix look of add button -->
+	<div class="main">
+		<div class="main_h1">Messages</div>
+		
+		<div class="message_h3">{{topic.topic}}</div>
+		<div class="clearer"></div>		
+				
+		{% for m in msg_list %}
+						
+				{% ifequal m.id msg_replied_to.id %}
+				
+					{% if forloop.first %}
+						<div class="message_text_first">{{m.msg_text}}</div>					
+					{%else%}
+						<div class="message_text">{{m.msg_text}}</div>						
+					{%endif %}
+					
+					<form action"." method="POST">{%csrf_token%}
+
+					<div class="form_label">Reply:</div><div class="form_element">{{ form.msg_text }}</div>
+					<div class="form_input">
+						<input type="submit" value="Add">
+						<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/messages/{{topic.id}}/messages/'">
+					</div>
+				
+					</form>
+					
+					<div class="message_info">
+						Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
+					</div>			
+				
+					{%for r in m.msg_set.all%}	
+						<div class="reply_text">{{r.msg_text}}</div>
+					
+					
+					<div class="message_info">
+						
+						{% ifequal r.author user %}
+						<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+							<span class="message_reply_delete">Delete</span>
+						</a>
+						{% endifequal %}
+						
+						{% if user.is_staff %}
+					        {% ifnotequal r.author user %}
+					        <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+						    <span class="message_reply_delete">Delete</span>
+					        </a>
+					        {% endifnotequal %}		
+					    {% endif %}
+											
+						Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
+
+					</div>
+				
+					{%endfor%}	
+				
+				
+				
+				{%else%}
+					{% if forloop.first %}
+						<div class="message_text_first">{{m.msg_text}}</div>					
+					{%else%}
+						<div class="message_text">{{m.msg_text}}</div>						
+					{%endif %}
+	
+					<div class="message_info">
+						
+						{% ifnotequal m.author user %}
+						<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/reply">
+							<span class="message_reply_change">Reply</span>
+						</a>
+						{% endifnotequal %}
+						
+						{% ifequal m.author user %}
+						<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+							<span class="message_reply_change">Delete</span>
+						</a>
+						{% endifequal %}
+
+						{% if user.is_staff %}
+					        {% ifnotequal m.author user %}
+					        <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+						    <span class="message_reply_change">Delete</span>
+					        </a>
+					        {% endifnotequal %}		
+					    {% endif %}
+
+						
+						Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
+						
+					</div>
+	
+					{%for r in m.msg_set.all%}	
+						<div class="reply_text">{{r.msg_text}}</div>
+					
+					
+						<div class="message_info">
+							
+							{% ifequal r.author user %}
+							<a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+								<span class="message_reply_delete">Delete</span>
+							</a>
+							{% endifequal %}
+							
+							{% if user.is_staff %}
+					            {% ifnotequal r.author user %}
+					            <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+						        <span class="message_reply_delete">Delete</span>
+					            </a>
+					        {% endifnotequal %}		
+					        
+					    {% endif %}
+							
+							
+							Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
+							
+						</div>
+					
+	
+					{%endfor%}			
+				
+				
+				{% endifequal %}
+				
+		{%endfor%}
+		
+	</div>
+	
+
+{% endblock %}
+
+
+		{% for m in msg_list %}
+
+				{% if forloop.first %}
+					<div class="message_text_first">{{m.msg_text}}</div>					
+				{%else%}
+					<div class="message_text">{{m.msg_text}}</div>						
+				{%endif %}
+
+				<div class="message_info">
+					
+					{% ifnotequal m.author user %}
+					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/reply">
+						<span class="message_reply_change">Reply</span>
+					</a>
+					{% endifnotequal %}
+					
+					{% ifequal m.author user %}
+					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+						<span class="message_reply_change">Delete</span>
+					</a>
+					{% endifequal %}
+					
+					Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
+					
+				</div>
+
+				{%for r in m.msg_set.all%}	
+					<div class="reply_text">{{r.msg_text}}</div>
+				
+				
+				<div class="message_info">
+					
+					{% ifequal r.author user %}
+					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+						<span class="message_reply_change">Delete</span>
+					</a>
+					{% endifequal %}
+					
+					Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
+					
+				</div>
+				
+
+				{%endfor%}
+	
+
+		{%endfor%}

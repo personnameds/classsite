@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	
+	<!-- fix look of add button -->
+	<div class="main">
+		<div class="main_h1">Messages</div>
+		<div class="clearer"></div>		
+		<div class="message_h2">Topics</div>
+		<div class="clearer"></div>
+		
+
+		<form action="." method="POST">{%csrf_token%}
+			<div class="form_topic_text">New Topic:</div><div class="form_element">{{ form.topic }}</div>			
+			<div class="form_topic_text">Applies to:</div><div class="form_element">{{ form.homework }}</div> 			
+			<div class="clearer"></div>
+			<div class="form_topic_input">
+				<input type="submit" value="Add">
+				<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/messages/'">
+			</div>
+		</form>
+
+		<br>
+		
+		{% for topic in topic_list %}
+			<a href="/messages/{{topic.id}}/messages">
+				{%if forloop.first %}
+					<div class="topic_first">
+						<div class="topic_text">{{topic.topic}}</div>
+						<div class="topic_date">Last message entered {{topic.last_msg_entered_on|timesince}} ago</div>
+					</div>
+				{%else%}
+					<div class="topic">
+						<div class="topic_text">{{topic.topic}}</div>
+						<div class="topic_date">Last message entered {{topic.last_msg_entered_on|timesince}} ago</div>
+					</div>
+				{%endif%}
+			</a>
+		{%endfor%}
+		
+	</div>
+	
+
+{% endblock %}
+

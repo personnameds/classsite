@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+
+	<!-- fix look of add button -->
+	<div class="main">
+		<div class="main_h1">Homework</div>
+		<a href="/{{class_url}}/homework/add/"><div class="add_main_button"></div></a>
+		<div class="clearer"></div>
+		
+		{% for homework in homework_list %}
+			
+			<!-- prints date -->
+			{% ifchanged homework.due_date.date %}
+				<div class="hwk_date">{{homework.due_date.date|date:"l F jS"}}</div> 
+			{% endifchanged %}			
+			
+			<!-- prints homework either regular or cut through for deleted -->
+			{% if not homework.deleted %}
+				<a href="/{{class_url}}{{homework.get_absolute_url}}"><div class="hwk_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
+			{% endif %}
+			{% if homework.deleted %}
+				<a href="/{{class_url}}{{homework.get_absolute_url}}"><div class="hwk_del_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
+			{% endif %}
+
+<!-- don't need to double up just need to add spans -->
+
+<!-- Add following as built on to -->
+			<!--prints link to messages -->
+
+			{% if not homework.deleted %}
+				{% for topic in homework.topic_set.all %}
+					{% ifchanged homework %}
+						<div class="hwk_doc_label">Messages:</div>						
+						<a href="/{{class_url}}/messages/{{topic.id}}/messages">
+							<div class="hwk_doc">There {{topic.msg_set.count|pluralize:'is,are'}} {{topic.msg_set.count}} message{{topic.msg_set.count|pluralize}}.</div>	
+							<div class="hwk_doc">Last message entered {{topic.last_msg|timesince}} ago.</div>
+						</a>
+					{% endifchanged %}	
+				{%endfor%}
+			{% endif %}
+	
+			{% if homework.deleted %}
+				{% for topic in homework.topic_set.all %}
+					{% ifchanged homework %}
+						<div class="hwk_del_doc_label">Messages:</div>						
+						<a href="/{{class_url}}/messages/{{topic.id}}/messages">
+								<div class="hwk_del_doc">There {{topic.msg_set.count|pluralize:'is,are'}} {{topic.msg_set.count}} message{{topic.msg_set.count|pluralize}}.</div>	
+								<div class="hwk_del_doc">Last message entered {{topic.last_msg|timesince}} ago.</div>
+							</a>
+					{% endifchanged %}	
+				{%endfor%}
+			{% endif %}	
+
+			<!-- prints link to documents -->
+			
+			{% if not homework.deleted %}
+				{% for documents in homework.document_set.all %}
+					{% ifchanged homework %}
+						<div class="hwk_doc_label">Related documents:</div>
+					{% endifchanged %}
+					<a href="{{documents.attached_file.url}}"><div class="hwk_doc">{{documents.filename}}
+						{% if documents.description %}
+							- {{documents.description}}
+						{% endif %}
+					</div></a>
+				{%endfor%}
+			{% endif %}
+			
+			{% if homework.deleted %}
+				{% for documents in homework.document_set.all %}
+					{% ifchanged homework %}
+						<div class="hwk_del_doc_label">Related documents:</div>
+					{% endifchanged %}
+					<a href="/{{class_url}}/documents/"><div class="hwk_del_doc">{{documents.filename}}
+						{% if documents.description %}
+							- {{documents.description}}
+						{% endif %}
+					</div></a>
+				{%endfor%}
+			{% endif %}			
+			
+			<!-- prints link to links -->
+
+			{% if not homework.deleted %}
+				{% for link in homework.link_set.all %}
+					{% ifchanged homework %}
+						<div class="hwk_doc_label">Related links:</div>
+					{% endifchanged %}
+					<a href="{{link.link}}"><div class="hwk_doc">{{link.description}}</div></a>
+				{%endfor%}
+			{% endif %}
+			
+			{% if homework.deleted %}
+				{% for link in homework.link_set.all %}
+					{% ifchanged homework %}
+						<div class="hwk_del_doc_label">Related links:</div>
+					{% endifchanged %}
+					<a href="{{link.link}}"><div class="hwk_del_doc">{{link.description}}</div></a>
+				{%endfor%}
+			{% endif %}		
+
+
+
+			<!-- prints author info -->
+
+			<div class="author_text">
+				Added by:{% firstof homework.entered_by.first_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
+					{% if homework.deleted %}
+						Deleted by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
+					{% endif %}
+					{% if homework.modified_by and not homework.deleted %}
+						Modified by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
+					{% endif %}
+			</div>
+		
+		{% endfor %}
+
+		<div class="hwk_footnote">To Add: Click on +.  To Modify: Click on the homework you would like to change</div>	
+		<!--
+		<div class="hwk_footnote">
+			<a href="http://sudeepsanyal.webfactional.com/homework/feed/"><img src="{{STATIC_URL}}valid-rss-rogers.png" alt="[Valid RSS]" title="Validate my RSS feed" /></a>
+			Subscribe to the Homework RSS Feed to receive updates when homework is added.
+		</div>	-->
+	</div>
+	
+	
+
+{% endblock %}
+
+
+

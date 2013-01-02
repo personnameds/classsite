@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+<div class="kalendar_main">
+		<div class="main_h1">Calendar</div>
+		<div class="clearer"></div>		
+
+		<!-- Navigating of Month Arrows etc -->
+		{%for k in kalendar_list%}
+			{%if forloop.first%}
+				{%ifnotequal viewing_date.month firstest_date.month%}
+					{% if viewing_date.month != 1 %}
+					    <a href="/{{class_url}}/calendar/{{viewing_date.year}}/{{viewing_date.month|add:'-1'}}">
+					{% else %}
+					    <a href="/{{class_url}}/calendar/{{viewing_date.year|add:'-1'}}/12">
+					{% endif %}					
+					<div class="kal_left_arrow"></div>
+					</a>
+				{%else%}
+					<div class="kal_no_arrow"></div>
+				{%endifnotequal%}
+				
+				<div class="kal_month">{{viewing_date|date:"F"}}</div>
+				
+				<!-- arrows don't work if first month is same as last month because doesn't check for year -->
+				{%ifnotequal viewing_date.month lastest_date.month%}			
+					{% if viewing_date.month != 12 %}
+					    <a href="/{{class_url}}/calendar/{{viewing_date.year}}/{{viewing_date.month|add:'1'}}">
+					{% else %}
+					    <a href="/{{class_url}}/calendar/{{viewing_date.year|add:'1'}}/1">
+					{% endif %}
+					<div class="kal_right_arrow"></div>
+					</a>
+				{%else%}
+					<div class="kal_no_arrow"></div>
+				{%endifnotequal%}
+				
+				<div class="clearer"></div>
+				
+				<div class="kal_day_label">Monday</div>
+				<div class="kal_day_label">Tuesday</div>
+				<div class="kal_day_label">Wednesday</div>
+				<div class="kal_day_label">Thursday</div>
+				<div class="kal_day_label">Friday</div>
+				
+			{%endif%}
+			
+			{%if forloop.first%}
+				{%for i in insert_counter %}
+					<div class="kal_blank_day_block"></div>
+				{%endfor%}
+			{%endif%}
+		
+
+			<div class="kal_day_block">
+			{%ifequal viewing_date.month k.date.month%}
+			<!-- Will have to check if Permissions work? -->
+				<!-- Day Number -->
+				{%if perms.kalendar.add_event%}
+					<a href="/{{class_url}}/calendar/add_event/{{k.date.year}}/{{k.date.month}}/{{k.date.day}}">
+					    <div class="kal_date">{{k.date|date:"j"}}
+					</a>	
+					{%if perms.kalendar.change_kalendar%}
+					    <a href="/{{class_url}}/calendar/modify/{{k.id}}/">
+						    <div class="kal_day_no">({{k.day_no}})</div>
+					    </a>
+					{% else %}
+					    <div class="kal_day_no">({{k.day_no}})</div>
+					{% endif %}
+						
+				{%else %}
+					<div class="kal_date">{{k.date|date:"j"}}
+					<div class="kal_day_no">({{k.day_no}})</div>
+				{%endif%}
+
+				</div>
+				<!-- Events -->				
+				<div class="kal_entries">	
+					{% for e in k.event_set.all %}
+					    {% for c in e.class_db.all %}
+					        {%if c.classes == class_url %}
+						        {% if user.is_staff %}
+						            <a href="/{{class_url}}/calendar/modify_event/{{e.id}}/">{{e.description}}<br></a>
+						        {%else%}
+						            {{e.description}}<br>
+						        {%endif%}
+						    {% endif %}
+					    {% endfor %}
+					{%endfor%}				
+					{% for h in k.homework_set.all %}
+					    {% for c in h.class_db.all %}
+					        {%if c.classes == class_url %}
+						        <a href="/{{class_url}}/homework"/>
+						        {{h.subject}}:{{h.assigned_work}}<br>
+						        </a>
+						    {% endif %}
+						{%endfor%}
+					{%endfor%}
+				</div>
+				
+			{%else%}
+				<div class="kal_date_other_month">{{k.date|date:"j"}}
+					<div class="kal_day_no">({{k.day_no}})</div>
+				</div>
+				<div class="kal_entries_other_month">
+					{% for e in k.event_set.all %}
+						{{e.description}}<br>
+					{%endfor%}	
+					{% for h in k.homework_set.all %}
+						{{h.subject}}:{{h.assigned_work}}<br>
+					{%endfor%}
+				</div>
+			{%endifequal%}			
+
+			</div>
+			{%ifequal k.date.weekday 4%}
+				<div class="clearer"></div>				
+			{%endifequal%}
+
+		{%endfor%}
+
+		<div class="clearer"></div>
+		
+</div>
+		
+{% endblock %}

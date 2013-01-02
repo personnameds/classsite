@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	<div class="main">
+		<div class='main_h1'>Schedule</div>
+		<div class="clearer"></div>		
+		
+		<div class="schedule">
+			<div class="empty"></div>
+			{% for w in week %}
+				<div class='weekday'>{{w.date|date:"l"}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="empty"></div>
+			{% for w in week %}
+					<div class='weekday'>{{w.date|date:"M j"}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="pertime_head">Period</div>
+			<div class="pertime_head">Time</div>
+			
+			{% for day, week in list %}
+				{% if user.is_staff %}
+					{% ifequal user.classes.classes class_url %}
+					    <a href="/{{class_url}}/schedule/modify/{{day.id}}/{{week.id}}">					
+						    <div class='weekday'>Day {{day.day_no|slice:":1"}}</div>			
+					    </a>
+					{%else%}
+					    <div class='weekday'>Day {{day.day_no|slice:":1"}}</div>
+					{% endifequal %}
+				{% else %}
+					<div class='weekday'>Day {{day.day_no|slice:":1"}}</div>
+				{% endif %}
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="pertime">Before School</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.before_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="pertime">Period 1</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+						8:40<br>-9:40
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.period1_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="pertime">Period 2</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+						9:42<br>-10:32
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.period2_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="pertime">Period 3</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+						10:34<br>-11:14
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.period3_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+
+			<div class="pertime">Lunch</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+						11:14<br>-12:14
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.lunch_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="pertime">Period 4</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+						12:19<br>-1:19
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.period4_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+
+			<div class="pertime">Period 5</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+						1:21<br>-2:11
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.period5_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="pertime">Period 6</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+						2:13<br>-2:53
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.period6_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			<div class="pertime">After School</div>
+			{% for day in days %}
+				{% if forloop.first %}
+					<div class="pertime">
+						{% ifnotequal day.after_start None %}
+							{{day.after_start|time:"g:i"}}<br>-{{day.after_finish|time:"g:i"}}
+						{%endifnotequal%}
+					</div>
+				{%endif%}
+				<div class='per_day'>{{day.after_event}}</div>
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			</div>
+			
+			
+		<div class="clearer"></div>
+		</div>		
+		
+	</div>
+
+	
+{% endblock %}
+

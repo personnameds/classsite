@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	
+	<!-- fix look of add button -->
+	<div class="main">
+		<div class="main_h1">Messages</div>
+		<div class="clearer"></div>		
+		
+		<div class="message_h3">Topics</div>
+		<a href="/{{class_url}}/messages/add_topic"><div class="add_topic_button"></div></a>
+		<div class="clearer"></div>
+		
+		{% for topic in topic_list %}
+
+			<a href="/{{class_url}}/messages/{{topic.id}}/messages">
+				{%if forloop.first %}
+					<div class="topic_first">
+						<div class="topic_text">{{topic.topic}}</div>
+						<div class="topic_date">Last message entered {{topic.last_msg|timesince}} ago</div>
+					</div>
+				{%else%}
+					<div class="topic">
+						<div class="topic_text">{{topic.topic}}</div>
+						<div class="topic_date">Last message entered {{topic.last_msg|timesince}} ago</div>
+					</div>
+				{%endif%}
+			</a>
+
+		{%endfor%}
+		
+	</div>
+	
+
+{% endblock %}

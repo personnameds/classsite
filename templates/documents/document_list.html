@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+
+
+{% block main_content %}
+	<div class="main">
+		<div class="main_h1">Documents</div>
+		{% if user.is_staff%}
+			<a href="/{{class_url}}/documents/add/"><div class="add_main_button"></div></a>
+		{% endif %}
+		<div class="clearer"></div>		
+		
+		{% for subject in subject_list %}
+		    <div class="doclink_subject">{{subject}}</div>
+		    {% for document in document_list %}
+		        {% ifequal document.subject subject %}
+				    <span class="doclink_a"><div class="doclink">
+				        <a href="{{document.attached_file.url}}">{{document.filename}}</a>
+				        {%if document.description %}
+					        - {{document.description}}
+				        {%endif%}
+				        {% if document.homework %}
+					        for
+					        <a href="/{{class_url}}/homework/">{{document.homework}}</a>
+				        {% endif %}
+				        </div></spand>
+                        {% if user.is_staff %}
+                            <div class="doclink_change"><a href="modify/{{document.id}}">Edit</a></div>
+                        {% endif %}
+			    {% endifequal %}
+			    <div class="clearer"></div>	
+		    {%endfor%}
+		{%endfor%}
+
+	</div>
+
+{% endblock %}

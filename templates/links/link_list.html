@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	<div class="main">
+		<div class="main_h1">Links</div>
+		{% if user.is_staff%}
+			<a href="/{{class_url}}/links/add/"><div class="add_main_button"></div></a>
+		{% endif %}
+		<div class="clearer"></div>		
+		
+		{% for subject in subject_list %}
+		    <div class="doclink_subject">{{subject}}</div>
+            {% for link in link_list %}
+                {% ifequal link.subject subject %}
+
+                        <span class="doclink_a"><div class="doclink">
+                            <a href="{{link.link}}">{{link.description}}</a>
+                            {% if link.homework %}
+                                for
+                                <a href="/{{class_url}}/homework/">{{link.homework}}</a>
+                            {% endif %}
+                        </div></span>
+                        {% if user.is_staff %}
+                            <div class="doclink_change"><a href="modify/{{link.id}}">Edit</a></div>
+                        {% endif %}
+                {%endifequal%}
+            <div class="clearer"></div>	
+            {%endfor%}
+		{%endfor%}
+	</div>
+
+{% endblock %}

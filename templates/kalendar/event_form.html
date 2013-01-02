@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+
+	<div class="main">
+		<div class="main_h1">Add Event</div>
+		<div class="clearer"></div>		
+		
+		<form action"." method="POST">{%csrf_token%}
+			<div class="errors">
+				{{form.event_date.errors}}
+				{{form.errors}}
+			</div>
+			<div class="form_label">Description:</div><div class="form_element">{{ form.description }}</div>
+			<div class="form_label">Date:</div><div class="form_element">{{ event_date|date:"M j Y" }}</div>
+			<div class="form_label">Classes:</div><div class="form_element">{{ form.class_db}}</div>
+			<div class="form_input">
+				<input type="submit" value="Add">
+				<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/calendar/'">
+			</div>
+		</form>
+	</div>
+
+{% endblock %}
+
