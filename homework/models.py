@@ -68,7 +68,7 @@ class Homework_Form(ModelForm):
         super(Homework_Form, self).__init__(*args, **kwargs)
 
     def clean(self):
-        if not self.request.user.groups.filter(name='teacher').count():
+        if not self.request.user.is_staff:
             if self.request.user.get_profile().in_class.classes != self.class_url:
                 raise forms.ValidationError("This is not your class.")
         return self.cleaned_data
@@ -88,11 +88,11 @@ class Homework_Form(ModelForm):
         
         return due_date
         
-    def clean_class_db(self):
-        class_db=self.cleaned_data['class_db']
-        if not self.request.user.is_staff:
-            inclass=self.request.user.get_profile().in_class.classes
-            for i in range(len(class_db)):
-                if class_db[i].classes != inclass:
-                    raise forms.ValidationError("You can only add homework to your class.")
-        return class_db
+#     def clean_class_db(self):
+#         class_db=self.cleaned_data['class_db']
+#         if not self.request.user.is_staff:
+#             inclass=self.request.user.get_profile().in_class.classes
+#             for i in range(len(class_db)):
+#                 if class_db[i].classes != inclass:
+#                     raise forms.ValidationError("You can only add homework to your class.")
+#         return class_db

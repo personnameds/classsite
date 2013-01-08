@@ -2,6 +2,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
 from classlists.models import Classes
 from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from contact.forms import Contact_Form
 
@@ -30,7 +31,8 @@ class ContactFormView(FormView):
 	    subject=self.request.POST['subject']
 	    message=self.request.POST['message']
 	    sender=self.request.POST['email']
-	    teacher=Classes.objects.get(pk=self.request.POST['teacher']).teacher
+	    teacher=User.objects.get(pk=self.request.POST['teacher'])
+	    #teacher=Classes.objects.get(pk=self.request.POST['teacher']).teacher
 	    recipient=[teacher.email]
 
 	    send_mail(subject, message, sender, recipient)

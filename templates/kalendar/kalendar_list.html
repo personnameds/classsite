@@ -57,11 +57,11 @@
 			{%ifequal viewing_date.month k.date.month%}
 			<!-- Will have to check if Permissions work? -->
 				<!-- Day Number -->
-				{%if perms.kalendar.add_event%}
+				{%if user.is_staff %}
 					<a href="/{{class_url}}/calendar/add_event/{{k.date.year}}/{{k.date.month}}/{{k.date.day}}">
 					    <div class="kal_date">{{k.date|date:"j"}}
 					</a>	
-					{%if perms.kalendar.change_kalendar%}
+					{%if user.is_superuser%}
 					    <a href="/{{class_url}}/calendar/modify/{{k.id}}/">
 						    <div class="kal_day_no">({{k.day_no}})</div>
 					    </a>

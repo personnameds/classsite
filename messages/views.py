@@ -12,7 +12,7 @@ class TopicListView(ListView):
 
     def get_queryset(self, **kwargs):
         class_db=Classes.objects.get(classes=self.kwargs['class_url'])
-        return Topic.objects.all().order_by('last_msg').filter(class_db=class_db)[:15]
+        return Topic.objects.all().order_by('-last_msg').filter(class_db=class_db)[:15]
         
     def get_context_data(self, **kwargs):
 	    class_url=self.kwargs['class_url']

@@ -48,18 +48,27 @@ class RegistrationFormView(FormView):
         new_user=form.save(commit=False)
         
         class_db=Classes.objects.get(classes=self.kwargs['class_url'])
+
+        firstname=form.cleaned_data["first_name"]
+        lastname=form.cleaned_data['last_name']
+        firstname=firstname.replace(" ","")
+        lastname=lastname.replace(" ","")
         
         i=1
         while True:
-            username=(form.cleaned_data["first_name"]+form.cleaned_data['last_name'][:i]).lower()
+
+            username=(firstname+lastname[:i]).lower()
+            #username=(form.cleaned_data["first_name"]+form.cleaned_data['last_name'][:i]).lower()
             i=i+1
             if not User.objects.filter(username=username):
                 break
 
         new_user.username=username        
         new_user.set_password(form.cleaned_data["password1"])
-        new_user.first_name=form.cleaned_data["first_name"].title()
-        new_user.last_name=form.cleaned_data["last_name"].title()
+        new_user.first_name=firstname.title()
+        new_user.last_name=lastname.title()
+        #new_user.first_name=form.cleaned_data["first_name"].title()
+        #new_user.last_name=form.cleaned_data["last_name"].title()
         new_user.save()
         
         new_user.get_profile().in_class=class_db
