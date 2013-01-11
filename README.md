@@ -1,5 +1,15 @@
 classsite
 =========
+Jan 10 Changes
+
+    document_list.html
+    link_list.html
+        Changed so that the document and link are clickable but the homework it relates to is not
+            also changed the way related homework looks so it looks different
+    
+    style.css
+        Added linkdocs_homework so homework looks different than link and document in html
+
 
 Jan 7 Changes
 
@@ -27,3 +37,4 @@ contact
 
 404.html
     added one to see if that solves django errors on live site
+    

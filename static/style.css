@@ -475,6 +475,17 @@ a {
  	color:#003399;
 	}
 
+.doclink_homework {
+        float:left;
+        display:block;
+		color:#444444;
+		margin-left:5px;
+		font-size:12pt;
+		font-weight:normtal;
+		text-decoration:none;
+  	 }
+
+
  .doclink_change {
         float:left;
         display:block;

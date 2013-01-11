@@ -14,16 +14,18 @@
 		    <div class="doclink_subject">{{subject}}</div>
 		    {% for document in document_list %}
 		        {% ifequal document.subject subject %}
-				    <span class="doclink_a"><div class="doclink">
-				        <a href="{{document.attached_file.url}}">{{document.filename}}</a>
+				    <div class="doclink">
+				        <a href="{{document.attached_file.url}}">{{document.filename}}
 				        {%if document.description %}
 					        - {{document.description}}
 				        {%endif%}
+				    </a></div>
+				    <div class="doclink_homework">
 				        {% if document.homework %}
 					        for
-					        <a href="/{{class_url}}/homework/">{{document.homework}}</a>
+					        {{document.homework}}
 				        {% endif %}
-				        </div></spand>
+				    </div>
                         {% if user.is_staff %}
                             <div class="doclink_change"><a href="modify/{{document.id}}">Edit</a></div>
                         {% endif %}

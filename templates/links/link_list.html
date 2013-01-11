@@ -14,13 +14,15 @@
             {% for link in link_list %}
                 {% ifequal link.subject subject %}
 
-                        <span class="doclink_a"><div class="doclink">
-                            <a href="{{link.link}}">{{link.description}}</a>
+                        <div class="doclink">
+                            <a href="{{link.link}}">{{link.description}}
+                        </a></div>
+                        <div class="doclink_homework">    
                             {% if link.homework %}
                                 for
-                                <a href="/{{class_url}}/homework/">{{link.homework}}</a>
+                                {{link.homework}}
                             {% endif %}
-                        </div></span>
+                        </div>
                         {% if user.is_staff %}
                             <div class="doclink_change"><a href="modify/{{link.id}}">Edit</a></div>
                         {% endif %}
@@ -31,3 +33,4 @@
 	</div>
 
 {% endblock %}
+
