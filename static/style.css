@@ -26,7 +26,33 @@ a {
 	border-top: 5px solid #666666;
 	border-bottom: 5px solid #666666;
 	}
-	
+
+/*which page*/
+#link{
+	display: inline-block;
+}
+
+#back{
+	background: url(buttons.png) repeat scroll 0 0 transparent;
+	width: 150px;
+	height: 80px;
+	cursor: pointer;
+	margin-bottom: 10px;
+	overflow: hidden;
+	text-align: center;
+}
+
+#back:hover{
+	background: url(buttons.png) repeat scroll -150px 0 transparent;
+}
+
+#text{
+	line-height: 75px;
+	font-size: 4em;
+	color: #999999;
+	text-align: center;
+}
+
 /*banner */
 #title_banner1 {
 	background: url(banner1.jpg);

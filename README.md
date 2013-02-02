@@ -1,5 +1,13 @@
 classsite
 =========
+Feb 1 Changes
+    style.css
+        Added whichclass section
+    whichclass.html
+        Updated links to buttons
+    buttons.png
+        Added buttons for classes
+
 Jan 10 Changes
 
     document_list.html
