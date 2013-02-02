@@ -24,12 +24,11 @@
                 <div class="main_h1">Welcome, which class would you like?</div>
                 <div class="clearer"></div>	
                 {% for class in classes_list %}
-                    {% if forloop.first %}
-                        <a href="/{{class}}"><div class="classheading">{{class|upper}}</div></a>
-                    {% else %}
-                        <div class="classheading">or</div>
-                        <a href="/{{class}}"><div class="classheading">{{class|upper}}</div></a>
-                    {% endif %}
+				    {% if forloop.first %}
+					    <div id="link"><a id="a" href="/{{class}}"><div id="back"><span id="text">{{class|upper}}</span></div></a></div>
+				    {% else %}
+					    <div id="link"><a id="a" href="/{{class}}"><div id="back"><span id="text">{{class|upper}}</span></div></a></div>
+				    {% endif %}
                 {% endfor %}
         </div><!-- columns end -->
      
