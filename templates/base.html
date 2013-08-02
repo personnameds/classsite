@@ -1,57 +1,60 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
-<html lang="en">
-<head>
-    <link rel="stylesheet" href="{{ STATIC_URL }}style.css" type="text/css">   
-</head>
-
-<body>    
-    <div id="wrapper">
-        
-    <div id="container">
-       	<!-- start of banner -->
-       	{% if class_url == "7b" %}
-       	    <div id="title_nobanner">
-       	    <div id="title_h1">Class 7B</div>
-       	{% elif class_url == "8a" %}
-       	     <div id="title_banner2">
-       	{% elif class_url == "8b" %}
-       	     <div id="title_banner1">
-       	{% endif %}
-
-       		{% if user.is_authenticated %}
-            	<a href='/{{class_url}}/registration/logout/'><div class='title_a'>Logout</div></a>
-            	{%if user.first_name or user.last_name %}
-            		<div class="title_b">{{ user.first_name }} {{user.last_name}}&#8260</div>
-            	{%else%}
-            			<div class="title_b">{{ user.username }}&#8260</div>
-            	{%endif%}
- 
-            {% else %}
-            	<a href="/{{class_url}}/registration/login/"><div class="title_a">Login</div></a>
-            {% endif %} 
-        </div> 
-        <!-- end of banner -->
-          
-        <div id="navigation_bar">
-            <a href="/{{class_url}}"><div class="navigation_a">Home</div></a>
-   			<a href="/{{class_url}}/calendar/"><div class="navigation_a">Calendar</div></a>
-			<a href="/{{class_url}}/schedule/"><div class="navigation_a">Schedule</div></a>
-   			<a href="/{{class_url}}/homework/"><div class="navigation_a">Homework</div></a>
-            <a href="/{{class_url}}/documents/"><div class="navigation_a">Documents</div></a>
-            <a href="/{{class_url}}/links/"><div class="navigation_a">Links</div></a>
-            <a href="/{{class_url}}/messages/"><div class="navigation_a">Messages</div></a>
-            <a href="/{{class_url}}/contact/"><div class="navigation_a">Contact</div></a>
-            
-        </div> <!-- end of navigation -->
-        
-        
-        <div id="columns">
-			<!--Main Block-->
-			{% block main_content %}{% endblock %}
-  				
-        </div><!-- columns end -->
-     
-    </div><!-- container end -->
-   
-	</div><!-- wrapper end -->
-</body>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>KKSA {{klass.klass_name|upper}}</title>
+		<link rel="stylesheet" href="{{ STATIC_URL }}lib/styles.css" />
+		<script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-ui-1.10.3.custom.min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}lib/jquery.timer.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}lib/scripts.js"></script>
+	</head>
+	
+	<body>
+		<div id="wrapper">
+			<div id="nav">
+				<ul>
+					<li id="current"><a href="/{{klass.klass_name}}">{{klass.klass_name|upper}}</a>
+						<ul>
+							<li><a href="/">KKSA</a></li>
+						</ul>
+					</li>
+					<li><a href="homework.html">Homework</a></li>
+					<li><a href="events.html">Events</a>
+						<ul>
+							<li><a href="schedule.html">Schedule</a></li>
+							<li><a href="calendar.html">Calendar</a></li>
+						</ul>
+					</li>
+					<li><a href="documents.html">Documents</a></li>
+					<li><a href="links.html">Links</a></li>
+					<li><a href="messages.html">Messages</a></li>
+					<li><a href="contact.html">Contact</a></li>
+					
+       		        {% if user.is_authenticated %}
+       		            <li class="account"><a href="logout.html">
+       		                {%if user.first_name %}
+            		            {{ user.first_name }} &#8260
+            	            {%else%}
+            			        {{ user.username }}&#8260
+            			    {%endif%}
+       		                Logout</a>
+                    {% else %}
+            	        <li class="account"><a href="login.html">Login</a>
+                    {% endif %} 		
+					</li>
+				</ul>
+			</div>
+			<div id="banner">
+				<div class="banner-container"><img src="{{ MEDIA_URL }}{{klass.banner}}" alt=""></div>
+			</div>
+			<div id="content">
+				Login doesn't change to name if logged in
+				<br>
+				
+				{% block main_content %}{% endblock %}
+				
+			</div>
+			<div id="to_top"></div>
+		</div>
+	</body>
+</html>

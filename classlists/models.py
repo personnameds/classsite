@@ -22,7 +22,7 @@ class Student(models.Model):
     # https://docs.djangoproject.com/en/1.5/topics/auth/customizing/#extending-user
 
     user=models.OneToOneField(User)
-    klass=models.ForeignKey('Klass') 
+    klass=models.ForeignKey('Klass', verbose_name='Class') 
 
     def __unicode__(self):
         return u'%s %s in %s' % (self.user.first_name, self.user.last_name, self.klass)

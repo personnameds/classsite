@@ -1,0 +1,241 @@
+body{
+	background: url('../img/layout/bg-blue.png') repeat scroll 0 0 #03A7B6;
+	color: #B5B5B5;
+	font-family: Arial,sans-serif;
+	overflow-y: scroll;
+	margin: 0;
+}
+hr{
+	color: #B5B5B5;
+	border: 0;
+	background: #B5B5B5;
+	height: 1px;
+}
+h1, h2, h3{
+	color: #B5B5B5;
+}
+
+a{outline: 0;}
+
+a:link{color: #2A75A9; text-decoration: none;}
+
+a:hover{color: #2A75A9; text-decoration: underline;}
+
+a:visited{color: #2A75A9; text-decoration: none;}
+
+#wrapper{
+	width: 900px;
+	margin: 0 auto;
+}
+#nav{
+	width: 100%;
+	height: 40px;
+	background: #D6D6D6;
+	margin: 0;
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: 100;
+	box-shadow: 0px 0px 10px #969696;
+}
+#nav ul{
+	padding: 0;
+	margin: 0 auto;
+	width: 900px;
+	height: 40px;
+	position: relative;
+	background: #D6D6D6;
+}
+#nav a{
+	display: block;
+	font-size: 16px;
+	line-height: 40px;
+	padding: 0 20px;
+	text-decoration: none;
+	color: #525252;
+	text-shadow: 0px 0px 2px #FFFFFF;
+}
+#nav li{
+	list-style: none;
+	width: auto;
+	height: 40px;
+	float: left;
+	position: relative;
+}
+#nav li:hover{
+	background: #F2F2F2;
+}
+#nav #current{
+	background: #E6E6E6;
+}
+#nav #current:hover{
+	background: #F2F2F2;
+}
+#nav ul ul{
+	background: #FFFFFF;
+	width: auto;
+	min-width: 120px;
+	height: 0px;
+	position: absolute;
+	top: 40px;
+	left: 0;
+	margin: 0;
+	text-align: left;
+	overflow: hidden;
+	/*box-shadow: 0px 5px 10px #BFBFBF;*/
+	z-index: 10;
+	box-shadow: 0px 0px 3px #E3E3E3;
+}
+#nav ul ul a{
+	padding: 0 20px 0 20px;
+	color: #ADADAD;
+	text-shadow: none;
+}
+#nav ul ul li{
+	width: auto;
+	height: 40px;
+	float: none;
+}
+#nav ul ul li:hover{
+	background: #F7F7F7;
+}
+#nav .account{
+	float: right;
+}
+#nav .arrow{
+	width: 8px;
+	height: 8px;
+	margin: 0 0 2px 3px;
+	background: url('../img/layout/down-arrow.png') no-repeat;
+	display: inline-block;
+}
+#banner{
+	width: 898px;
+	height: 138px;
+	background: #FFFFFF;
+	margin: 50px 0 0 0;
+	border: 1px solid #FFFFFF;
+	overflow: hidden;
+	box-shadow: 0px 0px 10px #969696;
+}
+#banner .banner-container{
+	width: 898px;
+	height: 138px;
+	overflow: hidden;
+	position: relative;
+}
+#banner img{
+	width: 898px;
+	height: 138px;
+}
+#banner .banner-name{
+	width: 90px;
+	height: 40px;
+	line-height: 40px;
+	padding: 0 10px;
+	background: rgba(42, 42, 42, 0.8);
+	position: absolute;
+	top: 0;
+	left: 0;
+	overflow: hidden;
+	color: #FFFFFF;
+	text-align: center;
+	font-size: 18px;
+}
+#content{
+	width: 850px;
+	min-height: 400px;
+	height: auto;
+	padding: 5px 25px 25px 25px;
+	background: #FFFFFF;
+	margin: 10px 0 10px 0;
+	box-shadow: 0px 0px 10px #969696;
+}
+#posts{
+	width: 850px;
+	height: auto;
+	display: inline-block;
+	padding: 0;
+	margin: 5px 0 10px 0;
+}
+.post{
+	width: 835px;
+	height: auto;
+	float: right;
+	margin: 3px 0 5px 0;
+	padding: 0 0 0 10px;
+	list-style: none;
+	border-left: 5px solid #93D3D9;
+}
+.post .title{
+	font-weight: bold;
+	font-size: 20px;
+}
+.post .date{
+	font-style: italic;
+	font-size: 14px;
+}
+#to_top{
+	width: 40px;
+	height: 40px;
+	background: url('../img/layout/up-arrow.png') no-repeat scroll 0 0 #D6D6D6;
+	position: fixed;
+	bottom: 10px;
+	right: 10px;
+	cursor: pointer;
+	box-shadow: 0px 0px 3px #969696;
+}
+
+/* Info Image Thumbnails */
+
+#event-thumbs{
+	width: 850px;
+	height: auto;
+	display: inline-block;
+	margin: 5px auto 10px auto;
+	padding: 0;
+}
+#event-thumbs li{
+	width: 280px;
+	height: 200px;
+	overflow: hidden;
+	margin: 0 5px 5px 0;
+	float: left;
+	list-style: none;
+	box-shadow: 0px 0px 10px #A3A3A3;
+	position: relative;
+}
+#event-thumbs li:nth-child(3n+3){
+	margin: 0 0 5px 0;
+}
+#event-thumbs li img{
+	width: 280px;
+	height: 200px;
+}
+#event-thumbs li .thumb-text{
+	width: 280px;
+	height: 230px;
+	position: absolute;
+	bottom: -200px;
+	left: 0;
+}
+#event-thumbs li .thumb-title{
+	width: 280px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	display: block;
+	background: url('../img/layout/opacity/03a7b6_60.png') repeat;
+	color: #FFFFFF;
+	text-shadow: 0px 0px 2px #BDBDBD;
+}
+#event-thumbs li .thumb-info{
+	width: 270px;
+	height: 190px;
+	padding: 5px;
+	text-align: center;
+	display: block;
+	background: url('../img/layout/opacity/0d0d0d_60.png') repeat;
+	box-shadow: inset 0px 0px 10px rgba(13, 13, 13, 0.9);
+	color: #FFFFFF;
+}
