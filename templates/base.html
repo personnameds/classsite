@@ -31,7 +31,7 @@
 					<li><a href="contact.html">Contact</a></li>
 					
        		        {% if user.is_authenticated %}
-       		            <li class="account"><a href="logout.html">
+       		            <li class="account"><a href="/{{klass.klass_name}}/registration/logout/">
        		                {%if user.first_name %}
             		            {{ user.first_name }} &#8260
             	            {%else%}
@@ -39,7 +39,7 @@
             			    {%endif%}
        		                Logout</a>
                     {% else %}
-            	        <li class="account"><a href="login.html">Login</a>
+            	        <li class="account"><a href="/{{klass.klass_name}}/registration/login/?next={{path}}">Login</a>
                     {% endif %} 		
 					</li>
 				</ul>
@@ -48,9 +48,6 @@
 				<div class="banner-container"><img src="{{ MEDIA_URL }}{{klass.banner}}" alt=""></div>
 			</div>
 			<div id="content">
-				Login doesn't change to name if logged in
-				<br>
-				
 				{% block main_content %}{% endblock %}
 				
 			</div>

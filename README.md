@@ -22,3 +22,6 @@ Homepage
 
 get_absolute_url
     -need to use and add so I can click from admin to see on website
+
+Login
+    do I need to include path in context everytime to make ?next work

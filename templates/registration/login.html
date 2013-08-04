@@ -2,29 +2,29 @@
 
 {% block main_content %}
 
-	<div class="main">
-		<div class="main_h1">Login</div>
-		<div class="clearer"></div>		
+    <h1>Login</h1>	
+    
+    Need to cleanup field errors<br>
+    Need to add new user registration<br>
+    Need css for form fields <br>
+    
+    <div class="error_text">{{form.non_field_errors}}</div>
+    
 
-        <div class="error_text">{{form.non_field_errors.as_text}}</div>
+    <form action="" method="post">{%csrf_token%}
+        <div class="form_error">{{form.username.errors.as_text}}</div>
+        <div class="form_label" for="username">Username:</div>
+        <div class="form_element"><input type="text" name="username" value="" id="username"></div>
+        <div class="form_error">{{form.password.errors.as_text}}</div>
+        <div class="form_label" for="password">Password:</div>
+        <div class="form_element"><input type="password" name="password" value="" id="password"></div>
 
-		
-		<form action="" method="post">{%csrf_token%}
-			<div class="form_error">{{form.username.errors.as_text}}</div>
-			<div class="form_label" for="username">Username:</div>
-			<div class="form_element"><input type="text" name="username" value="" id="username"></div>
-			<div class="form_error">{{form.password.errors.as_text}}</div>
-			<div class="form_label" for="password">Password:</div>
-			<div class="form_element"><input type="password" name="password" value="" id="password"></div>
-			<a href="/{{class_url}}/registration/newuser/"><div class="login_footnote">Add yourself to {{class_url|upper}}'s website</div></a>
-			<div class="form_input">
-				<input type="submit" value="Login"/>
-				<input type="hidden" name="next" value={{ next }} />
-			</div>
-		</form>			
-
-	</div>
-
-
+        <a href="/{{klass.klass_name}}/registration/newuser/"><div class="login_footnote">Add yourself to {{klass.klass_name|upper}}'s website</div></a>
+        <div class="form_input">
+        
+            <input type="submit" value="Login"/>
+            <input type="hidden" name="next" value={{ next }} />
+        </div>
+    </form>			
         
 {% endblock %}
