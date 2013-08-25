@@ -1,15 +1,14 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render_to_response
-from django.core.urlresolvers import reverse_lazy
-from django.template import RequestContext
-from kalendar.models import Kalendar, Update_Day_No_Kalendar_Form, Event, Add_Event_Form 
-from kalendar.forms import Create_Kalendar_Form
-from day_no.models import Day_No
-from classlists.models import Classes
-from django.views.generic.edit import FormView, UpdateView, CreateView
-from django.views.generic import ListView
+# from django.http import HttpResponseRedirect
+# from django.shortcuts import render_to_response
+# from django.core.urlresolvers import reverse_lazy
+# from django.template import RequestContext
+# from kalendar.models import Kalendar, Update_Day_No_Kalendar_Form, Event, Add_Event_Form 
+# from day_no.models import Day_No
+# from classlists.models import Classes
+# from django.views.generic.edit import UpdateView, CreateView
+# from django.views.generic import ListView
 
-from datetime import date, timedelta
+#from datetime import date, timedelta
  
 
 class EventCreateView(CreateView):
@@ -148,51 +147,6 @@ class KalendarListView(ListView):
         context['insert_counter']=insert_counter
         
         return context
-
-class CreateKalendarFormView(FormView):
-	form_class=Create_Kalendar_Form
-	template_name='kalendar/create_kalendar_form.html'
-	
-	def get_context_data(self, **kwargs):
-	    class_url=self.kwargs['class_url']
-	    context=super(CreateKalendarFormView, self).get_context_data(**kwargs)
-	    context['class_url']=class_url.lower()
-	    return context
-
- 	def form_valid(self, form, **kwargs):
-		
-		class_url=self.kwargs['class_url']
-		class_db=Classes.objects.get(classes=class_url)
-		
-		first_day=date(int(self.request.POST['first_day_year']),int(self.request.POST['first_day_month']),int(self.request.POST['first_day_day']))
-		last_day=date(int(self.request.POST['last_day_year']),int(self.request.POST['last_day_month']),int(self.request.POST['last_day_day']))
-		first_day_school=date(int(self.request.POST['first_day_school_year']),int(self.request.POST['first_day_school_month']),int(self.request.POST['first_day_school_day']))
-		
-		
-		Kalendar.objects.all().delete()
-
-		change_day=first_day
-		
-		while change_day < first_day_school:
-			if change_day.weekday() < 5:
-				k=Kalendar(date=change_day,day_no='H')
-				k.save()
-			change_day=change_day + timedelta(days=1)
-		
-		i=1
-		while change_day <= last_day:
-			if change_day.weekday() < 5:
-				k=Kalendar(date=change_day,day_no=str(i))
-				k.save()
-				if i==5:
-					i=1
-				else:
-					i=i+1
-					
-			change_day=change_day + timedelta(days=1)
- 		
- 		return HttpResponseRedirect(reverse_lazy('kal-list-view', args=(self.kwargs['class_url'], first_day.year,first_day.month,)))
-
 
 class UpdateDayNoKalendarView(UpdateView):
 	form_class=Update_Day_No_Kalendar_Form

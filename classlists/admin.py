@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from classlists.models import Klass, Student
+from classlists.models import Klass, Student, Teacher
 
 class StudentAdmin(admin.ModelAdmin):
     list_display=('user','klass',)
@@ -8,3 +8,4 @@ class StudentAdmin(admin.ModelAdmin):
 
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Klass)
+admin.site.register(Teacher)

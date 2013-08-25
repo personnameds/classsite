@@ -1,6 +1,6 @@
 from django.db import models
 from django.forms import ModelForm,TextInput, DateField, CheckboxSelectMultiple
-from classlists.models import Classes
+from classlists.models import Klass
 from day_no.models import Day_No
 from django.forms import ModelChoiceField
 
@@ -14,12 +14,18 @@ DAY_NOS=(
     )
 
 class Kalendar(models.Model):
-	date=models.DateField()
-	day_no=models.CharField(max_length=1,choices=DAY_NOS,blank=False)
-	day_version=models.ManyToManyField(Day_No,blank=False)
+    date=models.DateField()
+    day_no=models.CharField(max_length=1,choices=DAY_NOS,blank=False)
+    day_version=models.ManyToManyField(Day_No,blank=False)
 	
-	def __unicode__(self):
- 		return u'%s %s' % (self.date, self.day_no)
+    class Meta:
+        verbose_name='Date'
+        verbose_name_plural='Calendar'
+
+    def __unicode__(self):
+	    return u'%s %s' % (self.date, self.day_no)
+	
+
 
 class Update_Day_No_Kalendar_Form(ModelForm):
 	class Meta:
@@ -29,7 +35,7 @@ class Update_Day_No_Kalendar_Form(ModelForm):
 class Event(models.Model):
 	description= models.CharField(max_length=25)
 	event_date=models.ForeignKey(Kalendar,blank=True,null=True)
-	class_db=models.ManyToManyField(Classes, blank=True, null=True)
+	klass=models.ManyToManyField(Klass, blank=True, null=True)
 			
  	def __unicode__(self):
  		return self.description

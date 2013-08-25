@@ -118,10 +118,11 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.admindocs',
     'homepage',
-#     'registration',
-     'classlists',
-#     'day_no',
-#     'kalendar',
+    'registration',
+    'classlists',
+    'initialize',
+    'day_no',
+    'kalendar',
 #     'schedule',
 #     'homework',
 #     'documents',
@@ -160,6 +161,5 @@ LOGGING = {
     }
 }
 
-# LOGIN_URL = '/registration/login/'
-# AUTH_PROFILE_MODULE = 'classlists.UserProfile'
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

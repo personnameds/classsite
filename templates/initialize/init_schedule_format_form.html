@@ -3,12 +3,10 @@
 
 {% block main_content %}
 
-    <h1>Registration for {{klass.klass_name|upper}}</h1>				
+    <h1>Schedule Format</h1>				
     
     <form action="." method="POST">{%csrf_token%}
-    <div class="registration_form">
         {{form.as_p}}
-    </div>
         <div class="form_input">
             <input type="submit" value="Send">
         </div>
