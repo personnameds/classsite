@@ -1,8 +1,8 @@
 from django.db import models
-from django.forms import ModelForm,TextInput, DateField, CheckboxSelectMultiple
+#from django.forms import ModelForm,TextInput, DateField, CheckboxSelectMultiple
 from classlists.models import Klass
 from day_no.models import Day_No
-from django.forms import ModelChoiceField
+#from django.forms import ModelChoiceField
 
 DAY_NOS=(
     ('1','1'),
@@ -26,29 +26,33 @@ class Kalendar(models.Model):
 	    return u'%s %s' % (self.date, self.day_no)
 	
 
-
-class Update_Day_No_Kalendar_Form(ModelForm):
-	class Meta:
-		model=Kalendar
-		exclude=('day_version',)
-
-class Event(models.Model):
-	description= models.CharField(max_length=25)
-	event_date=models.ForeignKey(Kalendar,blank=True,null=True)
-	klass=models.ManyToManyField(Klass, blank=True, null=True)
-			
- 	def __unicode__(self):
- 		return self.description
-
-class EventModelChoiceField(ModelChoiceField):
-    def label_from_instance(self, obj):
-        return obj.date
-        
-class Add_Event_Form(ModelForm):
-	event_date=EventModelChoiceField(queryset=Kalendar.objects.all(), empty_label=None, required=False)
-	class Meta:
-		model=Event
-		widgets={
-			'description':TextInput(attrs={'size':'25'}),
-			'class_db':CheckboxSelectMultiple(),
-			}
+# 
+# 
+# 
+# 
+# 
+# class Update_Day_No_Kalendar_Form(ModelForm):
+# 	class Meta:
+# 		model=Kalendar
+# 		exclude=('day_version',)
+# 
+# class Event(models.Model):
+# 	description= models.CharField(max_length=25)
+# 	event_date=models.ForeignKey(Kalendar,blank=True,null=True)
+# 	klass=models.ManyToManyField(Klass, blank=True, null=True)
+# 			
+#  	def __unicode__(self):
+#  		return self.description
+# 
+# class EventModelChoiceField(ModelChoiceField):
+#     def label_from_instance(self, obj):
+#         return obj.date
+#         
+# class Add_Event_Form(ModelForm):
+# 	event_date=EventModelChoiceField(queryset=Kalendar.objects.all(), empty_label=None, required=False)
+# 	class Meta:
+# 		model=Event
+# 		widgets={
+# 			'description':TextInput(attrs={'size':'25'}),
+# 			'class_db':CheckboxSelectMultiple(),
+# 			}

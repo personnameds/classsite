@@ -16,7 +16,9 @@ Day_No
     -nothing upgraded same as classsite4
 
 Kalendar
-    -creation same as old nothing upgraded
+    -creation of kalendar same as old nothing upgraded
+    -need to add permissions to Kalendar_list
+    -I cleaned up Kalendar_List a little
 
 Classlists
     -resize banner images when uploaded (saved link in readitlater)
