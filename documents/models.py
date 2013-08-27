@@ -1,8 +1,8 @@
 from django.db import models
-from django.forms import ModelForm, TextInput, ModelChoiceField,CheckboxSelectMultiple
+from django.forms import ModelForm, TextInput, ModelChoiceField#,CheckboxSelectMultiple
 
 from homework.models import Homework
-from classlists.models import Classes
+from classlists.models import Klass
 
 from datetime import date
 
@@ -29,7 +29,7 @@ class Document(models.Model):
 	filename=models.CharField(max_length=300)	
 	description=models.CharField(max_length=30, blank=True)
 	homework=models.ForeignKey(Homework, blank=True, null=True)
-	class_db=models.ManyToManyField(Classes, blank=True, null=True)
+	klass=models.ManyToManyField(Klass, blank=True, null=True)
 	subject=models.CharField(max_length=10,choices=SUBJECT_CHOICES, blank=True, null=True)
 
 	def __unicode__(self):
@@ -42,4 +42,4 @@ class Add_Document_Form(ModelForm):
 			'description':TextInput(attrs={'size':'30'}),
 			#'class_db':CheckboxSelectMultiple(),
 			}
-		exclude=('filename','class_db')
+		exclude=('filename','klass')

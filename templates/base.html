@@ -18,18 +18,18 @@
 							<li><a href="/">KKSA</a></li>
 						</ul>
 					</li>
-					<li><a href="homework.html">Homework</a></li>
-					<li><a href="/{{klass.klass_name}}/calendar/">Calendars</a>
+					<li><a href="/{{klass.klass_name}}/homework">Homework</a></li>
+					<li><a href="/{{klass.klass_name}}/calendar/class">Calendars</a>
 						<ul>
-							<li><a href="/kksa/calendar/">School</a></li>
-							<li><a href="/{{klass.klass_name}}/calendar/">Class</a></li>
+							<li><a href="/{{klass.klass_name}}/calendar/kksa">School</a></li>
+							<li><a href="/{{klass.klass_name}}/calendar/class">Class</a></li>
 						</ul>
 					</li>
-					<li><a href="documents.html">Schedule</a></li>
-					<li><a href="documents.html">Documents</a></li>
-					<li><a href="links.html">Links</a></li>
-					<li><a href="messages.html">Messages</a></li>
-					<li><a href="contact.html">Contact</a></li>
+					<li><a href="/{{klass.klass_name}}/schedule">Schedule</a></li>
+					<li><a href="/{{klass.klass_name}}/documents">Documents</a></li>
+					<li><a href="/{{klass.klass_name}}/links">Links</a></li>
+					<li><a href="/{{klass.klass_name}}/messages">Messages</a></li>
+					<li><a href="/{{klass.klass_name}}/contact">Contact</a></li>
 					
        		        {% if user.is_authenticated %}
        		            <li class="account"><a href="/{{klass.klass_name}}/registration/logout/">

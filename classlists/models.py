@@ -25,10 +25,10 @@ class Student(models.Model):
     def __unicode__(self):
         return u'%s %s in %s' % (self.user.first_name, self.user.last_name, self.klass)
 
-@receiver(post_save, sender=User)
-def create_student(sender, instance, created, **kwargs):
-    if created:
-        Student.objects.create(user=instance, klass=instance.klass)
+# @receiver(post_save, sender=User)
+# def create_student(sender, instance, created, **kwargs):
+#     if created:
+#         Student.objects.create(user=instance, klass=instance.klass)
 
 class Teacher(models.Model):
     user=models.OneToOneField(User)

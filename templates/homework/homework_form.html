@@ -4,12 +4,12 @@
 {% block main_content %}
 
 	<div class="main">
-		<div class="main_h1">Add Homework</div>
-		<div class="clearer"></div>		
+		<h1>Add Homework</h1>
+	
 
 		<div class="form_error">{{form.assigned_work.errors.as_text}}</div>
 		<div class="form_error">{{form.due_date.errors.as_text}}</div>
-		<div class="form_error">{{form.class_db.errors.as_text}}</div>
+		<div class="form_error">{{form.klass.errors.as_text}}</div>
 		<div class="form_error">{{form.non_field_errors.as_text}}</div>
 
 		<form action"." method="POST">{%csrf_token%}		
@@ -21,7 +21,7 @@
 			{% endif %} -->
 			<div class="form_input"> 
 				<input type="submit" value="Add">
-				<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/homework/'">
+				<input type="button" value="Cancel" onclick="location.href='/{{klass.klass_name}}/homework/'">
 			</div>
 		</form>
 	</div>

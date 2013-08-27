@@ -3,9 +3,13 @@
 {% block main_content %}
 
 <div class="kalendar_main">
-	<h1>{{klass}} Kalnedar</h1>
-		<div class="clearer"></div>		
-
+	
+	{%ifequal kal_type 'kksa'%}
+	    <h1>KKSA Calendar</h1>
+	{% else %}
+	    <h1>{{klass.klass_name}} Calendar</h1>
+	{% endifequal %}
+	
 		{%for k in kalendar_list%}
 			
 			<!-- month name, arrows, day names -->
@@ -14,9 +18,9 @@
 				<!-- Navigating of Month Arrows etc -->
 				{%ifnotequal viewing_date.month firstest_date.month%}
 					{% if viewing_date.month != 1 %}
-					    <a href="/{{klass.klass_name}}/calendar/{{viewing_date.year}}/{{viewing_date.month|add:'-1'}}">
+					    <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/{{viewing_date.year}}/{{viewing_date.month|add:'-1'}}">
 					{% else %}
-					    <a href="/{{klass.klass_name}}/calendar/{{viewing_date.year|add:'-1'}}/12">
+					    <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/{{viewing_date.year|add:'-1'}}/12">
 					{% endif %}					
 					<div class="kal_left_arrow"></div>
 					</a>
@@ -32,9 +36,9 @@
 				<!-- arrows don't work if first month is same as last month because doesn't check for year -->
 				{%ifnotequal viewing_date.month lastest_date.month%}			
 					{% if viewing_date.month != 12 %}
-					    <a href="/{{klass.klass_name}}/calendar/{{viewing_date.year}}/{{viewing_date.month|add:'1'}}">
+					    <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/{{viewing_date.year}}/{{viewing_date.month|add:'1'}}">
 					{% else %}
-					    <a href="/{{klass.klass_name}}/calendar/{{viewing_date.year|add:'1'}}/1">
+					    <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/{{viewing_date.year|add:'1'}}/1">
 					{% endif %}
 					<div class="kal_right_arrow"></div>
 					</a>
@@ -64,15 +68,16 @@
 			<div class="kal_day_block">
 			{%ifequal viewing_date.month k.date.month%}
 
-<!-- events and dates links and permissions-->
-<!-- Will have to check if Permissions work? -->
+            <!-- events and dates links and permissions-->
+<!-- Will have to check if Permissions work? NEED TO CHANGE PERMISSIONS-->
+
 				<!-- Day Number -->
 				{%if user.is_staff %}
-					<a href="/{{class_url}}/calendar/add_event/{{k.date.year}}/{{k.date.month}}/{{k.date.day}}">
+					<a href="/{{klass.klass_name}}/calendar/{{kal_type}}/add_event/{{k.date.year}}/{{k.date.month}}/{{k.date.day}}">
 					    <div class="kal_date">{{k.date|date:"j"}}
 					</a>	
 					{%if user.is_superuser%}
-					    <a href="/{{class_url}}/calendar/modify/{{k.id}}/">
+					    <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify/{{k.id}}/">
 						    <div class="kal_day_no">({{k.day_no}})</div>
 					    </a>
 					{% else %}
@@ -87,40 +92,88 @@
 				</div>
 				<!-- Events -->				
 				<div class="kal_entries">	
-					{% for e in k.event_set.all %}
-					    {% for c in e.class_db.all %}
-					        {%if c.classes == class_url %}
+					<!-- class calendar -->
+					{%ifnotequal kal_type 'kksa' %}
+					    {% for e in k.event_set.all %}
+					        {% if klass in e.klass.all %}
 						        {% if user.is_staff %}
-						            <a href="/{{class_url}}/calendar/modify_event/{{e.id}}/">{{e.description}}<br></a>
+						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
 						        {%else%}
 						            {{e.description}}<br>
 						        {%endif%}
-						    {% endif %}
+					        {%endif%}
 					    {% endfor %}
-					{%endfor%}				
+					<!-- kksa calendar -->
+					{%else%}
+						{% for e in k.event_set.all %}
+					        {% if e.kksa %}
+						        {% if user.is_staff %}
+						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
+						        {%else%}
+						            {{e.description}}<br>
+						        {%endif%}
+					        {%endif%}
+					    {% endfor %}
+					{%endifnotequal%}
+
+				<!-- End of Events -->		    
+				<!-- Homework -->	
+				{%ifnotequal kal_type 'kksa' %}    			
 					{% for h in k.homework_set.all %}
-					    {% for c in h.class_db.all %}
-					        {%if c.classes == class_url %}
-						        <a href="/{{class_url}}/homework"/>
+					    {% if klass in h.klass.all %}
+						        <a href="/{{klass.klass_name}}/homework"/>
 						        {{h.subject}}:{{h.assigned_work}}<br>
 						        </a>
-						    {% endif %}
-						{%endfor%}
+						{% endif %}
 					{%endfor%}
+				{%endifnotequal%}
+				<!-- End of homework -->	
 				</div>
 <!-- Will have to check if Permissions work? -->
-				
+
+
+            <!-- Kalendar days from another month -->				
 			{%else%}
 				<div class="kal_date_other_month">{{k.date|date:"j"}}
 					<div class="kal_day_no">({{k.day_no}})</div>
 				</div>
+				<!-- Events -->	
 				<div class="kal_entries_other_month">
-					{% for e in k.event_set.all %}
-						{{e.description}}<br>
-					{%endfor%}	
+					{%ifnotequal kal_type 'kksa' %}
+					    {% for e in k.event_set.all %}
+					        {% if klass in e.klass.all %}
+						        {% if user.is_staff %}
+						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
+						        {%else%}
+						            {{e.description}}<br>
+						        {%endif%}
+					        {%endif%}
+					    {% endfor %}
+					{%else%}
+						{% for e in k.event_set.all %}
+					        {% if e.kksa %}
+						        {% if user.is_staff %}
+						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
+						        {%else%}
+						            {{e.description}}<br>
+						        {%endif%}
+					        {%endif%}
+					    {% endfor %}
+					{%endifnotequal%}
+				<!-- End of Events -->	
+				<!-- Homework -->	
+					    
+				{%ifnotequal kal_type 'kksa' %}    			
 					{% for h in k.homework_set.all %}
-						{{h.subject}}:{{h.assigned_work}}<br>
+					    {% if klass in h.klass.all %}
+						        <a href="/{{klass.klass_name}}/homework"/>
+						        {{h.subject}}:{{h.assigned_work}}<br>
+						        </a>
+						{% endif %}
 					{%endfor%}
+				{%endifnotequal%}
+				<!-- End of homework -->	
+
 				</div>
 			{%endifequal%}			
 

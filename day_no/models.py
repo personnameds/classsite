@@ -17,3 +17,22 @@ class Day_No(models.Model):
 
     class Meta:
         verbose_name="Day Number"
+
+class Add_Day_No_Form(forms.ModelForm):
+    change_type=forms.ChoiceField(choices=(('P','Permanent'),('M','For This Week')), label='Change will be:', initial='M')
+
+    class Meta:
+        model=Day_No
+        fields=('change_type','before_event','period1_event','period2_event','period3_event','lunch_event','period4_event','period5_event','period6_event','after_event')
+
+    def __init__(self, request, class_url, *args, **kwargs):
+        self.request=request
+        self.class_url=class_url
+        super(Add_Day_No_Form, self).__init__(*args, **kwargs)
+
+#     def clean(self):
+#         if self.request.user.get_profile().in_class.classes != self.class_url:
+#             raise forms.ValidationError("This is not your class.")
+#         return self.cleaned_data
+        
+        

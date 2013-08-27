@@ -9,12 +9,12 @@
 		<div class="clearer"></div>		
 		
 		<div class="message_h3">Topics</div>
-		<a href="/{{class_url}}/messages/add_topic"><div class="add_topic_button"></div></a>
+		<a href="/{{klass.klass_name}}/messages/add_topic"><div class="add_topic_button"></div></a>
 		<div class="clearer"></div>
 		
 		{% for topic in topic_list %}
 
-			<a href="/{{class_url}}/messages/{{topic.id}}/messages">
+			<a href="/{{klass.klass_name}}/messages/{{topic.id}}/messages">
 				{%if forloop.first %}
 					<div class="topic_first">
 						<div class="topic_text">{{topic.topic}}</div>

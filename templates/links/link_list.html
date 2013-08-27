@@ -3,9 +3,9 @@
 
 {% block main_content %}
 	<div class="main">
-		<div class="main_h1">Links</div>
+		<h1>Links</h1>
 		{% if user.is_staff%}
-			<a href="/{{class_url}}/links/add/"><div class="add_main_button"></div></a>
+			<a href="/{{klass.klass_name}}/links/add/"><div class="add_main_button"></div></a>
 		{% endif %}
 		<div class="clearer"></div>		
 		

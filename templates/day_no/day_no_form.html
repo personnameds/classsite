@@ -9,7 +9,7 @@
 		<form action"." method="POST">{%csrf_token%}
 			{{form.as_ul}}
 			<input type="submit" value="Change">
-			<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/schedule/'">
+			<input type="button" value="Cancel" onclick="location.href='/{{klass.klass_name}}/schedule/'">
 		</form>	
 
 	</div>

@@ -24,8 +24,9 @@
 			
 			{% for day, week in list %}
 				{% if user.is_staff %}
+					<!--need to change to teacher permissions -->
 					{% ifequal user.classes.classes class_url %}
-					    <a href="/{{class_url}}/schedule/modify/{{day.id}}/{{week.id}}">					
+					    <a href="/{{klass.klass_name}}/schedule/modify/{{day.id}}/{{week.id}}">					
 						    <div class='weekday'>Day {{day.day_no|slice:":1"}}</div>			
 					    </a>
 					{%else%}

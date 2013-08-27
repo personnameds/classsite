@@ -1,7 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-from classlists.models import Classes
-from django.contrib.auth.models import User
+from classlists.models import Klass
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from contact.forms import Contact_Form
@@ -11,9 +10,10 @@ class ContactFormView(FormView):
 	template_name='contact/contact.html'
 	
 	def get_context_data(self, **kwargs):
-	    class_url=self.kwargs['class_url']
+	    klass=self.kwargs['class_url']
 	    context=super(ContactFormView, self).get_context_data(**kwargs)
-	    context['class_url']=class_url.lower()
+	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+	    context['path']=self.request.path
 	    return context
 
 	def get_initial(self, **kwargs):
@@ -24,9 +24,7 @@ class ContactFormView(FormView):
 
 
 	def form_valid(self, form):
-	    class_url=self.kwargs['class_url']
-	    
-	    class_db=Classes.objects.get(classes=self.kwargs['class_url'])
+	    klass=self.kwargs['class_url']
 	    
 	    subject=self.request.POST['subject']
 	    message=self.request.POST['message']
@@ -35,6 +33,6 @@ class ContactFormView(FormView):
 	    #teacher=Classes.objects.get(pk=self.request.POST['teacher']).teacher
 	    recipient=[teacher.email]
 
-	    send_mail(subject, message, sender, recipient)
+	    send_mail(subject, message, sender, recipient, fail_silently=True)
 	    
-	    return HttpResponseRedirect('/'+class_url+'/')
+	    return HttpResponseRedirect('/'+klass)

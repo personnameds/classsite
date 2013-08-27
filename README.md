@@ -1,11 +1,11 @@
 classsite v5
 
 To Do:
+    -teacher names instead of their username etc
+    -security!
 
-Init
-    -when creating calendar it addes the following stuff as initial setup
-        create groups (saved link in readitlater)
-        add classes and day numbers for class
+Admin
+    -update all admin.py
 
 Initialize
     -need to automate day creation based on schedule format, right now hardcoded
@@ -19,6 +19,32 @@ Kalendar
     -creation of kalendar same as old nothing upgraded
     -need to add permissions to Kalendar_list
     -I cleaned up Kalendar_List a little
+    -events needs cleaning up
+
+Links
+    -original
+
+Schedule
+    -original
+    -permissions
+    -Add_Day_No Stuff needs revising?????
+
+Messages
+    -original
+    -edit messages????
+    -if 0 messages topic should delete
+
+Documents
+    -works same as original
+    -different directories for each class
+
+Contact
+    -works same as original
+
+Homework
+    -security
+    -multiple class homework
+    -original nothing updated
 
 Classlists
     -resize banner images when uploaded (saved link in readitlater)
@@ -43,3 +69,4 @@ Other
     -Get_absolute_url
         -need to use and add so I can click from admin to see on website
     -need to get rid of @reciever for user when syncdb???
+    

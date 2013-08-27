@@ -2,7 +2,7 @@
 
 {% block main_content %}
 	<div class="main">
-		<div class="main_h1">Add Links</div>
+		<h1>Add Links</h1>
 		<div class="clearer"></div>		
 		
 		<form action="." method="POST" enctype="multipart/form-data">{%csrf_token%}
@@ -14,7 +14,7 @@
 			<div class="form_label">Subject:</div><div class="form_element">{{ form.subject}}</div>
 			<div class="form_input"> 
 				<input type="submit" value="Add">
-				<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/links/'">
+				<input type="button" value="Cancel" onclick="location.href='/{{klass.klass_name}}/links/'">
 			</div>
 		</form>
 

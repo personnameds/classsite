@@ -18,7 +18,7 @@
 			<div class="form_label">Message:</div><div class="form_element">{{ form.msg_text }}</div>
 			<div class="form_input">
 				<input type="submit" value="Add">
-				<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/messages/'">
+				<input type="button" value="Cancel" onclick="location.href='/{{klass.klass_name}}/messages/'">
 			</div>
 		</form>
 		
@@ -36,20 +36,20 @@
 				<div class="message_info">
 					
 					{% ifnotequal m.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/reply">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/reply">
 						<span class="message_reply_change">Reply</span>
 					</a>
 					{% endifnotequal %}
 					
 					{% ifequal m.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					</a>
 					{% endifequal %}
 					
 					{% if user.is_staff %}
 					    {% ifnotequal m.author user %}
-					    <a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+					    <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					    </a>
 					    {% endifnotequal %}		
@@ -66,14 +66,14 @@
 					<div class="message_info">
 						
 						{% ifequal r.author user %}
-						<a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 							<span class="message_reply_delete">Delete</span>
 						</a>
 						{% endifequal %}
 						
 						{% if user.is_staff %}
 					        {% ifnotequal r.author user %}
-					        <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+					        <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						    <span class="message_reply_delete">Delete</span>
 					        </a>
 					        {% endifnotequal %}		

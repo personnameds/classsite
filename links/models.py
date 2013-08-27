@@ -2,7 +2,7 @@ from django.db import models
 from django.forms import ModelForm, TextInput, ModelChoiceField,CheckboxSelectMultiple
 
 from homework.models import Homework
-from classlists.models import Classes
+from classlists.models import Klass
 
 from datetime import date
 
@@ -25,10 +25,10 @@ SUBJECT_CHOICES = (
     )
     
 class Link(models.Model):
-	link=models.URLField(verify_exists=True)
+	link=models.URLField()
 	description=models.CharField(max_length=30)
 	homework=models.ForeignKey(Homework, blank=True, null=True)
-	class_db=models.ManyToManyField(Classes, blank=True, null=True)
+	klass=models.ManyToManyField(Klass, blank=True, null=True)
 	subject=models.CharField(max_length=10,choices=SUBJECT_CHOICES, blank=True, null=True)
 
 	def __unicode__(self):

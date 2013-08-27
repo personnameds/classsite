@@ -123,12 +123,12 @@ INSTALLED_APPS = (
     'initialize',
     'day_no',
     'kalendar',
-#     'schedule',
-#     'homework',
-#     'documents',
-#     'links',
-#     'messages',
-#     'contact',
+    'schedule',
+    'homework',
+    'documents',
+    'links',
+    'messages',
+    'contact',
 )
 
 

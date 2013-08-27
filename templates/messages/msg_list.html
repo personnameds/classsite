@@ -9,7 +9,7 @@
 		<div class="clearer"></div>		
 		
 		<div class="message_h3">{{topic.topic}}</div>
-		<a href="/{{class_url}}/messages/{{topic.id}}/add_message"><div class="add_message_button"></div></a>
+		<a href="/{{klass.klass_name}}/messages/{{topic.id}}/add_message"><div class="add_message_button"></div></a>
 		<div class="clearer"></div>	
 		<div class="message_text">Applies to - {{topic.homework}}</div>		
 		<div class="clearer"></div>	
@@ -26,20 +26,20 @@
 				<div class="message_info">
 					
 					{% ifnotequal m.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/reply">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/reply">
 						<span class="message_reply_change">Reply</span>
 					</a>
 					{% endifnotequal %}
 					
 					{% ifequal m.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					</a>
 					{% endifequal %}
 					
 					{% if user.is_staff %}
 					    {% ifnotequal m.author user %}
-					    <a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+					    <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					    </a>
 					    {% endifnotequal %}		
@@ -56,14 +56,14 @@
 					<div class="message_info">
 						
 						{% ifequal r.author user %}
-						<a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 							<span class="message_reply_delete">Delete</span>
 						</a>
 						{% endifequal %}
 						
 						{% if user.is_staff %}
 					        {% ifnotequal r.author user %}
-					        <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+					        <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						    <span class="message_reply_delete">Delete</span>
 					        </a>
 					        {% endifnotequal %}		

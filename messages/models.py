@@ -4,14 +4,14 @@ from django.forms import ModelForm, TextInput, Textarea, ModelChoiceField
 from django.contrib.auth.models import User
 
 from homework.models import Homework
-from classlists.models import Classes
+from classlists.models import Klass
 from datetime import date
 
 class Topic(models.Model):
 	topic = models.CharField(max_length=50)
 	homework=models.ForeignKey(Homework, blank=True, null=True)
 	last_msg=models.DateTimeField()
-	class_db=models.ForeignKey(Classes)
+	klass=models.ForeignKey(Klass)
 	
  	def __unicode__(self):
  		return '%s' %(self.topic)
@@ -26,7 +26,7 @@ class Add_Topic_Form(ModelForm):
 		widgets={
 			'description':TextInput(attrs={'size':'45'}),
 			}
-		exclude=('last_msg','class_db')
+		exclude=('last_msg','klass')
 
 
 class Msg(models.Model):
@@ -35,7 +35,7 @@ class Msg(models.Model):
 	author = models.ForeignKey(User)
 	msg_text=models.TextField()
 	msg_replied_to=models.ForeignKey('self',blank=True, null=True)
-	class_db=models.ForeignKey(Classes)
+	klass=models.ForeignKey(Klass)
 	
 
 	def __unicode__(self):
@@ -47,7 +47,7 @@ class Add_Message_Form(ModelForm):
 		widgets={
 			'msg_text':Textarea(),
 			}
-		exclude=('topic','entered_on','msg_replied_to','author','class_db')
+		exclude=('topic','entered_on','msg_replied_to','author','klass')
 
 
 

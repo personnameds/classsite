@@ -3,8 +3,11 @@
 {% block main_content %}
 	<h1>Homepage</h1>
     
-    Missing add message button
-    <br>
+    {% if user.is_staff %}
+        <a href="add/"><div class="add_main_button"></div></a>
+    {% endif %} 
+    <div class="clearer"></div>
+    
     Edit message needs to change format
     <br>
     Colour of text too light
