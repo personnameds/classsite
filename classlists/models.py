@@ -34,7 +34,10 @@ class Teacher(models.Model):
     user=models.OneToOneField(User)
     klass=models.ForeignKey('Klass', verbose_name='Class',blank=True)
     teacher_name=models.CharField(max_length=20, unique=True)
-    
+
+    class Meta:
+        permissions=(('is_teacher', 'Is a teacher'),)
+        
     def __unicode__(self):
         return self.teacher_name
         

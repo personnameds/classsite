@@ -9,7 +9,7 @@
 	{% else %}
 	    <h1>{{klass.klass_name}} Calendar</h1>
 	{% endifequal %}
-	
+
 		{%for k in kalendar_list%}
 			
 			<!-- month name, arrows, day names -->
@@ -55,11 +55,11 @@
 				<div class="kal_day_label">Friday</div>
 				
 	
-			{%endif%}
+
 
             <!-- the actual kalendar -->
 			
-	        {%if forloop.first%}
+
                 {%for i in insert_counter %}
                     <div class="kal_blank_day_block"></div>
                 {%endfor%}
@@ -72,7 +72,7 @@
 <!-- Will have to check if Permissions work? NEED TO CHANGE PERMISSIONS-->
 
 				<!-- Day Number -->
-				{%if user.is_staff %}
+				{% if perms.classlists.is_teacher %}
 					<a href="/{{klass.klass_name}}/calendar/{{kal_type}}/add_event/{{k.date.year}}/{{k.date.month}}/{{k.date.day}}">
 					    <div class="kal_date">{{k.date|date:"j"}}
 					</a>	
@@ -96,7 +96,7 @@
 					{%ifnotequal kal_type 'kksa' %}
 					    {% for e in k.event_set.all %}
 					        {% if klass in e.klass.all %}
-						        {% if user.is_staff %}
+						        {% if perms.classlists.is_teacher %}
 						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
 						        {%else%}
 						            {{e.description}}<br>
@@ -107,7 +107,7 @@
 					{%else%}
 						{% for e in k.event_set.all %}
 					        {% if e.kksa %}
-						        {% if user.is_staff %}
+						        {% if perms.classlists.is_teacher %}
 						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
 						        {%else%}
 						            {{e.description}}<br>
@@ -142,7 +142,7 @@
 					{%ifnotequal kal_type 'kksa' %}
 					    {% for e in k.event_set.all %}
 					        {% if klass in e.klass.all %}
-						        {% if user.is_staff %}
+						        {% if perms.classlists.is_teacher %}
 						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
 						        {%else%}
 						            {{e.description}}<br>
@@ -152,7 +152,7 @@
 					{%else%}
 						{% for e in k.event_set.all %}
 					        {% if e.kksa %}
-						        {% if user.is_staff %}
+						        {% if perms.classlists.is_teacher %}
 						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
 						        {%else%}
 						            {{e.description}}<br>

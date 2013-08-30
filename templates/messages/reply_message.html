@@ -5,10 +5,9 @@
 	
 	<!-- fix look of add button -->
 	<div class="main">
-		<div class="main_h1">Messages</div>
+		<h1>Messages</1>
 		
-		<div class="message_h3">{{topic.topic}}</div>
-		<div class="clearer"></div>		
+		<h2>{{topic.topic}}</h2>	
 				
 		{% for m in msg_list %}
 						
@@ -46,7 +45,7 @@
 						</a>
 						{% endifequal %}
 						
-						{% if user.is_staff %}
+						{% if perms.classlists.is_teacher %}
 					        {% ifnotequal r.author user %}
 					        <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						    <span class="message_reply_delete">Delete</span>
@@ -83,7 +82,7 @@
 						</a>
 						{% endifequal %}
 
-						{% if user.is_staff %}
+						{% if perms.classlists.is_teacher %}
 					        {% ifnotequal m.author user %}
 					        <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						    <span class="message_reply_change">Delete</span>
@@ -108,7 +107,7 @@
 							</a>
 							{% endifequal %}
 							
-							{% if user.is_staff %}
+							{% if perms.classlists.is_teacher %}
 					            {% ifnotequal r.author user %}
 					            <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						        <span class="message_reply_delete">Delete</span>

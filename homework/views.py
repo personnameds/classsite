@@ -45,10 +45,10 @@ class HomeworkCreateView(CreateView):
         initial['klass']=klass
         return initial
 
-    def get_form_kwargs(self):
-        kwargs=super(HomeworkCreateView, self).get_form_kwargs()
-        kwargs.update({'request':self.request, 'klass':self.kwargs['class_url']})
-        return kwargs
+#     def get_form_kwargs(self):
+#         kwargs=super(HomeworkCreateView, self).get_form_kwargs()
+#         kwargs.update({'request':self.request, 'klass':self.kwargs['class_url']})
+#         return kwargs
 
     def form_valid(self, form):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
@@ -86,10 +86,10 @@ class HomeworkUpdateView(UpdateView):
         context['klass']=klass
         return context
 
-    def get_form_kwargs(self):
-        kwargs=super(HomeworkUpdateView, self).get_form_kwargs()
-        kwargs.update({'request':self.request, 'klass':self.kwargs['class_url']})
-        return kwargs
+#     def get_form_kwargs(self):
+#         kwargs=super(HomeworkUpdateView, self).get_form_kwargs()
+#         kwargs.update({'request':self.request, 'klass':self.kwargs['class_url']})
+#         return kwargs
 
     def form_valid(self, form):
         pk=self.kwargs['pk']

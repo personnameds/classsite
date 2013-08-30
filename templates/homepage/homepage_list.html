@@ -3,18 +3,11 @@
 {% block main_content %}
 	<h1>Homepage</h1>
     
-    {% if user.is_staff %}
+    {% if perms.classlists.is_teacher %}
         <a href="add/"><div class="add_main_button"></div></a>
     {% endif %} 
     <div class="clearer"></div>
-    
-    Edit message needs to change format
-    <br>
-    Colour of text too light
-    <br>
-    More space between each entry??
-    <br>
-    
+
 	<ul id="posts">
 	    {% for entry in homepage_list %}
 	    <li class="post">

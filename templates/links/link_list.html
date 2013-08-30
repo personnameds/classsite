@@ -4,7 +4,7 @@
 {% block main_content %}
 	<div class="main">
 		<h1>Links</h1>
-		{% if user.is_staff%}
+        {% if perms.classlists.is_teacher %}
 			<a href="/{{klass.klass_name}}/links/add/"><div class="add_main_button"></div></a>
 		{% endif %}
 		<div class="clearer"></div>		
@@ -22,7 +22,7 @@
                                 for {{link.homework}}
                             {% endif %}
                         </div>
-                        {% if user.is_staff %}
+                        {% if perms.classlists.is_teacher %}
                             <div class="doclink_change"><a href="modify/{{link.id}}">Edit</a></div>
                         {% endif %}
                 {%endifequal%}

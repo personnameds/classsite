@@ -6,12 +6,13 @@ from initialize.forms import Create_Kalendar_Form
 from classlists.models import Klass, Teacher
 from day_no.models import Day_No
 from kalendar.models import Kalendar
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group, Permission
 from datetime import date, timedelta
 
 def InitKlassesCreateView(request):
     Klass.objects.all().delete()
     Teacher.objects.all().delete()
+    Group.objects.all().delete()
     
     new_klass=Klass(
         klass_name='8B',
@@ -36,6 +37,15 @@ def InitKlassesCreateView(request):
         teacher_name='Mrs. Ocampo',
         )
     new_teacher.save()
+    
+    teacher_group=Group(name='Teacher Group')
+    teacher_group.save()
+    is_teacher=Permission.objects.get(name='Is a teacher')
+    teacher_group.permissions.add(is_teacher)
+    
+    for t in Teacher.objects.all():
+        t.user.groups.add(teacher_group,)
+        
     
     return HttpResponseRedirect(reverse('init_day_create',))
     

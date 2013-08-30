@@ -62,16 +62,16 @@ class Homework_Form(ModelForm):
     due_date=forms.DateField(initial=duedate,widget=SelectDateWidget())
 
 
-    def __init__(self, request, klass, *args, **kwargs):
-        self.request=request
-        self.klass=klass
-        super(Homework_Form, self).__init__(*args, **kwargs)
+#     def __init__(self, request, klass, *args, **kwargs):
+#         self.request=request
+#         self.klass=klass
+#         super(Homework_Form, self).__init__(*args, **kwargs)
 
-    def clean(self):
-        if not self.request.user.is_staff:
-            if self.request.user.get_profile().in_class.classes != self.class_url:
-                raise forms.ValidationError("This is not your class.")
-        return self.cleaned_data
+#     def clean(self):
+#         if not self.request.user.is_staff:
+#             if self.request.user.get_profile().in_class.classes != self.class_url:
+#                 raise forms.ValidationError("This is not your class.")
+#         return self.cleaned_data
 
     def clean_due_date(self):
         due_date=self.cleaned_data['due_date']

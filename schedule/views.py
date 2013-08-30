@@ -39,6 +39,7 @@ class ScheduleTemplateView(TemplateView):
 		context['days']=days
 		context['list']=list
 
-		context['class_url']=klass
+		context['klass']=klass
+		context['path']=self.request.path 
 		
 		return context

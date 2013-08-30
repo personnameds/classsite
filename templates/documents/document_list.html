@@ -3,9 +3,10 @@
 
 
 {% block main_content %}
-	<div class="main">
-		<div h1>Documents</dh1>
-		{% if user.is_staff%}
+
+		<h1>Documents</h1>
+
+		{% if perms.classlists.is_teacher %}
 			<a href="/{{klass}}/documents/add/"><div class="add_main_button"></div></a>
 		{% endif %}
 		<div class="clearer"></div>		
@@ -25,14 +26,12 @@
 					        for {{document.homework}}
 				        {% endif %}
 				    </div>
-                        {% if user.is_staff %}
+                        {% if perms.classlists.is_teacher %}
                             <div class="doclink_change"><a href="modify/{{document.id}}">Edit</a></div>
                         {% endif %}
 			    {% endifequal %}
 			    <div class="clearer"></div>	
 		    {%endfor%}
 		{%endfor%}
-
-	</div>
 
 {% endblock %}

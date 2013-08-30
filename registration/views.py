@@ -14,10 +14,16 @@ class LoginUserView(FormView):
     template_name='registration/login.html'
     
     def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
         context=super(LoginUserView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']='/'+self.kwargs['class_url']
+        
+        try: 
+            klass=self.kwargs['class_url']
+        except:
+            klass=self.request.GET['next']
+            klass=klass[1:3]
+        
+        context['klass']=Klass.objects.get(klass_name=klass)
+        context['path']='/'+klass
         return context
     
     def form_valid(self, form):

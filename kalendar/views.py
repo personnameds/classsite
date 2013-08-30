@@ -86,11 +86,11 @@ class KalendarListView(ListView):
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
         context['path']=self.request.path
 
-        #first, last and current viewing kalendar dates
+        #first, last of entire kalendar dates and current viewing date
         month=int(self.kwargs.get('month', date.today().month))
         year=int(self.kwargs.get('year', date.today().year))
-        firstest_date=Kalendar.objects.all()[0].date
-        lastest_date=Kalendar.objects.latest('id').date
+        firstest_date=Kalendar.objects.all().order_by('date')[0].date
+        lastest_date=Kalendar.objects.all().order_by('-date')[0].date
         viewing_date=date(year,month,1)
 
         
@@ -135,7 +135,7 @@ class KalendarListView(ListView):
 	
         return Kalendar.objects.filter(date__gte=first_kal_date, 
                                        date__lte=last_kal_date,
-                                       )
+                                       ).order_by('date')
 
 
 

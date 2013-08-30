@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>KKSA.ca</title>
+		<link rel="stylesheet" href="{{STATIC_URL}}lib/index_styles.css" />
+		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery-ui-1.10.3.custom.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery.timer.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}lib/scripts.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+		<!--[if lte IE 9]>
+		<div id="IE">
+			<h3>Your Browser is Outdated!</h3>
+			<p style="font-size: 10pt;">Some Elemets may not function properly. Please try one of the following:</p>
+			<a href="http://www.firefox.com"><img src="img/layout/browsers/firefox.png" alt="firefox"></a>
+			<a href="http://www.chrome.com"><img src="img/layout/browsers/chrome.png" alt="chrome"></a>
+			<a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie"><img src="img/layout/browsers/ie.png" alt="ie"></a>
+		</div>
+		<![endif]-->
+		<div id="background">
+			<img src="{{STATIC_URL}}img/layout/nature.jpg">
+		</div>
+		<div id="wrapper">
+			<h1>Welcome,</h1>
+			<div id="info">To KKSA.ca! Please select your class:</div>
+			<ul id="class_btns">
+                {% for k in klass_list %}
+				    <li><a href="{{k.klass_name}}">{{k.klass_name}}</a></li>
+				{% endfor %}
+			</ul>
+			
+			<div id="footer"><a href="http://www.sasha.yaro.cc" target="_blank">Design and Development: Sasha Y.</a><br><span>Django Web Design and Development: S. Sanyal</span></div>
+		</div>
+	</body>
+</html>
