@@ -14,9 +14,9 @@
 		<div id="IE">
 			<h3>Your Browser is Outdated!</h3>
 			<p style="font-size: 10pt;">Some Elemets may not function properly. Please try one of the following:</p>
-			<a href="http://www.firefox.com"><img src="img/layout/browsers/firefox.png" alt="firefox"></a>
-			<a href="http://www.chrome.com"><img src="img/layout/browsers/chrome.png" alt="chrome"></a>
-			<a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie"><img src="img/layout/browsers/ie.png" alt="ie"></a>
+			<a href="http://www.firefox.com"><img src="{{STATIC_URL}}img/layout/browsers/firefox.png" alt="firefox"></a>
+			<a href="http://www.chrome.com"><img src="{{STATIC_URL}}img/layout/browsers/chrome.png" alt="chrome"></a>
+			<a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie"><img src="{{STATIC_URL}}img/layout/browsers/IE.png" alt="ie"></a>
 		</div>
 		<![endif]-->
 		<div id="background">
@@ -30,8 +30,11 @@
 				    <li><a href="{{k.klass_name}}">{{k.klass_name}}</a></li>
 				{% endfor %}
 			</ul>
-			
-			<div id="footer"><a href="http://www.sasha.yaro.cc" target="_blank">Design and Development: Sasha Y.</a><br><span>Django Web Design and Development: S. Sanyal</span></div>
+			<div id="footer">
+				<span>Django Web Design and Development: S. Sanyal</span>
+				<a href="http://www.sasha.yaro.cc" target="_blank">Design and Development: Sasha Y.</a>
+				<a class="right" href="http://schoolweb.tdsb.on.ca/karenkain/Home.aspx">About KKSA</a>
+			</div>
 		</div>
 	</body>
 </html>

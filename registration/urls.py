@@ -5,7 +5,6 @@ urlpatterns = patterns('',
     url(r'^login/$',(LoginUserView.as_view())),
     url(r'^logout/$',(LogoutUserView.as_view())),
     url(r'^newuser/$',(RegistrationFormView.as_view())),	
-  	url(r'^newuser/welcome/$',(WelcomeView.as_view())),	
+  	url(r'^newuser/welcome/$',(WelcomeView.as_view())),	  	
 	)
-
-
+	

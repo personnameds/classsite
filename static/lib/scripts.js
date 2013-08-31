@@ -34,6 +34,4 @@ $(document).ready(function() {
 		$('.thumb-text', this).stop().animate({'bottom':'-200px'}, 400, "easeOutSine");
 	}
 	);
-	
-	$('#footer a').text('Design and Development: Sasha Y.');
 });

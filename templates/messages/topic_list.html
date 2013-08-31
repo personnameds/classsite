@@ -7,8 +7,9 @@
 
 		<h1>Messages</h2>
 		<h2>Topics</h2>
+
 		<a href="/{{klass.klass_name}}/messages/add_topic"><div class="add_topic_button"></div></a>
-		
+
 		{% for topic in topic_list %}
 
 			<a href="/{{klass.klass_name}}/messages/{{topic.id}}/messages">

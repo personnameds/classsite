@@ -2,12 +2,10 @@ classsite v5
 
 To Do:
     -make sure everything looks good
-    -cron job
     -resetup everything on server
     -add all classes and teachers
     -teacher names instead of their username etc
     -fail silently off emails before going live
-    -need to get rid of @reciever for user when syncdb???
 
 Admin
     -update all admin.py
@@ -51,9 +49,7 @@ Homework
 
 Classlists
     -resize banner images when uploaded (saved link in readitlater)
-    -Student admin page only shows username not first and last
-        doable but not easy with admin I have now
-        I can switch back to regular admin page and then it will use unicode from model
+    -Student Model turned off... do I need it?
 
 Homepage
     -can I make homepage updateview cleaner, is it a hack or is it good?

@@ -7,7 +7,6 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
 from registration.forms import Registration_Form
 from classlists.models import Klass
-# from django.contrib.auth.models import User, Group
 
 class LoginUserView(FormView):
     form_class=AuthenticationForm

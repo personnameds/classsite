@@ -1,68 +1,104 @@
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic.edit import CreateView, FormView
+from django.views.generic.base import TemplateView
 # from initialize.models import Schedule_Format, Schedule_Format_Form
-from initialize.forms import Create_Kalendar_Form
+from initialize.forms import Create_Kalendar_Form, Teacher_Registration_Form, Create_Klass_Form
 from classlists.models import Klass, Teacher
 from day_no.models import Day_No
 from kalendar.models import Kalendar
 from django.contrib.auth.models import User, Group, Permission
 from datetime import date, timedelta
 
-def InitKlassesCreateView(request):
-    Klass.objects.all().delete()
-    Teacher.objects.all().delete()
-    Group.objects.all().delete()
-    
-    new_klass=Klass(
-        klass_name='8B',
-        )
-    new_klass.save()
-    
-    new_teacher=Teacher(
-        user=User.objects.get(username='sudeep'),
-        klass=new_klass,
-        teacher_name='Mr. Sanyal',
-        )
-    new_teacher.save()
-    
-    new_klass=Klass(
-        klass_name='8A',
-        )
-    new_klass.save()
-    
-    new_teacher=Teacher(
-        user=User.objects.get(username='locampo'),
-        klass=new_klass,
-        teacher_name='Mrs. Ocampo',
-        )
-    new_teacher.save()
-    
-    teacher_group=Group(name='Teacher Group')
-    teacher_group.save()
-    is_teacher=Permission.objects.get(name='Is a teacher')
-    teacher_group.permissions.add(is_teacher)
-    
-    for t in Teacher.objects.all():
-        t.user.groups.add(teacher_group,)
+class InitInfoTemplateView(TemplateView):
+    template_name='initialize/init_info.html'
+
+    def get_context_data(self, **kwargs):
+
+        context=super(InitInfoTemplateView, self).get_context_data(**kwargs)
+
         
-    
-    return HttpResponseRedirect(reverse('init_day_create',))
-    
+        context['klass_list']=Klass.objects.all()
+        context['teacher_list']=Teacher.objects.all()
+        
+        try:
+            if Kalendar.objects.all()[0]:
+                context['kalendar']=True
+            else:
+                context['kalendar']=False
+        except:
+            pass
+            
+        return context
+        
+class InitTeachersFormView(FormView):
+    form_class=Teacher_Registration_Form
+    template_name='initialize/init_teacher.html'
 
-# class InitScheduleFormatCreateView(CreateView):
-# # Not needed so not used for now
-# #     template_name='initialize/init_schedule_format_form.html'
-# #     form_class=Schedule_Format_Form
-# #     success_url='initialize/initdayformat' 
-    
-def InitDayCreateView(request):
-    Day_No.objects.all().delete()
-    
-    day_list=('1P','2P','3P','4P','5P','HP','1M','2M','3M','4M','5M','HM')
-    klass_list=Klass.objects.all()
+    def form_valid(self, form):
+                
+        firstname=form.cleaned_data["first_name"]
+        lastname=form.cleaned_data['last_name']
+        firstname=firstname.replace(" ","")
+        lastname=lastname.replace(" ","")
+        teacher_name=form.cleaned_data["teacher_name"]
+        user_name=teacher_name.replace(" ","").replace(".","")
+        
+        #creates a username using the teacher name
+        i=1
+        username=user_name.lower()
+        #I don't think this works
+        while True:
+            if not User.objects.filter(username=username):
+                break
+            #add numbers if teacher name is taken            
+            username=(user_name+str(i-1)).lower()
+            i=i+1
 
-    for k in klass_list:
+        #adds user and creates student at the same time
+        new_user=User.objects.create_user(
+                                        username=username,
+                                        first_name=firstname.title(),
+                                        last_name=lastname.title(),
+                                        email=form.cleaned_data['email'],
+                                        )
+        new_user.set_password(form.cleaned_data["password1"])
+        new_user.save()
+        
+        new_teacher=Teacher(user=new_user,
+                            teacher_name=teacher_name,
+                            )
+        new_teacher.save()
+
+        try:
+            teacher_group=Group.objects.get(name='Teacher Group')
+            new_user.groups.add(teacher_group)
+        except Group.DoesNotExist:
+            teacher_group=Group(name='Teacher Group')
+            teacher_group.save()
+            is_teacher=Permission.objects.get(name='Is a teacher')
+            teacher_group.permissions.add(is_teacher)
+            new_user.groups.add(teacher_group)
+
+        return HttpResponseRedirect('/initialize')
+
+class InitKlassFormView(FormView):
+    form_class=Create_Klass_Form
+    template_name='initialize/init_klass.html'
+
+    def form_valid(self, form):
+        klass_name=form.cleaned_data['klass_name']
+        teacher=form.cleaned_data['teacher']
+        
+        new_klass=Klass(klass_name=klass_name)
+        new_klass.save()
+        teacher.klass=new_klass
+        teacher.save()
+        
+        #days are hardcoded in
+        #if delete class, days do not delete
+        day_list=('1P','2P','3P','4P','5P','HP','1M','2M','3M','4M','5M','HM')
+
         for i in day_list:
             new_day_no=Day_No(
                 day_no=i,
@@ -75,11 +111,11 @@ def InitDayCreateView(request):
                 period5_event="P5",			
                 period6_event="P6",						
                 after_event="",	
-                klass=k,
+                klass=new_klass,
                 )
-            new_day_no.save()
-    
-    return HttpResponseRedirect(reverse('init_kalendar_create',))
+            new_day_no.save()     
+        
+        return HttpResponseRedirect('/initialize')
     
 class InitKalendarFormView(FormView):
 	form_class=Create_Kalendar_Form
@@ -113,5 +149,7 @@ class InitKalendarFormView(FormView):
 					
 			change_day=change_day + timedelta(days=1)
  		
- 		return HttpResponseRedirect('/')
+ 		return HttpResponseRedirect('/initialize')
 
+
+    
