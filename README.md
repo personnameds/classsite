@@ -1,21 +1,13 @@
 classsite v5
 
 To Do:
-    -make sure everything looks good
-    -resetup everything on server
     -add all classes and teachers
-    -teacher names instead of their username etc
-    -fail silently off emails before going live
 
 Admin
     -update all admin.py
 
 Initialize
     -need to automate day creation based on schedule format, right now hardcoded
-    -need to autmoate classes and teacher creation, right now hardcoded
-    -everything is too hardcoded in
-    -should break up into parts from an admin only webpage
-    -admin only webpage should display class and teacher info
     -if fail security login redirect not setup
 
 Day_No
@@ -64,8 +56,9 @@ Registration
     
 Other
     -memcached
-    -No hard coded urls (reverse lazy etc.)
+    -No hard coded urls (reverse)
     -Get_absolute_url
         -need to use and add so I can click from admin to see on website
+    -feeds
 
     

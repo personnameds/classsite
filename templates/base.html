@@ -34,8 +34,10 @@
 					
        		        {% if user.is_authenticated %}
        		            <li class="account"><a href="/{{klass.klass_name}}/registration/logout/">
-       		                {%if user.first_name %}
-            		            {{ user.first_name }} &#8260
+       		                {%if user.teacher %}
+                                {{user.teacher.teacher_name }} &#8260
+            	            {%elif user.first_name %}
+                                {{ user.first_name }} &#8260
             	            {%else%}
             			        {{ user.username }}&#8260
             			    {%endif%}

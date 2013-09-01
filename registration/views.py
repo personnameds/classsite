@@ -100,7 +100,6 @@ class RegistrationFormView(FormView):
  					+new_user.username+'\n'+'Password:'+form.cleaned_data["password1"]+'\n', 
  					'mistersanyal@gmail.com',
  					[new_user.email,'mistersanyal@gmail.com'],
- 					fail_silently=True
  					)
         return HttpResponseRedirect('welcome')
 

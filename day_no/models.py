@@ -8,7 +8,7 @@ class Day_No(models.Model):
     period1_event=models.CharField(max_length=10)
     period2_event=models.CharField(max_length=10)
     period3_event=models.CharField(max_length=10)
-    lunch_event=models.CharField(max_length=10)
+    lunch_event=models.CharField(max_length=10, blank=True)
     period4_event=models.CharField(max_length=10)
     period5_event=models.CharField(max_length=10)
     period6_event=models.CharField(max_length=10)
@@ -21,9 +21,20 @@ class Day_No(models.Model):
 class Add_Day_No_Form(forms.ModelForm):
     change_type=forms.ChoiceField(choices=(('P','Permanent'),('M','For This Week')), label='Change will be:', initial='M')
 
+    before_event=forms.CharField(max_length=10, label='Before School', required=False)
+    period1_event=forms.CharField(max_length=10, label='Period 1')
+    period2_event=forms.CharField(max_length=10, label='Period 2')
+    period3_event=forms.CharField(max_length=10, label='Period 3')
+    lunch_event=forms.CharField(max_length=10, label='Lunch', required=False)
+    period4_event=forms.CharField(max_length=10, label='Period 4')
+    period5_event=forms.CharField(max_length=10, label='Period 5')
+    period6_event=forms.CharField(max_length=10, label='Period 6')
+    after_event=forms.CharField(max_length=10, label='After School', required=False)
+
     class Meta:
         model=Day_No
         fields=('change_type','before_event','period1_event','period2_event','period3_event','lunch_event','period4_event','period5_event','period6_event','after_event')
+
 
     def __init__(self, request, class_url, *args, **kwargs):
         self.request=request
@@ -34,5 +45,3 @@ class Add_Day_No_Form(forms.ModelForm):
 #         if self.request.user.get_profile().in_class.classes != self.class_url:
 #             raise forms.ValidationError("This is not your class.")
 #         return self.cleaned_data
-        
-        

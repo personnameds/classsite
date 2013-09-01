@@ -42,9 +42,11 @@
 					    </a>
 					    {% endifnotequal %}		
 					{% endif %}
-					
-					Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
-					
+					{% if m.author.teacher %}
+						    Written by {{m.author.teacher.teacher_name}} {{m.entered_on|timesince}} ago		
+					{% else %}
+					    Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
+					{% endif %}
 				</div>
 
 				{%for r in m.msg_set.all%}	
@@ -66,8 +68,12 @@
 					        </a>
 					        {% endifnotequal %}		
 					    {% endif %}
-						
-						Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
+						{% if r.author.teacher %}
+						    Written by {{r.author.teacher.teacher_name}} {{r.entered_on|timesince}} ago												    
+						{% else %}  
+						    Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
+                        {% endif %}
+
 						
 					</div>
 				

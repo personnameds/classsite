@@ -32,7 +32,6 @@ class ContactFormView(FormView):
 	    teacher=User.objects.get(pk=self.request.POST['teacher'])
 	    #teacher=Classes.objects.get(pk=self.request.POST['teacher']).teacher
 	    recipient=[teacher.email]
-
-	    send_mail(subject, message, sender, recipient, fail_silently=True)
+	    send_mail(subject, message, sender, recipient)
 	    
 	    return HttpResponseRedirect('/'+klass)
