@@ -1,48 +1,64 @@
-classsite
-=========
-Feb 1 Changes
-    style.css
-        Added whichclass section
-    whichclass.html
-        Updated links to buttons
-    buttons.png
-        Added buttons for classes
+classsite v5
 
-Jan 10 Changes
+To Do:
+    -add all classes and teachers
 
-    document_list.html
-    link_list.html
-        Changed so that the document and link are clickable but the homework it relates to is not
-            also changed the way related homework looks so it looks different
+Admin
+    -update all admin.py
+
+Initialize
+    -need to automate day creation based on schedule format, right now hardcoded
+    -if fail security login redirect not setup
+
+Day_No
+    -nothing upgraded same as classsite4
+
+Kalendar
+    -creation of kalendar same as old nothing upgraded
+    -need to add permissions to Kalendar_list
+    -I cleaned up Kalendar_List a little
+    -events needs cleaning up
+
+Links
+
+Schedule
+    -update schedule needs to look nicer for teachers
+    -add_day_no form needs revising
+    -any teacher can change and teachers schedule
+
+Messages
+    -edit messages????
+    -if 0 messages topic should delete
+
+Documents
+    -different directories for each class
+
+Contact
+
+Homework
+    -check if actually in class adding homework too
+    -multiple class homework
+
+Classlists
+    -resize banner images when uploaded (saved link in readitlater)
+    -Student Model turned off... do I need it?
+
+Homepage
+    -can I make homepage updateview cleaner, is it a hack or is it good?
+    -homepage templates form and modify still old style not updated yet
+
+Login
+    -do I need to include path in context everytime to make ?next work
     
-    style.css
-        Added linkdocs_homework so homework looks different than link and document in html
-
-
-Jan 7 Changes
-
-kalendar_list.html
-    Changed permission for links to add event to .is_staff
-    Changed permission for links to change day number to .is_superuser
-
-homework models.py
-    HomeworkModelForm
-    Commented out clean_class_db
-    Changed clean function to allow teachers to add homework to all classes
+Registration
+    -works but needs to be revised, focus on redirect stuff
+    -I really doubt I need the path context thing
     
-messages views.py
-    order_by('-last_msg')
-    
-registration views.py
-    added .replace to first and last name to get rid of white space
-    still may be problems with other characters
+Other
+    -memcached
+    -No hard coded urls (reverse)
+    -Get_absolute_url
+        -need to use and add so I can click from admin to see on website
+    -feeds
 
-contact 
-    forms.py
-    changed teachermodelchoicefield to include all teachers and their last name
-    views.py
-    changed teacher to use user to get the email address of the teacher
-
-404.html
-    added one to see if that solves django errors on live site
     

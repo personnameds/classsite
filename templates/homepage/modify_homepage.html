@@ -12,12 +12,13 @@
 		<form action="." method="POST">{%csrf_token%}
 			<div class="form_label">Message:</div><div class="form_element">{{form.message}}</div>
 			{{form.entered_by}}
-			{{form.class_db}}
+			{{form.klass}}
 			{{form.date}}
+
 			<div class="form_input"> 
 					<input type="submit" name="mod/del" value="Modify">
 					<input type="submit" name="mod/del" value="Delete">
-					<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/homework/'">
+					<input type="button" value="Cancel" onclick="location.href='/{{klass}}/'">
 			</div>
 		</form>
 	</div>

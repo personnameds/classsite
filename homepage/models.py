@@ -1,21 +1,17 @@
 from django.db import models
-from classlists.models import Classes
+from classlists.models import Klass
 from django.contrib.auth.models import User
 from django.forms import ModelForm, ValidationError
 
 
-##check online I might have messed this up
 class Homepage(models.Model):
     message=models.TextField()
     date=models.DateField(blank=True, null=True)
-    class_db=models.ForeignKey(Classes, blank=True, null=True)
+    klass=models.ForeignKey(Klass, blank=True, null=True, verbose_name='Class')
     entered_by=models.ForeignKey(User, blank=True, null=True)
-    
-    class Meta:
-        ordering=["-date"]
 
     def __unicode__(self):
-        return self.message
+        return u'%s : %s' % (self.message, self.entered_by)
 
 class Homepage_Form(ModelForm):
     class Meta:

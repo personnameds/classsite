@@ -1,27 +1,34 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-	<div class="main">
-		<div class="main_h1">Homepage</div>
+	<h1>Homepage</h1>
+    
+    {% if perms.classlists.is_teacher %}
+        <a href="add/"><div class="add_main_button"></div></a>
+    {% endif %} 
+    <div class="clearer"></div>
 
+	<ul id="posts">
+	    {% for entry in homepage_list %}
+	    <li class="post">
+			<span>{{entry.message}}</span><br>
+            <span class="date">
+                {{entry.date|date:"F j, Y"}} - 
+                {{entry.entered_by.teacher.teacher_name}}
+			    {% ifequal entry.entered_by user %}
+			        <a href="modify/{{entry.id}}">Edit</a>
+			    {% endifequal %}
+                
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+<!-- 
 		{% if user.is_staff %}
 			<a href="add/"><div class="add_main_button"></div></a>
 		{% endif %}			
-		<div class="clearer"></div>	
-				
-		{% for entry in homepage_list %}
-			<div class="main_p">{{entry.message}}</div>
-			<div class="main_author">{{entry.date|date:"F j, Y"}} - 
-			    {{entry.entered_by.first_name}} {{entry.entered_by.last_name}}</div>
-			    {% ifequal entry.entered_by user %}
-			        <div class="main_change"><a href="modify/{{entry.id}}">Edit</a></div>
-			    {% endifequal %}
-			<div class="clearer"></div>	
+			
+ -->
 
-			<br>
-		{% endfor %}
-
-	</div>
 
 {% endblock %}
-

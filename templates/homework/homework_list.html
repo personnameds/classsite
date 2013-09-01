@@ -4,9 +4,9 @@
 
 
 	<!-- fix look of add button -->
-	<div class="main">
-		<div class="main_h1">Homework</div>
-		<a href="/{{class_url}}/homework/add/"><div class="add_main_button"></div></a>
+
+		<h1>Homework</h1>
+		<a href="/{{klass.klass_name}}/homework/add/"><div class="add_main_button"></div></a>
 		<div class="clearer"></div>
 		
 		{% for homework in homework_list %}
@@ -18,10 +18,10 @@
 			
 			<!-- prints homework either regular or cut through for deleted -->
 			{% if not homework.deleted %}
-				<a href="/{{class_url}}{{homework.get_absolute_url}}"><div class="hwk_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
+				<a href="/{{klass.klass_name}}{{homework.get_absolute_url}}"><div class="hwk_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
 			{% endif %}
 			{% if homework.deleted %}
-				<a href="/{{class_url}}{{homework.get_absolute_url}}"><div class="hwk_del_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
+				<a href="/{{klass.klass_name}}{{homework.get_absolute_url}}"><div class="hwk_del_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
 			{% endif %}
 
 <!-- don't need to double up just need to add spans -->
@@ -33,7 +33,7 @@
 				{% for topic in homework.topic_set.all %}
 					{% ifchanged homework %}
 						<div class="hwk_doc_label">Messages:</div>						
-						<a href="/{{class_url}}/messages/{{topic.id}}/messages">
+						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/messages">
 							<div class="hwk_doc">There {{topic.msg_set.count|pluralize:'is,are'}} {{topic.msg_set.count}} message{{topic.msg_set.count|pluralize}}.</div>	
 							<div class="hwk_doc">Last message entered {{topic.last_msg|timesince}} ago.</div>
 						</a>
@@ -45,7 +45,7 @@
 				{% for topic in homework.topic_set.all %}
 					{% ifchanged homework %}
 						<div class="hwk_del_doc_label">Messages:</div>						
-						<a href="/{{class_url}}/messages/{{topic.id}}/messages">
+						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/messages">
 								<div class="hwk_del_doc">There {{topic.msg_set.count|pluralize:'is,are'}} {{topic.msg_set.count}} message{{topic.msg_set.count|pluralize}}.</div>	
 								<div class="hwk_del_doc">Last message entered {{topic.last_msg|timesince}} ago.</div>
 							</a>
@@ -73,7 +73,7 @@
 					{% ifchanged homework %}
 						<div class="hwk_del_doc_label">Related documents:</div>
 					{% endifchanged %}
-					<a href="/{{class_url}}/documents/"><div class="hwk_del_doc">{{documents.filename}}
+					<a href="/{{klass.klass_name}}/documents/"><div class="hwk_del_doc">{{documents.filename}}
 						{% if documents.description %}
 							- {{documents.description}}
 						{% endif %}
@@ -104,16 +104,27 @@
 
 
 			<!-- prints author info -->
-
-			<div class="author_text">
-				Added by:{% firstof homework.entered_by.first_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
-					{% if homework.deleted %}
-						Deleted by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
-					{% endif %}
-					{% if homework.modified_by and not homework.deleted %}
-						Modified by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
-					{% endif %}
-			</div>
+                <div class="author_text">
+                    {% if homework.entered_by.teacher %}
+                        Added by:{% firstof homework.entered_by.teacher.teacher_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
+                    {% else %}
+                        Added by:{% firstof homework.entered_by.first_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
+                    {% endif %}       
+                    {% if homework.deleted %}
+                        {% if homework.modified_by.teacher %}                    
+                            Deleted by:{% firstof homework.modified_by.teacher.teacher_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
+                        {% else %}
+                            Deleted by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
+                        {%endif%}
+                    {% endif %}
+                    {% if homework.modified_by and not homework.deleted %}
+                        {% if homework.modified_by.teacher %}                     
+                            Modified by:{% firstof homework.modified_by.teacher.teacher_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
+                        {% else %}
+                            Modified by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
+                        {% endif %}
+                    {% endif %}
+                </div>
 		
 		{% endfor %}
 

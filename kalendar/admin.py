@@ -34,13 +34,13 @@ class EventAdmin(admin.ModelAdmin):
 
     def get_list_display(self, request):
         if request.user.is_superuser:
-            return ('description','event_date','class_db',)
+            return ('description','event_date','klass',)
         else:
             return ('description','event_date',)
 
     def changelist_view(self, request, extra_context=None):
         if request.user.is_superuser:
-            self.list_filter=('class_db',)
+            self.list_filter=('klass',)
         else:
             self.list_filter=None
         return super(EventAdmin, self).changelist_view(request, extra_context)

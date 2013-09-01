@@ -5,12 +5,10 @@
 	
 	<!-- fix look of add button -->
 	<div class="main">
-		<div class="main_h1">Messages</div>
-		<div class="clearer"></div>		
+		<h1>Messages</h1>	
 		
-		<div class="message_h3">{{topic.topic}}</div>
-		<a href="/{{class_url}}/messages/{{topic.id}}/add_message"><div class="add_message_button"></div></a>
-		<div class="clearer"></div>	
+		</h2>{{topic.topic}}</h2>
+		<a href="/{{klass.klass_name}}/messages/{{topic.id}}/add_message"><div class="add_message_button"></div></a>
 		<div class="message_text">Applies to - {{topic.homework}}</div>		
 		<div class="clearer"></div>	
 		
@@ -26,27 +24,29 @@
 				<div class="message_info">
 					
 					{% ifnotequal m.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/reply">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/reply">
 						<span class="message_reply_change">Reply</span>
 					</a>
 					{% endifnotequal %}
 					
 					{% ifequal m.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					</a>
 					{% endifequal %}
 					
-					{% if user.is_staff %}
+					{% if perms.classlists.is_teacher %}
 					    {% ifnotequal m.author user %}
-					    <a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+					    <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					    </a>
 					    {% endifnotequal %}		
 					{% endif %}
-					
-					Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
-					
+					{% if m.author.teacher %}
+						    Written by {{m.author.teacher.teacher_name}} {{m.entered_on|timesince}} ago		
+					{% else %}
+					    Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
+					{% endif %}
 				</div>
 
 				{%for r in m.msg_set.all%}	
@@ -56,20 +56,24 @@
 					<div class="message_info">
 						
 						{% ifequal r.author user %}
-						<a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 							<span class="message_reply_delete">Delete</span>
 						</a>
 						{% endifequal %}
 						
-						{% if user.is_staff %}
+						{% if perms.classlists.is_teacher %}
 					        {% ifnotequal r.author user %}
-					        <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+					        <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						    <span class="message_reply_delete">Delete</span>
 					        </a>
 					        {% endifnotequal %}		
 					    {% endif %}
-						
-						Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
+						{% if r.author.teacher %}
+						    Written by {{r.author.teacher.teacher_name}} {{r.entered_on|timesince}} ago												    
+						{% else %}  
+						    Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
+                        {% endif %}
+
 						
 					</div>
 				

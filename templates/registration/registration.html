@@ -2,17 +2,17 @@
 
 
 {% block main_content %}
-	<div class="main">
-		<div class="main_h1">Registration for {{class_url|upper}}</div>
-		<div class="clearer"></div>					
-		
-		<form action="." method="POST">{%csrf_token%}
-		<div class="registration_form">
-			{{form.as_p}}
-		</div>
-			<div class="form_input">
-				<input type="submit" value="Send">
-			</div>
-		</form>
-	</div>
+
+    <h1>Registration for {{klass.klass_name|upper}}</h1>				
+    
+    <form action="." method="POST">{%csrf_token%}
+    <div class="registration_form">
+        {{form.as_p}}
+    </div>
+        <div class="form_input">
+            <input type="submit" value="Send">
+        </div>
+    </form>
+
 {% endblock %}
+

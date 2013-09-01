@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+	<h1>Homepage</h1>
+
+    <h2>Teachers</h2>
+    <a href="/initialize/teachers">Add A Teacher</a><br>
+    {% for t in teacher_list %}
+        {{t.teacher_name}} - {{t.klass.klass_name}}<br>
+    {% endfor %}
+    
+    <h2>Classes</h2>
+    <a href="/initialize/klass">Add A Class</a><br>
+    {% for k in klass_list %}
+        {{k.klass_name}}<br>
+    {% endfor %}
+    
+    <h2>Kalendar</h2>
+    <a href="/initialize/kalendar">Create the Calendar</a><br>
+    {{kalendar}}
+
+    
+{% endblock %}

@@ -2,9 +2,7 @@
 
 
 {% block main_content %}
-	<div class="main">
-		<div class="main_h1">Contact</div>
-		<div class="clearer"></div>					
+		<h1>Contact</h1>				
 		
 		<form action="." method="POST">{%csrf_token%}
 			<div class="form_error">{{form.subject.errors.as_text}}</div>
@@ -19,7 +17,6 @@
 				<input type="submit" value="Send">
 			</div>
 		</form>
-	</div>
 
 {% endblock %}
 

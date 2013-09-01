@@ -5,10 +5,9 @@
 	
 	<!-- fix look of add button -->
 	<div class="main">
-		<div class="main_h1">Messages</div>
+		<h1>Messages</1>
 		
-		<div class="message_h3">{{topic.topic}}</div>
-		<div class="clearer"></div>		
+		<h2>{{topic.topic}}</h2>	
 				
 		{% for m in msg_list %}
 						
@@ -25,7 +24,7 @@
 					<div class="form_label">Reply:</div><div class="form_element">{{ form.msg_text }}</div>
 					<div class="form_input">
 						<input type="submit" value="Add">
-						<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/messages/{{topic.id}}/messages/'">
+						<input type="button" value="Cancel" onclick="location.href='/{{klass.klass_name}}/messages/{{topic.id}}/messages/'">
 					</div>
 				
 					</form>
@@ -41,14 +40,14 @@
 					<div class="message_info">
 						
 						{% ifequal r.author user %}
-						<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 							<span class="message_reply_delete">Delete</span>
 						</a>
 						{% endifequal %}
 						
-						{% if user.is_staff %}
+						{% if perms.classlists.is_teacher %}
 					        {% ifnotequal r.author user %}
-					        <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+					        <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						    <span class="message_reply_delete">Delete</span>
 					        </a>
 					        {% endifnotequal %}		
@@ -72,20 +71,20 @@
 					<div class="message_info">
 						
 						{% ifnotequal m.author user %}
-						<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/reply">
+						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/reply">
 							<span class="message_reply_change">Reply</span>
 						</a>
 						{% endifnotequal %}
 						
 						{% ifequal m.author user %}
-						<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 							<span class="message_reply_change">Delete</span>
 						</a>
 						{% endifequal %}
 
-						{% if user.is_staff %}
+						{% if perms.classlists.is_teacher %}
 					        {% ifnotequal m.author user %}
-					        <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+					        <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						    <span class="message_reply_change">Delete</span>
 					        </a>
 					        {% endifnotequal %}		
@@ -103,14 +102,14 @@
 						<div class="message_info">
 							
 							{% ifequal r.author user %}
-							<a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+							<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 								<span class="message_reply_delete">Delete</span>
 							</a>
 							{% endifequal %}
 							
-							{% if user.is_staff %}
+							{% if perms.classlists.is_teacher %}
 					            {% ifnotequal r.author user %}
-					            <a href="/{{class_url}}/messages/{{topic.id}}/{{r.id}}/delete">
+					            <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						        <span class="message_reply_delete">Delete</span>
 					            </a>
 					        {% endifnotequal %}		
@@ -147,13 +146,13 @@
 				<div class="message_info">
 					
 					{% ifnotequal m.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/reply">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/reply">
 						<span class="message_reply_change">Reply</span>
 					</a>
 					{% endifnotequal %}
 					
 					{% ifequal m.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					</a>
 					{% endifequal %}
@@ -169,7 +168,7 @@
 				<div class="message_info">
 					
 					{% ifequal r.author user %}
-					<a href="/{{class_url}}/messages/{{topic.id}}/{{m.id}}/delete">
+					<a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					</a>
 					{% endifequal %}

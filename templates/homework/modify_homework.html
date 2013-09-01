@@ -4,9 +4,8 @@
 {% block main_content %}
 
 	<div class="main">
-		<div class="main_h1">Modify Homework</div>
-		<div class="clearer"></div>		
-
+		<h1">Modify Homework</h1>
+		
 		<form action"." method="POST">{%csrf_token%}
 
 		<div class="form_error">{{form.assigned_work.errors.as_text}}</div>
@@ -24,7 +23,7 @@
 			<div class="form_input"> 
 					<input type="submit" name="mod/del" value="Modify">
 					<input type="submit" name="mod/del" value="Delete">
-					<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/homework/'">
+					<input type="button" value="Cancel" onclick="location.href='/{{klass.klass_name}}/homework/'">
 			</div>
 		
 		

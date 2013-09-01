@@ -2,7 +2,7 @@ from django.db import models
 from django import forms
 from django.contrib.auth.models import User
 from kalendar.models import Kalendar
-from classlists.models import Classes
+from classlists.models import Klass
 from django.forms import ModelForm, CheckboxSelectMultiple
 from django.forms.extras.widgets import SelectDateWidget
 from datetime import date, timedelta
@@ -34,7 +34,7 @@ class Homework(models.Model):
     modified_by=models.ForeignKey(User, related_name='modified_by',null=True, blank=True) ##until user is added
     modified_on=models.DateField(blank=True, null=True)
     deleted=models.BooleanField(default=False)
-    class_db=models.ManyToManyField(Classes, blank=True, null=True)
+    klass=models.ManyToManyField(Klass, blank=True, null=True)
     
     class Meta:
 		ordering=['due_date__date']
@@ -49,7 +49,7 @@ class Homework(models.Model):
 class Homework_Form(ModelForm):
     class Meta:
         model=Homework
-        exclude=('entered_by','entered_on','modified_by','modified_on','deleted','class_db')
+        exclude=('entered_by','entered_on','modified_by','modified_on','deleted','klass')
 #         widgets={
 #             'class_db':CheckboxSelectMultiple(),
 #             }
@@ -62,16 +62,16 @@ class Homework_Form(ModelForm):
     due_date=forms.DateField(initial=duedate,widget=SelectDateWidget())
 
 
-    def __init__(self, request, class_url, *args, **kwargs):
-        self.request=request
-        self.class_url=class_url
-        super(Homework_Form, self).__init__(*args, **kwargs)
+#     def __init__(self, request, klass, *args, **kwargs):
+#         self.request=request
+#         self.klass=klass
+#         super(Homework_Form, self).__init__(*args, **kwargs)
 
-    def clean(self):
-        if not self.request.user.is_staff:
-            if self.request.user.get_profile().in_class.classes != self.class_url:
-                raise forms.ValidationError("This is not your class.")
-        return self.cleaned_data
+#     def clean(self):
+#         if not self.request.user.is_staff:
+#             if self.request.user.get_profile().in_class.classes != self.class_url:
+#                 raise forms.ValidationError("This is not your class.")
+#         return self.cleaned_data
 
     def clean_due_date(self):
         due_date=self.cleaned_data['due_date']

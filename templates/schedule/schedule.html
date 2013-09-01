@@ -2,9 +2,7 @@
 
 
 {% block main_content %}
-	<div class="main">
-		<div class='main_h1'>Schedule</div>
-		<div class="clearer"></div>		
+		<h1>Schedule</h1>
 		
 		<div class="schedule">
 			<div class="empty"></div>
@@ -23,14 +21,12 @@
 			<div class="pertime_head">Time</div>
 			
 			{% for day, week in list %}
-				{% if user.is_staff %}
-					{% ifequal user.classes.classes class_url %}
-					    <a href="/{{class_url}}/schedule/modify/{{day.id}}/{{week.id}}">					
+				{% if perms.classlists.is_teacher %}
+
+					    <a href="/{{klass.klass_name}}/schedule/modify/{{day.id}}/{{week.id}}">					
 						    <div class='weekday'>Day {{day.day_no|slice:":1"}}</div>			
 					    </a>
-					{%else%}
-					    <div class='weekday'>Day {{day.day_no|slice:":1"}}</div>
-					{% endifequal %}
+
 				{% else %}
 					<div class='weekday'>Day {{day.day_no|slice:":1"}}</div>
 				{% endif %}
@@ -142,9 +138,6 @@
 			
 		<div class="clearer"></div>
 		</div>		
-		
-	</div>
-
 	
 {% endblock %}
 

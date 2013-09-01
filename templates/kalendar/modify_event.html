@@ -2,7 +2,21 @@
 
 
 {% block main_content %}
-
+    <h1>Modify Event</h1>
+    <h2>{{ event_date|date:"M j Y" }}</h2>
+  		<form action"." method="POST">{%csrf_token%}
+			<div class="errors">
+				{{form.event_date.errors}}
+				{{form.errors}}
+			</div>
+			{{form.as_p}}		
+			<div class="form_input">
+				<input type="submit" name="mod/del" value="Modify">
+				<input type="submit" name="mod/del" value="Delete">
+				<input type="button" value="Cancel" onclick="location.href='/{{class_url}}/calendar/'">
+			</div>
+		</form>  
+<!-- 
 	<div class="main">
 		<div class="main_h1">Modify Event</div>
 		<div class="clearer"></div>		
@@ -21,6 +35,7 @@
 			</div>
 		</form>
 	</div>
+ -->
 
 {% endblock %}
 
