@@ -32,6 +32,10 @@ class ContactFormView(FormView):
 	    teacher=User.objects.get(pk=self.request.POST['teacher'])
 	    #teacher=Classes.objects.get(pk=self.request.POST['teacher']).teacher
 	    recipient=[teacher.email]
-	    send_mail(subject, message, sender, recipient)
-	    
+	    #send_mail(subject, message, sender, recipient)
+
+	    email=EmailMessage(subject, message, 'sudeepsanyal@sudeepsanyal.webfactional.com',
+	                    recipient, headers={'Reply-To':sender})
+	    email.send()
+
 	    return HttpResponseRedirect('/'+klass)

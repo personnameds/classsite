@@ -12,7 +12,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^$', ListView.as_view(
-                model=Klass,
+                queryset=Klass.objects.order_by('klass_name'),
                 context_object_name="klass_list",
                 template_name='index.html',
                 )),

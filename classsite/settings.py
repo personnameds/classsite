@@ -160,6 +160,12 @@ LOGGING = {
         },
     }
 }
+# EMAIL_HOST='smtp.webfaction.com'
+# EMAIL_HOST_USER='sudeepsanyal'
+# EMAIL_HOST_PASSWORD='assandra3#'
+# DEFAULT_FROM_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
+# SERVER_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
 
+ALLOWED_HOSTS=['.mrsanyal.com', '.sudeepsanyal.webfactional.com','.kksa.ca',]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

@@ -22,8 +22,6 @@ Kalendar
 Links
 
 Schedule
-    -update schedule needs to look nicer for teachers
-    -add_day_no form needs revising
     -any teacher can change and teachers schedule
 
 Messages

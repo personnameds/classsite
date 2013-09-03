@@ -98,8 +98,8 @@ class RegistrationFormView(FormView):
         send_mail('Welcome to the Class '+klass.klass_name+' Website ',
  					new_user.first_name+' '+new_user.last_name+'\n'+'Username:'
  					+new_user.username+'\n'+'Password:'+form.cleaned_data["password1"]+'\n', 
- 					'mistersanyal@gmail.com',
- 					[new_user.email,'mistersanyal@gmail.com'],
+ 					'sudeepsanyal@sudeepsanyal.webfactional.com',
+ 					[new_user.email,'sudeepsanyal@sudeepsanyal.webfactional.com'],
  					)
         return HttpResponseRedirect('welcome')
 
