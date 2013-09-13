@@ -27,11 +27,14 @@ class TopicCreateView(CreateView):
 	
 	def get_context_data(self, **kwargs):
 	    context=super(TopicCreateView, self).get_context_data(**kwargs)
-	    context['homework']=Homework.objects.exclude(due_date__date__lt=(date.today()))
-	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+	    #context['homework']=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
+	    context['form'].fields['homework'].queryset=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
+	    context['klass']=klass
 	    context['path']=self.request.path
 	    return context
-	
+
+
 	def form_valid(self, form):
 	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
 	    new_topic=form.save(commit=False)

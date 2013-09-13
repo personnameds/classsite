@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
-from registration.forms import Registration_Form
+from registration.forms import Registration_Form, PasswordChange_Form
 from classlists.models import Klass
 
 class LoginUserView(FormView):
@@ -112,3 +112,60 @@ class WelcomeView(TemplateView):
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
         context['path']='/'+self.kwargs['class_url']
         return context  
+
+class ChangedView(TemplateView):
+    template_name='registration/changed.html'
+
+    def get_context_data(self, **kwargs):
+        klass=self.kwargs['class_url']
+        context=super(ChangedView, self).get_context_data(**kwargs)
+        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        context['path']='/'+self.kwargs['class_url']
+        return context  
+
+class NotChangedView(TemplateView):
+    template_name='registration/notchanged.html'
+
+    def get_context_data(self, **kwargs):
+        klass=self.kwargs['class_url']
+        context=super(NotChangedView, self).get_context_data(**kwargs)
+        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        context['path']='/'+self.kwargs['class_url']
+        return context  
+
+
+
+class PasswordChangeFormView(FormView):
+    form_class=PasswordChange_Form
+    template_name='registration/passwordchange.html'
+
+    def get_context_data(self, **kwargs):
+        klass=self.kwargs['class_url']
+        context=super(PasswordChangeFormView, self).get_context_data(**kwargs)
+        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        context['path']='/'+self.kwargs['class_url']
+        return context
+        
+     
+    def form_valid(self, form):
+
+        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+
+        username=form.cleaned_data['username']            
+        firstname=form.cleaned_data["first_name"]
+        lastname=form.cleaned_data['last_name']
+        email=form.cleaned_data['email']
+        
+        if (self.request.user.username == username) and (self.request.user.first_name == firstname) and (self.request.user.last_name == lastname) and (self.request.user.email == email):
+            self.request.user.set_password(form.cleaned_data["password1"])
+            self.request.user.save()
+            send_mail('Password Change for '+klass.klass_name+' Website ',
+ 					'Username:'+username+'\n'+'Password:'+form.cleaned_data["password1"]+'\n', 
+ 					'sudeepsanyal@sudeepsanyal.webfactional.com',
+ 					[email,'sudeepsanyal@sudeepsanyal.webfactional.com'],
+ 					)  
+            return HttpResponseRedirect('changed')          
+        else:
+            return HttpResponseRedirect('notchanged')  
+
+   

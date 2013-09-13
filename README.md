@@ -1,7 +1,5 @@
 classsite v5
 
-To Do:
-    -add all classes and teachers
 
 Admin
     -update all admin.py
@@ -15,14 +13,13 @@ Day_No
 
 Kalendar
     -creation of kalendar same as old nothing upgraded
-    -need to add permissions to Kalendar_list
     -I cleaned up Kalendar_List a little
     -events needs cleaning up
 
 Links
 
 Schedule
-    -any teacher can change and teachers schedule
+    -any teacher can change any teachers schedule
 
 Messages
     -edit messages????
@@ -51,6 +48,7 @@ Login
 Registration
     -works but needs to be revised, focus on redirect stuff
     -I really doubt I need the path context thing
+    -Change password works but can be done with less views
     
 Other
     -memcached

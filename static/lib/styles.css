@@ -58,7 +58,7 @@ a{outline: 0;}
 
 a:link{color: #2A75A9; text-decoration: none;}
 
-a:hover{color: #2A75A9; text-decoration: none;}
+a:hover{color: #2A75A9; text-decoration: underline;}
 
 a:visited{color: #2A75A9; text-decoration: none;}
 
@@ -299,13 +299,16 @@ a:visited{color: #2A75A9; text-decoration: none;}
 	border-right: 1px solid #FFFFFF;
 	border-left: 1px solid #FFFFFF;
 	border-top: 1px solid #FFFFFF;
+	position: relative;
 }
 .kal_date a{
 	color: #FFFFFF;
 }
 .kal_day_no{
-	float: right;
 	font-size: 10pt;
+	position: absolute;
+    right: 5px;
+    top: 5px;
 }
 .kal_date_other_month{
 	width: 130px;
@@ -347,67 +350,50 @@ a:visited{color: #2A75A9; text-decoration: none;}
 
 /*homework */
 .hwk_date{
-	font-weight: bold;
-	color: #444444;
-	font-size: 14pt;
-	margin-left: 5px;
-	margin-top: 5px;
+	font-size: 18pt;
+	margin: 30px 0 20px 0;
 }
 .hwk_text{
-	color: #444444;
-	font-size: 12pt;
-	margin: 0px 0px 0px 5px;
-	font-weight: normal;	
+	margin-top: 15px;
 }
 .hwk_del_text{
-	color: #444444;
-	font-size: 12pt;
 	text-decoration: line-through;
-	font-weight: normal;
-	margin: 0px 0px 0px 5px;
+	margin-top: 15px;
 }
 .hwk_doc{
-	color: #444444;
 	font-size: 10pt;
-	margin: 0px 0px 0px 25px;
-	font-weight: normal;	
+	font-style: italic;
+	margin-bottom: 1px;
 }
 .hwk_doc_label{
-	color: #444444;
 	font-size: 10pt;
-	margin: 0px 0px 0px 15px;
-	font-weight: normal;	
+	font-style: italic;
+	margin-bottom: 1px;
 }
 .hwk_del_doc{
-	color: #1664DA;
-	font-size: 10pt;
 	text-decoration: line-through;
-	font-weight: normal;
-	margin: 0px 0px 0px 25px;
+	font-size: 10pt;
+	font-style: italic;
+	margin-bottom: 1px;
 }
 .hwk_del_doc_label{
-	color: #444444;
-	font-size: 10pt;
 	text-decoration: line-through;
-	font-weight: normal;
-	margin: 0px 0px 0px 15px;
+	font-size: 10pt;
+	font-style: italic;
+	margin-bottom: 1px;
 }
 .author_text{
-	color: #444444;
-	font-size: 6pt;
-	font-weight: normal;
-	margin: 0px 0px 0px 5px;
+	font-size: 10pt;
+	font-style: italic;
+	margin-bottom: 1px;
 }
 .hwk_footnote{
-	color: #444444;
-	font-weight: normal;
-	font-size: 8pt;
-	margin: 10px 0px 0px 5px;
+	font-size: 10pt;
+	margin-top: 50px;
 }
 
 /*documents and links*/
 .main_p{
-	color: #444444;
 	font-size: 12pt;
 	margin: 5px 0px 0px 5px;
 	font-weight: normal;
@@ -415,7 +401,6 @@ a:visited{color: #2A75A9; text-decoration: none;}
 .main_author{
 	float: left;
 	display: block;
-	color: #444444;
 	font-size: 10pt;
 	margin: 5px 0px 0px 5px;
 	font-weight: normal;
@@ -516,7 +501,7 @@ a:visited{color: #2A75A9; text-decoration: none;}
 	margin-bottom: 5px;
 	color: #878787;
 	overflow: hidden;
-	display: table-cell;
+	display: inline-table;
 }
 .topic_text{
 	width: 500px;
@@ -558,30 +543,30 @@ a:visited{color: #2A75A9; text-decoration: none;}
 }
 .message_text{
 	font-size: 12pt;
-	width: 550px;
+	width: auto;
 	margin-left: 5px;
-	padding: 5px;
-	color: #1664DA;
+	padding: 10px 0;
+	color: #5E5E5E;
 	background: #FFFFFF;
 }
 .message_text_first{
 	font-size: 12pt;
-	width: 550px;
+	width: auto;
 	margin-left: 5px;
-	padding: 5px;
-	color: #1664DA;
+	padding: 10px 0;
+	color: #5E5E5E;
 	background: #FFFFFF;
-	border-top: 1px solid #1664DA;	
+	border-top: 1px solid #5E5E5E;	
 }
 .message_info{
 	font-size: 8pt;
 	text-align: right;
-	width: 555px;
+	width: auto;
 	background: #FFFFFF;
 	margin-left: 5px;
 	padding-right: 5px;
-	color: #1664DA;
-	border-bottom: 1px solid #1664DA;	
+	color: #5E5E5E;
+	border-bottom: 1px solid #5E5E5E;	
 }
 .message_reply_change{
 	float: left;
@@ -596,7 +581,7 @@ a:visited{color: #2A75A9; text-decoration: none;}
 	width: 550px;
 	margin-left: 30px;
 	padding: 5px;
-	color: #1664DA;
+	color: #5E5E5E;
 	background: #FFFFFF;
 }
 .reply_info{
@@ -606,8 +591,8 @@ a:visited{color: #2A75A9; text-decoration: none;}
 	background: #FFFFFF;
 	margin-left: 30px;
 	padding-right: 5px;
-	color: #1664DA;
-	border-bottom: 1px solid #1664DA;	
+	color: #5E5E5E;
+	border-bottom: 1px solid #5E5E5E;	
 }	
 
  /*schedule*/
@@ -663,3 +648,6 @@ a:visited{color: #2A75A9; text-decoration: none;}
 	font-size: 12pt;
 	height: 30px;
 }
+
+/* NEW messages */
+
