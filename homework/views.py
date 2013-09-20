@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from homework.models import Homework, Homework_Form
-from classlists.models import Klass
+from classlists.models import Klass, Teacher
 from kalendar.models import Kalendar
 from datetime import datetime, date, timedelta
 from django.core.urlresolvers import reverse
@@ -96,7 +96,7 @@ class HomeworkUpdateView(UpdateView):
         h=Homework.objects.get(id=pk)
         klass=self.kwargs['class_url']
         if self.request.POST['mod/del']=='Delete':
-            if self.request.user.is_staff:
+            if Teacher.objects.filter(user=self.request.user).exists():
                 h.delete()
             else:
                 del_homework=form.save(commit=False)

@@ -65,6 +65,7 @@ class DocumentUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
         context=super(DocumentUpdateView, self).get_context_data(**kwargs)
+        context['form'].fields['homework'].queryset=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
         context['klass']=klass
         context['path']=self.request.path
         return context
