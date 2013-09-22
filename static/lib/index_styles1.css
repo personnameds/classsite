@@ -18,12 +18,12 @@ h1{
 	font-weight: 200 !important;
 	font-size: 100px;
 	margin: 0 0 20px 0;
-	text-shadow: 0px 0px 5px #ADADAD;
+	text-shadow: 0px 0px 5px #000000;
 }
 #info{
 	font-size: 20px;
 	margin: 20px 0 0 0;
-	text-shadow: 0px 0px 5px #ADADAD;
+	text-shadow: 1px 1px 1px #000000;
 	min-width: 540px;
 }
 #IE{
@@ -37,7 +37,7 @@ h1{
 	position: absolute;
 	top: 20px;
 	right: 20px;
-	z-index: 0;
+	z-index: 100;
 	text-align: center;
 	color: #B0B0B0;
 }
@@ -48,6 +48,23 @@ h1{
 #IE img{
 	outline: 0;
 	border: 0;
+}
+#about_link{
+	width: auto;
+	height: auto;
+	background: #FFFFFF;
+	border: 1px solid #5E5E5E;
+	border-radius: 3px;
+	box-shadow: 0px 0px 10px #ADADAD;
+	padding: 10px;
+	position: absolute;
+	top: 20px;
+	right: 20px;
+	z-index: 0;
+	text-align: center;
+}
+#about_link a{
+	color: #5E5E5E;
 }
 #background{
     position: fixed;
@@ -79,12 +96,10 @@ h1{
 	min-width: 800px;
 }
 #class_btns li{
-	width: 150px;
 	height: 80px;
 	background: url('../img/layout/btn_gradient.png') repeat;
 	border: 1px solid #D6D6D6;
-	border-radius: 3px;
-	box-shadow: 0px 0px 10px #ADADAD;
+	border-radius: 3px;    
 	margin: 0px 20px 20px 0px;
 	padding: 0;
 	line-height: 80px;
@@ -98,6 +113,7 @@ h1{
 	text-decoration: none;
 	display: block;
 	color: #5E5E5E;
+	padding: 0 40px;
 }
 #class_btns li:active{
 	background: #FFFFFF;

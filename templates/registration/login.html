@@ -14,8 +14,9 @@
         <div class="form_error">{{form.password.errors.as_text}}</div>
         <div class="form_label" for="password">Password:</div>
         <div class="form_element"><input type="password" name="password" value="" id="password"></div>
-
-        <a href="/{{klass.klass_name}}/registration/newuser/"><div class="login_footnote">Add yourself to {{klass.klass_name|upper}}'s website</div></a>
+        {% if klass %}
+            <a href="/{{klass.klass_name}}/registration/newuser/"><div class="login_footnote">Add yourself to {{klass.klass_name|upper}}'s website</div></a>
+        {% endif %}
         <div class="form_input">
         
             <input type="submit" value="Login"/>

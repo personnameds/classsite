@@ -2,20 +2,12 @@ from django.conf.urls import patterns, include, url
 from django.conf import settings #development only used to show media files
 from django.conf.urls.static import static #development only used to show media files
 
-from django.views.generic import ListView
-from classlists.models import Klass
-
-
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    url(r'^$', ListView.as_view(
-                queryset=Klass.objects.order_by('klass_name'),
-                context_object_name="klass_list",
-                template_name='index.html',
-                )),
+    url(r'^',include('schoolpage.urls')),
     url(r'^initialize/',include('initialize.urls')),
     url(r'^(?P<class_url>\w{2})/', include('homepage.urls')),
     url(r'^(?P<class_url>\w{2})/registration/',include('registration.urls')),

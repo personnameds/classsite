@@ -17,12 +17,18 @@ class LoginUserView(FormView):
         
         try: 
             klass=self.kwargs['class_url']
+            path='/'+klass
+            context['klass']=Klass.objects.get(klass_name=klass)  
         except:
             klass=self.request.GET['next']
-            klass=klass[1:3]
-        
-        context['klass']=Klass.objects.get(klass_name=klass)
-        context['path']='/'+klass
+            if klass=='/':
+                path='/'
+            else:
+                klass=klass[1:3]
+                path='/'+klass
+                context['klass']=Klass.objects.get(klass_name=klass)  
+                      
+        context['path']=path
         return context
     
     def form_valid(self, form):
@@ -40,10 +46,13 @@ class LogoutUserView(TemplateView):
     template_name='registration/logout.html'
 
     def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
         context=super(LogoutUserView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']='/'+self.kwargs['class_url']
+        try:
+            klass=self.kwargs['class_url']
+            context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+            context['path']='/'+self.kwargs['class_url']
+        except:
+            pass
         logout(self.request)
         return context
 
