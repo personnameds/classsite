@@ -33,7 +33,7 @@
 					<li><a href="/{{klass.klass_name}}/contact">Contact</a></li>
 					
        		        {% if user.is_authenticated %}
-       		            <li class="account"><a href="/{{klass.klass_name}}/registration/logout/">
+       		            <li class="account"><a href="/registration/logout/">
        		                {%if user.teacher %}
                                 {{user.teacher.teacher_name }} &#8260
             	            {%elif user.first_name %}
@@ -43,7 +43,7 @@
             			    {%endif%}
        		                Logout</a>
                     {% else %}
-            	        <li class="account"><a href="/{{klass.klass_name}}/registration/login/?next={{path}}">Login</a>
+            	        <li class="account"><a href="/registration/login/?next={{next}}">Login</a>
                     {% endif %} 		
 					</li>
 				</ul>

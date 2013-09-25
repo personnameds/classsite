@@ -18,6 +18,7 @@ class SchoolpageListView(ListView):
 	    klass_list=Klass.objects.all().order_by('klass_name')
 	    context=super(SchoolpageListView, self).get_context_data(**kwargs)
 	    context['klass_list']=klass_list
+	    context['next']=self.request.path
 	    return context
 
 class SchoolpageCreateView(CreateView):
@@ -26,7 +27,7 @@ class SchoolpageCreateView(CreateView):
 	    	
 	def get_context_data(self, **kwargs):
 	    context=super(SchoolpageCreateView, self).get_context_data(**kwargs)
-	    context['path']=self.request.path 
+	    context['next']=self.request.path 
 	    return context
 	
 	def form_valid(self, form):
@@ -43,7 +44,7 @@ class SchoolpageUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context=super(SchoolpageUpdateView, self).get_context_data(**kwargs)
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
         
     def get_form(self, form_class):

@@ -19,7 +19,7 @@ class LinkListView(ListView):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
         context=super(LinkListView, self).get_context_data(**kwargs)
         context['klass']=klass
-        context['path']=self.request.path
+        context['next']=self.request.path
 
         links_list=Link.objects.select_related().filter(klass=klass)
         subjects=links_list.values_list('subject', flat=True).distinct()
@@ -45,7 +45,7 @@ class LinkCreateView(CreateView):
 	    context=super(LinkCreateView, self).get_context_data(**kwargs)
 	    context['form'].fields['homework'].queryset=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
 	    context['klass']=klass
-	    context['path']=self.request.path
+	    context['next']=self.request.path
 	    return context
 	
   	def form_valid(self, form):
@@ -68,7 +68,7 @@ class LinkUpdateView(UpdateView):
         context=super(LinkUpdateView, self).get_context_data(**kwargs)
         context['form'].fields['homework'].queryset=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
         context['klass']=klass
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
         
     def form_valid(self, form):

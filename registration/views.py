@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import FormView
-from django.views.generic import TemplateView
 from django.contrib.auth.models import User
+from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.core.mail import send_mail
@@ -14,21 +14,8 @@ class LoginUserView(FormView):
     
     def get_context_data(self, **kwargs):
         context=super(LoginUserView, self).get_context_data(**kwargs)
-        
-        try: 
-            klass=self.kwargs['class_url']
-            path='/'+klass
-            context['klass']=Klass.objects.get(klass_name=klass)  
-        except:
-            klass=self.request.GET['next']
-            if klass=='/':
-                path='/'
-            else:
-                klass=klass[1:3]
-                path='/'+klass
-                context['klass']=Klass.objects.get(klass_name=klass)  
-                      
-        context['path']=path
+      
+        context['next']=self.request.path
         return context
     
     def form_valid(self, form):
@@ -42,19 +29,10 @@ class LoginUserView(FormView):
         
         return HttpResponseRedirect(next)
 
-class LogoutUserView(TemplateView):
-    template_name='registration/logout.html'
-
-    def get_context_data(self, **kwargs):
-        context=super(LogoutUserView, self).get_context_data(**kwargs)
-        try:
-            klass=self.kwargs['class_url']
-            context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-            context['path']='/'+self.kwargs['class_url']
-        except:
-            pass
-        logout(self.request)
-        return context
+def LogoutUserView(request):
+    
+    logout(request)
+    return HttpResponseRedirect("/")
 
 class RegistrationFormView(FormView):
     form_class=Registration_Form
@@ -64,7 +42,7 @@ class RegistrationFormView(FormView):
         klass=self.kwargs['class_url']
         context=super(RegistrationFormView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']='/'+self.kwargs['class_url']
+        context['next']='/'+self.kwargs['class_url']
             
         return context 
 
@@ -119,7 +97,7 @@ class WelcomeView(TemplateView):
         klass=self.kwargs['class_url']
         context=super(WelcomeView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']='/'+self.kwargs['class_url']
+        context['next']='/'+self.kwargs['class_url']
         return context  
 
 class ChangedView(TemplateView):
@@ -129,7 +107,7 @@ class ChangedView(TemplateView):
         klass=self.kwargs['class_url']
         context=super(ChangedView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']='/'+self.kwargs['class_url']
+        context['next']='/'+self.kwargs['class_url']
         return context  
 
 class NotChangedView(TemplateView):
@@ -139,7 +117,7 @@ class NotChangedView(TemplateView):
         klass=self.kwargs['class_url']
         context=super(NotChangedView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']='/'+self.kwargs['class_url']
+        context['next']='/'+self.kwargs['class_url']
         return context  
 
 
@@ -152,7 +130,7 @@ class PasswordChangeFormView(FormView):
         klass=self.kwargs['class_url']
         context=super(PasswordChangeFormView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']='/'+self.kwargs['class_url']
+        context['next']='/'+self.kwargs['class_url']
         return context
         
      

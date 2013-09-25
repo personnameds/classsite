@@ -40,6 +40,6 @@ class ScheduleTemplateView(TemplateView):
 		context['list']=list
 
 		context['klass']=klass
-		context['path']=self.request.path 
+		context['next']=self.request.path 
 		
 		return context

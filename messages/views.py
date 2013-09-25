@@ -17,7 +17,7 @@ class TopicListView(ListView):
     def get_context_data(self, **kwargs):
         context=super(TopicListView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
 
 class TopicCreateView(CreateView):
@@ -31,7 +31,7 @@ class TopicCreateView(CreateView):
 	    #context['homework']=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
 	    context['form'].fields['homework'].queryset=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
 	    context['klass']=klass
-	    context['path']=self.request.path
+	    context['next']=self.request.path
 	    return context
 
 
@@ -55,7 +55,7 @@ class MessageListView(ListView):
 	    topic=Topic.objects.get(id=int(self.kwargs['topic_id']))
 	    context['topic']=topic
 	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-	    context['path']=self.request.path
+	    context['next']=self.request.path
 	    return context
 
 class MessageCreateView(CreateView):
@@ -68,7 +68,7 @@ class MessageCreateView(CreateView):
         context['topic']=topic
         context['msg_list']=Msg.objects.filter(topic=topic).order_by('-entered_on').exclude(msg_replied_to__isnull=False)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
         
     def form_valid(self, form):
@@ -113,7 +113,7 @@ class ReplyMessageCreateView(CreateView):
 	    context['msg_replied_to']=Msg.objects.get(id=int(self.kwargs['message_id']))
 	    context['msg_list']=Msg.objects.filter(topic=topic).order_by('-entered_on').exclude(msg_replied_to__isnull=False)
 	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-	    context['path']=self.request.path
+	    context['next']=self.request.path
 	    return context
 	    
 	def form_valid(self, form):

@@ -43,12 +43,8 @@ Homepage
     -homepage templates form and modify still old style not updated yet
 
 Registration/Login
-    -works but needs to be revised, focus on redirect stuff
-    -I really doubt I need the path context thing
     -Change password works but can be done with less views and make it easier to do
-    -need to clean up all the next, path stuff
-    -logout should go to homepage and say goodbye?? 
-    -do I need to include path in context everytime to make ?next work    
+    -Registration on/off or through teacher? Needs revising  
     
 Other
     -memcached
