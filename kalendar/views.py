@@ -16,7 +16,7 @@ class EventCreateView(CreateView):
  	    context=super(EventCreateView, self).get_context_data(**kwargs)
  	    context['event_date']=date(int(self.kwargs['year']),int(self.kwargs['month']),int(self.kwargs['day']))	
  	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
- 	    context['path']=self.request.path
+ 	    context['next']=self.request.path
  	    context['kal_type']=self.kwargs['kal_type']
  	    return context
 
@@ -47,7 +47,7 @@ class EventUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
  	    context=super(EventUpdateView, self).get_context_data(**kwargs)
  	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
- 	    context['path']=self.request.path
+ 	    context['next']=self.request.path
  	    context['kal_type']=self.kwargs['kal_type']
  	    return context
  	
@@ -84,7 +84,7 @@ class KalendarListView(ListView):
         
         context['kal_type']=kal_type
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']=self.request.path
+        context['next']=self.request.path
 
         #first, last of entire kalendar dates and current viewing date
         month=int(self.kwargs.get('month', date.today().month))
@@ -150,7 +150,7 @@ class UpdateDayNoKalendarView(UpdateView):
         klass=self.kwargs['class_url']
         context=super(UpdateDayNoKalendarView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
     
     def get_object(self):

@@ -17,7 +17,7 @@ class InitInfoTemplateView(TemplateView):
 
         context=super(InitInfoTemplateView, self).get_context_data(**kwargs)
 
-        
+        context['next']=self.request.path
         context['klass_list']=Klass.objects.all()
         context['teacher_list']=Teacher.objects.all()
         

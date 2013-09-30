@@ -1,26 +1,28 @@
-{% extends "base.html" %}
-
-{% block main_content %}
-
-    <h1>Login</h1>	
-
-    <div class="error_text">{{form.non_field_errors}}</div>
-    
-
-    <form action="" method="post">{%csrf_token%}
-        <div class="form_error">{{form.username.errors.as_text}}</div>
-        <div class="form_label" for="username">Username:</div>
-        <div class="form_element"><input type="text" name="username" value="" id="username"></div>
-        <div class="form_error">{{form.password.errors.as_text}}</div>
-        <div class="form_label" for="password">Password:</div>
-        <div class="form_element"><input type="password" name="password" value="" id="password"></div>
-
-        <a href="/{{klass.klass_name}}/registration/newuser/"><div class="login_footnote">Add yourself to {{klass.klass_name|upper}}'s website</div></a>
-        <div class="form_input">
-        
-            <input type="submit" value="Login"/>
-            <input type="hidden" name="next" value={{ next }} />
-        </div>
-    </form>			
-        
-{% endblock %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login to KKSA.ca</title>
+		<link rel="stylesheet" href="{{STATIC_URL}}lib/styles.css" />
+		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery-1.10.1.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery-ui-1.10.3.custom.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery.timer.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}lib/scripts.js"></script>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+		<div id="container">
+			<div id="login">
+				<h1>Login</h1>
+				<form method="post" action="">{%csrf_token%}
+					<label>Username:</label>
+					<input style="margin: 3px auto; text-align: left;" id="username" type="text" name="username">
+					<label>Password:</label>
+					<input style="margin: 3px auto; text-align: left;" id="password" type="password" name="password">
+					<input type="submit" value="Login">
+					<!--<input type="button" value="Register"> -->
+					<input type="hidden" name="next" value={{ next }} />
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

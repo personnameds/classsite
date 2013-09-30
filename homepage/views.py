@@ -18,7 +18,7 @@ class HomepageListView(ListView):
         klass=self.kwargs['class_url']
         context=super(HomepageListView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
 
 
@@ -30,7 +30,7 @@ class HomepageCreateView(CreateView):
 	    klass=self.kwargs['class_url']
 	    context=super(HomepageCreateView, self).get_context_data(**kwargs)
 	    context['klass']=klass.lower()
-	    context['path']=self.request.path 
+	    context['next']=self.request.path 
 	    return context
 	
     # I remmoved get_form_kwargs left it below just incase
@@ -52,7 +52,7 @@ class HomepageUpdateView(UpdateView):
         klass=self.kwargs['class_url']
         context=super(HomepageUpdateView, self).get_context_data(**kwargs)
         context['klass']=klass.lower()
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
         
     def get_form(self, form_class):

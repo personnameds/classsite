@@ -18,7 +18,7 @@ class DocumentListView(ListView):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
         context=super(DocumentListView, self).get_context_data(**kwargs)
         context['klass']=klass
-        context['path']=self.request.path
+        context['next']=self.request.path
         
         document_list=Document.objects.select_related().filter(klass=klass)
         subjects=document_list.values_list('subject', flat=True).distinct()
@@ -43,7 +43,7 @@ class DocumentCreateView(CreateView):
 	    context=super(DocumentCreateView, self).get_context_data(**kwargs)
 	    context['form'].fields['homework'].queryset=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
 	    context['klass']=klass
-	    context['path']=self.request.path
+	    context['next']=self.request.path
 	    return context
 	    
 	def form_valid(self, form):
@@ -67,7 +67,7 @@ class DocumentUpdateView(UpdateView):
         context=super(DocumentUpdateView, self).get_context_data(**kwargs)
         context['form'].fields['homework'].queryset=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
         context['klass']=klass
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
         
     def form_valid(self, form):

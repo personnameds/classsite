@@ -19,7 +19,7 @@ class HomeworkListView(ListView):
         klass=self.kwargs['class_url']
         context=super(HomeworkListView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']=self.request.path
+        context['next']=self.request.path
         context['now']=datetime.now()
         return context
 
@@ -33,7 +33,7 @@ class HomeworkCreateView(CreateView):
         klass=self.kwargs['class_url']
         context=super(HomeworkCreateView, self).get_context_data(**kwargs)
         context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['path']=self.request.path
+        context['next']=self.request.path
         return context
     
     def get_initial(self, **kwargs):
@@ -84,6 +84,7 @@ class HomeworkUpdateView(UpdateView):
         
         context=super(HomeworkUpdateView, self).get_context_data(**kwargs)
         context['klass']=klass
+        context['next']=self.request.path
         return context
 
 #     def get_form_kwargs(self):

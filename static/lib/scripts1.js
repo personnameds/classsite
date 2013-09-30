@@ -1,5 +1,5 @@
 $(document).ready(function() {
-
+	
 	$('#nav li:has(> ul)').hover(
 	function() {
 		$('ul', this).stop().animate({'height': ($('li', this).length * 40) + 'px'}, 500, "easeOutBounce");
@@ -34,12 +34,15 @@ $(document).ready(function() {
 		$('.thumb-text', this).stop().animate({'bottom':'-200px'}, 400, "easeOutSine");
 	}
 	);
-	
-	if ($('#footer .credit1').length == 0) {
-		$("#footer").prepend("<span class='credit1'><a href='http://sasha.yaro.cc' target='_blank'>Design and Development: Sasha Y.</a></span>");
+	if ($('#IE').length > 0) {
+		$('#about_link').css('visibility', 'hidden');
 	}
 	
-	if (!($('#footer .credit1').find == "<a href='http://sasha.yaro.cc' target='_blank'>Design and Development: Sasha Y.</a>")) {
-		$("#footer .credit1").html("<a href='http://sasha.yaro.cc' target='_blank'>Design and Development: Sasha Y.</a>");
+	if ($('#footer .credit2').length == 0) {
+		$("#footer").append("<a href='http://sasha.yaro.cc' target='_blank'>Design and Development: Sasha Y.</a>");
+	}
+	
+	if (!($('#footer .credit2').find == "<a href='http://sasha.yaro.cc' target='_blank'>Design and Development: Sasha Y.</a>")) {
+		$("#footer .credit2").html("<a href='http://sasha.yaro.cc' target='_blank'>Design and Development: Sasha Y.</a>");
 	}
 });

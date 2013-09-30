@@ -42,13 +42,9 @@ Homepage
     -can I make homepage updateview cleaner, is it a hack or is it good?
     -homepage templates form and modify still old style not updated yet
 
-Login
-    -do I need to include path in context everytime to make ?next work
-    
-Registration
-    -works but needs to be revised, focus on redirect stuff
-    -I really doubt I need the path context thing
-    -Change password works but can be done with less views
+Registration/Login
+    -Change password works but can be done with less views and make it easier to do
+    -Registration on/off or through teacher? Needs revising  
     
 Other
     -memcached
