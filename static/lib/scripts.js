@@ -1,11 +1,12 @@
 $(document).ready(function() {
-
+	
 	$('#nav li:has(> ul)').hover(
 	function() {
-		$('ul', this).stop().animate({'height': ($('li', this).length * 40) + 'px'}, 500, "easeOutBounce");
+		$('ul', this).stop().animate({'height': ($('li', this).length * 40) + 'px'}, 500, "easeOutCubic");
+		$('ul', this).css('border-style', 'none solid solid solid');
 	},
 	function() {
-		$('ul', this).stop().animate({'height':'0px'}, 400, "easeOutSine");
+		$('ul', this).stop().animate({'height':'0px'}, 400, "easeOutSine", function() {$(this).css('border-style', 'none')});
 	}
 	);
 	
@@ -28,10 +29,10 @@ $(document).ready(function() {
 	
 	$('#event-thumbs li:has(.thumb-text)').hover(
 	function() {
-		$('.thumb-text', this).stop().animate({'bottom':'0px'}, 300, "easeOutSine");
+		$('.thumb-text', this).stop().animate({'bottom': '0px'}, 300, "easeOutSine");
 	},
 	function() {
-		$('.thumb-text', this).stop().animate({'bottom':'-200px'}, 400, "easeOutSine");
+		$('.thumb-text', this).stop().animate({'bottom': '-200px'}, 400, "easeOutSine");
 	}
 	);
 	
