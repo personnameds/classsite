@@ -1,18 +1,18 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-	<h1>Homepage</h1>
+	<h1>Initialize Website</h1>
 
     <h2>Teachers</h2>
-    <a href="/initialize/teachers">Add A Teacher</a><br>
-    {% for t in teacher_list %}
-        {{t.teacher_name}} - {{t.klass.klass_name}}<br>
+    <a href="/initialize/staff">Add A Staff Member</a><br>
+    {% for s in staff_list %}
+        {{s.teacher_name}}<br>
     {% endfor %}
     
     <h2>Classes</h2>
     <a href="/initialize/klass">Add A Class</a><br>
-    {% for k in klass_list %}
-        {{k.klass_name}}<br>
+    {% for k, t in klass_list %}
+        {{k.klass_name}} - {{t}} <img src="{{MEDIA_URL}}{{k.banner}}" height="15%" width="30%"><br>
     {% endfor %}
     
     <h2>Kalendar</h2>

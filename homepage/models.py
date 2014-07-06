@@ -10,8 +10,13 @@ class Homepage(models.Model):
     klass=models.ForeignKey(Klass, blank=True, null=True, verbose_name='Class')
     entered_by=models.ForeignKey(User, blank=True, null=True)
 
-    def __unicode__(self):
-        return u'%s : %s' % (self.message, self.entered_by)
+    def entered_by_display(self):
+        return self.entered_by.kksa_staff.teacher_name
+    entered_by_display.short_description='Entered By'
+
+    class Meta:
+        verbose_name='Class Homepage Message'
+        verbose_name_plural='Class Homepage Messages'        
 
 class Homepage_Form(ModelForm):
     class Meta:

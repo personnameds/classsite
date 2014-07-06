@@ -13,7 +13,7 @@
 			
 			<!-- prints date -->
 			{% ifchanged homework.due_date.date %}
-				<div class="hwk_date">{{homework.due_date.date|date:"l F jS"}}</div> 
+				<div class="hwk_date">{{homework.due_date.date|date:"l F jS"}} - Day {{homework.due_date.day_no}}</div> 
 			{% endifchanged %}			
 			
 			<!-- prints homework either regular or cut through for deleted -->
@@ -105,21 +105,21 @@
 
 			<!-- prints author info -->
                 <div class="author_text">
-                    {% if homework.entered_by.teacher %}
-                        Added by:{% firstof homework.entered_by.teacher.teacher_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
+                    {% if homework.entered_by.kksa_staff %}
+                        Added by:{% firstof homework.entered_by.kksa_staff.teacher_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
                     {% else %}
                         Added by:{% firstof homework.entered_by.first_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
                     {% endif %}       
                     {% if homework.deleted %}
-                        {% if homework.modified_by.teacher %}                    
-                            Deleted by:{% firstof homework.modified_by.teacher.teacher_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
+                        {% if homework.modified_by.kksa_staff %}                    
+                            Deleted by:{% firstof homework.modified_by.kksa_staff.teacher_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
                         {% else %}
                             Deleted by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
                         {%endif%}
                     {% endif %}
                     {% if homework.modified_by and not homework.deleted %}
-                        {% if homework.modified_by.teacher %}                     
-                            Modified by:{% firstof homework.modified_by.teacher.teacher_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
+                        {% if homework.modified_by.kksa_staff %}                     
+                            Modified by:{% firstof homework.modified_by.kksa_staff.teacher_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
                         {% else %}
                             Modified by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
                         {% endif %}

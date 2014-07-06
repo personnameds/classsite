@@ -94,7 +94,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'classsite.urls'
@@ -117,19 +117,19 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'homepage',
-    'registration',
-    'classlists',
-    'initialize',
-    'day_no',
-    'kalendar',
-    'schedule',
-    'homework',
-    'documents',
-    'links',
-    'messages',
-    'contact',
-    'schoolpage',
+     'homepage',
+     'registration',
+     'classlists',
+#     'initialize',
+     'day_no',
+     'kalendar',
+#     'schedule',
+     'homework',
+#     'documents',
+#     'links',
+#     'messages',
+#     'contact',
+     'schoolpage',
 )
 
 
@@ -167,6 +167,6 @@ LOGGING = {
 # DEFAULT_FROM_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
 # SERVER_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
 
-ALLOWED_HOSTS=['.mrsanyal.com', '.sudeepsanyal.webfactional.com','.kksa.ca',]
+#ALLOWED_HOSTS=['.mrsanyal.com', '.sudeepsanyal.webfactional.com','.kksa.ca',]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True

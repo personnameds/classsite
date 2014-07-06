@@ -15,22 +15,21 @@ DAY_NOS=(
 
 class Kalendar(models.Model):
     date=models.DateField()
-    day_no=models.CharField(max_length=1,choices=DAY_NOS,blank=False)
-    day_version=models.ManyToManyField(Day_No,blank=False)
-	
+    day_no=models.CharField(max_length=1,choices=DAY_NOS)
+    
+    def __unicode__(self):
+        return '%s Day %s' %(self.date.strftime("%a %b %d"), self.day_no)
+
+#     def __unicode__(self):
+#         return '%s: %s' %(self.subject, self.assigned_work)
+        	
     class Meta:
         verbose_name='Date'
         verbose_name_plural='Calendar'
 
-    def __unicode__(self):
-	    return u'%s %s' % (self.date, self.day_no)
-	
-
-
 class Update_Day_No_Kalendar_Form(ModelForm):
 	class Meta:
 		model=Kalendar
-		exclude=('day_version',)
 
 class Event(models.Model):
     description= models.CharField(max_length=25)
@@ -40,6 +39,10 @@ class Event(models.Model):
     
     def __unicode__(self):
         return self.description
+    
+    def klass_names(self):
+        return ', '.join([k.klass_name for k in self.klass.all()])
+    klass_names.short_description="Classes"
     
 class Add_Event_Form(ModelForm):
     kksa=forms.BooleanField(label='KKSA',required=False)

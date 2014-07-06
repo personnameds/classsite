@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from homework.models import Homework, Homework_Form
-from classlists.models import Klass, Teacher
+from classlists.models import Klass, KKSA_Staff
 from kalendar.models import Kalendar
 from datetime import datetime, date, timedelta
 from django.core.urlresolvers import reverse
@@ -13,7 +13,7 @@ class HomeworkListView(ListView):
     
     def get_queryset(self):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        return Homework.objects.select_related().exclude(due_date__date__lte=(date.today())).filter(klass=klass)
+        return Homework.objects.all().exclude(due_date__date__lt=(date.today())).filter(klass__id=klass.id)
         
     def get_context_data(self, **kwargs):
         klass=self.kwargs['class_url']
@@ -38,17 +38,17 @@ class HomeworkCreateView(CreateView):
     
     def get_initial(self, **kwargs):
         initial=super(HomeworkCreateView, self).get_initial()
-        
         klass=self.kwargs['class_url']
         klass=Klass.objects.filter(klass_name=self.kwargs['class_url'])
-        
         initial['klass']=klass
         return initial
-
-#     def get_form_kwargs(self):
-#         kwargs=super(HomeworkCreateView, self).get_form_kwargs()
-#         kwargs.update({'request':self.request, 'klass':self.kwargs['class_url']})
-#         return kwargs
+    
+    #Choose Klass field only available for teachers
+    def get_form(self, form_class):
+        form=super(HomeworkCreateView, self).get_form(form_class)
+        if not self.request.user.has_perm('classlists.is_kksastaff'):
+            form.fields.pop('klass')
+        return form
 
     def form_valid(self, form):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
@@ -67,46 +67,47 @@ class HomeworkUpdateView(UpdateView):
     model=Homework
     form_class=Homework_Form
     template_name="homework/modify_homework.html"
-    
-    def get_initial(self, **kwargs):
-        initial=super(HomeworkUpdateView, self).get_initial()
-    
-        pk=self.kwargs['pk']
-        h=Homework.objects.get(id=pk)
-        initial['due_date']=h.due_date.date
-        
-        return initial
 
     def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']    
-        pk=self.kwargs['pk']
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        
         context=super(HomeworkUpdateView, self).get_context_data(**kwargs)
         context['klass']=klass
         context['next']=self.request.path
         return context
-
-#     def get_form_kwargs(self):
-#         kwargs=super(HomeworkUpdateView, self).get_form_kwargs()
-#         kwargs.update({'request':self.request, 'klass':self.kwargs['class_url']})
-#         return kwargs
+    
+    #Choose Klass field only available for teachers
+    def get_form(self, form_class):
+        form=super(HomeworkUpdateView, self).get_form(form_class)
+        if not self.request.user.has_perm('classlists.is_kksastaff'):
+            form.fields.pop('klass')
+        return form
 
     def form_valid(self, form):
-        pk=self.kwargs['pk']
-        h=Homework.objects.get(id=pk)
-        klass=self.kwargs['class_url']
+        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        
+        #Delete homework
         if self.request.POST['mod/del']=='Delete':
-            if Teacher.objects.filter(user=self.request.user).exists():
-                h.delete()
-            else:
+            #If Teacher
+            if self.request.user.has_perm('classlists.is_kksastaff'):
                 del_homework=form.save(commit=False)
-                del_homework.modified_by=self.request.user
-                del_homework.modified_on=datetime.today()
-                del_homework.deleted=True
-                del_homework.save()
+                for k in form.cleaned_data['klass']:
+                    del_homework.klass.remove(k)
+                if del_homework.klass.count()==0:
+                    del_homework.delete()
+            #if not a teacher
+            else: 
+                if h.klass.count() > 1: #if more than 1 class attached to homework
+                    pass ##need to erase 1 class but keep the other classes untouched
+                else: #if only 1 class set deleted to True
+                    del_homework=form.save(commit=False)
+                    del_homework.modified_by=self.request.user
+                    del_homework.modified_on=datetime.today()
+                    del_homework.deleted=True
+                    del_homework.save()
             return HttpResponseRedirect(reverse('homework_view', args=(self.kwargs['class_url'],),))
-        else:
+        
+        #Modifying homework
+        else: ##modifying the homework
             mod_homework=form.save(commit=False)
             mod_homework.modified_by=self.request.user
             mod_homework.modified_on=datetime.today()
