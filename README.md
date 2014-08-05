@@ -1,5 +1,18 @@
 classite v6
 
+Homework
+    -When teacher adds homework add docs and links at same time
+    -admin shows related docs and links
+    -Add Homework Due Date should be a multi-select widget
+    -Make Class checkboxes prettier when adding homework
+    -Should Assigned Work be part of homework_details rather than homework
+    -RSS Feed
+    
+Documents
+    -REDO BASED ON NEW HOMEWORK MODELS
+    -Modify/Delete files shows path
+    -Files need to delete if no longer used
+
 Classlists
     -resize banner images when uploaded (saved link in readitlater)
     -banner image in admin is hardcoded so wont work but neat idea
@@ -10,17 +23,7 @@ base.html
     -default banner hardcoded in, need to erase class banners for it to show
     
 Day_No
-    -Initilize and Model only
-
-Homework
-    -Update homework view needs to be fixed
-    -Need to finish deleted when done by a student
-    -Modify homework not touched yet
-    -nned to hook in docs and links to homework
-    -When teacher adds homework add docs and links at same time
-    -admin shows related docs and links
-    -Add Homework Due Date should be a multi-select widget
-    -Make Class checkboxes prettier
+    -Uses day version in kalendar, sure there is a better way but it works
 
 Registration/Login
     -Login and Logout work but not checked
@@ -34,9 +37,10 @@ Schedule
     -look ahead?
 
 Kalendar
-    -Initilize and Model only
-    -Creation of Kalendar is good I think
-    -Take a look at rest of Kalendar and Event stuff not looked at in a while
+    -Kalendar and Events work - old code
+    -Kalendar change multiple days at once
+    -KKSA and Class calendar????
+
 
 Initialize
     -initialize is only for me
@@ -46,9 +50,7 @@ Initialize
 Schoolpage
     -modelform and views do I need that stuff
 
-Homepage
-    -can I make homepage updateview cleaner, is it a hack or is it good?
-    -homepage templates form and modify still old style not updated yet    
+Homepage  
 
 Overall
     -test.py
@@ -56,6 +58,7 @@ Overall
     -can other teachers edit other teacher messages on classpage and schoolpage
     -duplicate templates I do not need so many they are repetitive, just need to
      pass title as context variable
+    -datefield.auto_now
 
 classsite v5
 

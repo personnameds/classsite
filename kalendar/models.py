@@ -16,13 +16,19 @@ DAY_NOS=(
 class Kalendar(models.Model):
     date=models.DateField()
     day_no=models.CharField(max_length=1,choices=DAY_NOS)
+    day_version=models.ManyToManyField(Day_No, blank=False, null=True)
+    
+    def mod_klasses(self):
+        if self.day_version.all():
+            return ', '.join([d.klass.klass_name for d in self.day_version.all()])
+        else:
+            return 'No Changes'
+    mod_klasses.short_description='Modified Schedules'
+    
     
     def __unicode__(self):
         return '%s Day %s' %(self.date.strftime("%a %b %d"), self.day_no)
-
-#     def __unicode__(self):
-#         return '%s: %s' %(self.subject, self.assigned_work)
-        	
+    
     class Meta:
         verbose_name='Date'
         verbose_name_plural='Calendar'
@@ -30,6 +36,7 @@ class Kalendar(models.Model):
 class Update_Day_No_Kalendar_Form(ModelForm):
 	class Meta:
 		model=Kalendar
+		fields=('date', 'day_no')
 
 class Event(models.Model):
     description= models.CharField(max_length=25)

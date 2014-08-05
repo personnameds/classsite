@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from documents.views import DocumentListView, DocumentCreateView, DocumentUpdateView
 from django.contrib.auth.decorators import permission_required
 

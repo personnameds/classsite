@@ -21,25 +21,34 @@ class HomepageListView(ListView):
         context['next']=self.request.path
         return context
 
-
 class HomepageCreateView(CreateView):
-	model=Homepage
-	template_name='homepage/homepage_form.html'
-	    	
-	def get_context_data(self, **kwargs):
-	    klass=self.kwargs['class_url']
-	    context=super(HomepageCreateView, self).get_context_data(**kwargs)
-	    context['klass']=Klass.objects.get(klass_name=klass)
-	    context['next']=self.request.path 
-	    return context
+    form_class=Homepage_Form
+    model=Homepage
+    template_name='homepage/homepage_form.html'
     
-	def form_valid(self, form):
-		new_homepage=form.save(commit=False)
-		new_homepage.date=date.today()
-		new_homepage.klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-		new_homepage.entered_by=self.request.user
-		new_homepage.save()
-		return HttpResponseRedirect(reverse_lazy('homepage-list-view', args=(new_homepage.klass.klass_name,),))
+    def get_context_data(self, **kwargs):
+        klass=self.kwargs['class_url']
+        context=super(HomepageCreateView, self).get_context_data(**kwargs)
+        context['klass']=Klass.objects.get(klass_name=klass)
+        context['next']=self.request.path
+        return context
+    
+    def get_initial(self, **kwargs):
+        initial=super(HomepageCreateView, self).get_initial()
+        initial['klass']=Klass.objects.filter(klass_name=self.kwargs['class_url'])
+        return initial
+        
+    def form_valid(self, form):
+        new_homepage=form.save(commit=False)
+        new_homepage.date=date.today()
+        new_homepage.entered_by=self.request.user
+        
+        for k in form.cleaned_data['klass']:
+            new_homepage.pk=None
+            new_homepage.klass=k
+            new_homepage.save()
+
+        return HttpResponseRedirect(reverse_lazy('homepage-list-view', args=(new_homepage.klass.klass_name,),))
 
 class HomepageUpdateView(UpdateView):
     model=Homepage
@@ -52,27 +61,18 @@ class HomepageUpdateView(UpdateView):
         context['klass']=Klass.objects.get(klass_name=klass)
         context['next']=self.request.path
         return context
-        
+
     def get_form(self, form_class):
         form=super(HomepageUpdateView, self).get_form(form_class)
-        form.fields['entered_by'].widget=forms.HiddenInput()
-        form.fields['klass'].widget=forms.HiddenInput()
-        form.fields['date'].widget=forms.HiddenInput()
+        form.fields.pop('klass')
         return form
 
-    def get_form_kwargs(self):
-        kwargs=super(HomepageUpdateView, self).get_form_kwargs()
-        kwargs.update({'request':self.request})
-        return kwargs
-        
     def form_valid(self, form):
-        pk=self.kwargs['pk']
-        new_homepage=Homepage.objects.get(id=pk)
+        new_homepage=form.save(commit=False)
         if self.request.POST['mod/del']=='Delete':
             new_homepage.delete()
-            return HttpResponseRedirect(reverse_lazy('homepage-list-view', args=(new_homepage.klass.klass_name,),))
         else:
-            new_homepage=form.save()
-            return HttpResponseRedirect(reverse_lazy('homepage-list-view', args=(new_homepage.klass.klass_name,),))
+            new_homepage.entered_by=self.request.user
+            new_homepage.save()
+        return HttpResponseRedirect(reverse_lazy('homepage-list-view', args=(new_homepage.klass.klass_name,),))
             
-

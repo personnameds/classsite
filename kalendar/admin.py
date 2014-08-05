@@ -5,7 +5,7 @@ from day_no.models import Day_No
 
 class KalendarAdmin(admin.ModelAdmin):
     date_hierarchy='date'
-    list_display=('date','day_no',)
+    list_display=('date','day_no','mod_klasses',)
 
 admin.site.register(Kalendar, KalendarAdmin)
 

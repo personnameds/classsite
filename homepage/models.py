@@ -1,8 +1,8 @@
 from django.db import models
 from classlists.models import Klass
 from django.contrib.auth.models import User
-from django.forms import ModelForm, ValidationError
-
+from django.forms import ModelForm, ValidationError, ModelMultipleChoiceField
+from django.forms.widgets import CheckboxSelectMultiple
 
 class Homepage(models.Model):
     message=models.TextField()
@@ -19,16 +19,13 @@ class Homepage(models.Model):
         verbose_name_plural='Class Homepage Messages'        
 
 class Homepage_Form(ModelForm):
+    klass=ModelMultipleChoiceField(
+                            queryset=Klass.objects,
+                            widget=CheckboxSelectMultiple(),
+                            label='Class:',
+                            error_messages={'required':'Please choose at least one class'},
+                            )
+                            
     class Meta:
         model=Homepage
-        
-    def __init__(self, request, *args, **kwargs):
-        self.request=request
-        super(Homepage_Form, self).__init__(*args, **kwargs)
-
-    def clean_entered_by(self):
-        entered_by=self.cleaned_data['entered_by']
-        if self.cleaned_data['entered_by']:
-            if not self.request.user==self.cleaned_data['entered_by']:
-                raise ValidationError("You did not write this message.")
-        return entered_by
+        fields =['message']

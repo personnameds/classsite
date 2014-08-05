@@ -1,11 +1,13 @@
 from django.db import models
 from django import forms
+from django.forms import widgets
 from classlists.models import Klass
 from django.utils.translation import ugettext_lazy as _
 
 class Day_No(models.Model):
     day_name=models.CharField(max_length=2)
     klass=models.ForeignKey(Klass)
+
     before=models.CharField(max_length=12, blank=True)
     p1=models.CharField(max_length=12)
     p2=models.CharField(max_length=12)
@@ -24,7 +26,7 @@ class Day_No(models.Model):
 
 class Update_Day_No_Form(forms.ModelForm):
     change_type=forms.ChoiceField(choices=(('P','Permanent'),('M','For This Week')), label='Change will be:', initial='M')
-
+    
     class Meta:
         model=Day_No
         fields=('change_type','before','p1','p2','p3','lunch','p4','p5','p6','after')
@@ -39,9 +41,3 @@ class Update_Day_No_Form(forms.ModelForm):
             'p6': _('Period 6'),
             'after': _('After School'),
             }
-
-#I need this but commented out because I want to rewrite
-#     def __init__(self, request, class_url, *args, **kwargs):
-#         self.request=request
-#         self.class_url=class_url
-#         super(Add_Day_No_Form, self).__init__(*args, **kwargs)

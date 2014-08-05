@@ -16,7 +16,7 @@ class InitInfoTemplateView(TemplateView):
 
         context=super(InitInfoTemplateView, self).get_context_data(**kwargs)
 
-        context['next']=self.request.path
+        context['next']='/'
         klass_list=[]
         for k in Klass.objects.all():
             klass_list.append((k,k.teacher))

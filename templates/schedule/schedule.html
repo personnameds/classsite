@@ -21,14 +21,14 @@
 			<div class="pertime_head">Time</div>
 			
 			{% for day, week in list %}
-				{% if perms.classlists.is_teacher %}
+				{% if perms.classlists.is_kksastaff %}
 
 					    <a href="/{{klass.klass_name}}/schedule/modify/{{day.id}}/{{week.id}}">					
-						    <div class='weekday'>Day {{day.day_no|slice:":1"}}</div>			
+						    <div class='weekday'>Day {{day.day_name|slice:":1"}}</div>			
 					    </a>
 
 				{% else %}
-					<div class='weekday'>Day {{day.day_no|slice:":1"}}</div>
+					<div class='weekday'>Day {{day.day_name|slice:":1"}}</div>
 				{% endif %}
 			{% endfor %}
 			<div class="clearer"></div>
@@ -39,7 +39,7 @@
 					<div class="pertime">
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.before_event}}</div>
+				<div class='per_day'>{{day.before}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 			
@@ -50,7 +50,7 @@
 						8:40<br>-9:40
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.period1_event}}</div>
+				<div class='per_day'>{{day.p1}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 			
@@ -61,7 +61,7 @@
 						9:42<br>-10:32
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.period2_event}}</div>
+				<div class='per_day'>{{day.p2}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 			
@@ -72,7 +72,7 @@
 						10:34<br>-11:14
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.period3_event}}</div>
+				<div class='per_day'>{{day.p3}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 
@@ -83,7 +83,7 @@
 						11:14<br>-12:14
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.lunch_event}}</div>
+				<div class='per_day'>{{day.lunch}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 			
@@ -94,7 +94,7 @@
 						12:19<br>-1:19
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.period4_event}}</div>
+				<div class='per_day'>{{day.p4}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 
@@ -105,7 +105,7 @@
 						1:21<br>-2:11
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.period5_event}}</div>
+				<div class='per_day'>{{day.p5}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 			
@@ -116,7 +116,7 @@
 						2:13<br>-2:53
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.period6_event}}</div>
+				<div class='per_day'>{{day.p6}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 			
@@ -124,12 +124,9 @@
 			{% for day in days %}
 				{% if forloop.first %}
 					<div class="pertime">
-						{% ifnotequal day.after_start None %}
-							{{day.after_start|time:"g:i"}}<br>-{{day.after_finish|time:"g:i"}}
-						{%endifnotequal%}
 					</div>
 				{%endif%}
-				<div class='per_day'>{{day.after_event}}</div>
+				<div class='per_day'>{{day.after}}</div>
 			{% endfor %}
 			<div class="clearer"></div>
 			

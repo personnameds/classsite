@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-
+LINKS AND DOCS STILL NOT UPDATED
 
 	<!-- fix look of add button -->
 
@@ -9,20 +9,21 @@
 		<a href="/{{klass.klass_name}}/homework/add/"><div class="add_main_button"></div></a>
 		<div class="clearer"></div>
 		
-		{% for homework in homework_list %}
+		{% for hwk_details in hwk_details_list %}
 			
 			<!-- prints date -->
-			{% ifchanged homework.due_date.date %}
-				<div class="hwk_date">{{homework.due_date.date|date:"l F jS"}} - Day {{homework.due_date.day_no}}</div> 
+			{% ifchanged hwk_details.due_date.date %}
+				<div class="hwk_date">{{hwk_details.due_date.date|date:"l F jS"}} - Day {{hwk_details.due_date.day_no}}</div> 
 			{% endifchanged %}			
 			
 			<!-- prints homework either regular or cut through for deleted -->
-			{% if not homework.deleted %}
-				<a href="/{{klass.klass_name}}{{homework.get_absolute_url}}"><div class="hwk_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
+			{% if not hwk_details.deleted %}
+				<a href="/{{klass.klass_name}}{{hwk_details.hwk.get_absolute_url}}"><div class="hwk_text">{{hwk_details.hwk.subject}}: {{hwk_details.hwk.assigned_work}}</div></a>
 			{% endif %}
-			{% if homework.deleted %}
-				<a href="/{{klass.klass_name}}{{homework.get_absolute_url}}"><div class="hwk_del_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
+			{% if hwk_details.deleted %}
+				<a href="/{{klass.klass_name}}{{hwk_details.hwk.get_absolute_url}}"><div class="hwk_del_text">{{hwk_details.hwk.subject}}: {{hwk_details.hwk.assigned_work}}</div></a>
 			{% endif %}
+
 
 <!-- don't need to double up just need to add spans -->
 
@@ -105,23 +106,23 @@
 
 			<!-- prints author info -->
                 <div class="author_text">
-                    {% if homework.entered_by.kksa_staff %}
-                        Added by:{% firstof homework.entered_by.kksa_staff.teacher_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
+                    {% if hwk_details.hwk.entered_by.kksa_staff %}
+                        Added by:{% firstof hwk_details.hwk.entered_by.kksa_staff.teacher_name hwk_details.hwk.entered_by.username %} on {{hwk_details.hwk.entered_on|date:"N jS"}}
                     {% else %}
-                        Added by:{% firstof homework.entered_by.first_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
+                        Added by:{% firstof hwk_details.hwk.entered_by.first_name hwk_details.hwk.entered_by.username %} on {{hwk_details.hwk.entered_on|date:"N jS"}}
                     {% endif %}       
-                    {% if homework.deleted %}
-                        {% if homework.modified_by.kksa_staff %}                    
-                            Deleted by:{% firstof homework.modified_by.kksa_staff.teacher_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
+                    {% if hwk_details.deleted %}
+                        {% if hwk_details.modified_by.kksa_staff %}                    
+                            Deleted by:{% firstof hwk_details.modified_by.kksa_staff.teacher_name hwk_details.modified_by.username %} on  {{hwk_details.modified_on|date:"N jS"}}	
                         {% else %}
-                            Deleted by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
+                            Deleted by:{% firstof hwk_details.modified_by.first_name hwk_details.modified_by.username %} on  {{hwk_details.modified_on|date:"N jS"}}	
                         {%endif%}
                     {% endif %}
-                    {% if homework.modified_by and not homework.deleted %}
-                        {% if homework.modified_by.kksa_staff %}                     
-                            Modified by:{% firstof homework.modified_by.kksa_staff.teacher_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
+                    {% if hwk_details.modified_by and not hwk_details.deleted %}
+                        {% if hwk_details.modified_by.kksa_staff %}                     
+                            Modified by:{% firstof hwk_details.modified_by.kksa_staff.teacher_name hwk_details.modified_by.username %} on {{hwk_details.modified_on|date:"N jS"}}	
                         {% else %}
-                            Modified by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
+                            Modified by:{% firstof hwk_details.modified_by.first_name hwk_details.modified_by.username %} on {{hwk_details.modified_on|date:"N jS"}}	
                         {% endif %}
                     {% endif %}
                 </div>

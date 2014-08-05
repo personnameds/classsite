@@ -12,7 +12,7 @@ class DocumentListView(ListView):
     
     def get_queryset(self):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        return Document.objects.select_related().filter(klass=klass)
+        return Document.objects.filter(klass=klass)
         
     def get_context_data(self, **kwargs):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
@@ -20,7 +20,7 @@ class DocumentListView(ListView):
         context['klass']=klass
         context['next']=self.request.path
         
-        document_list=Document.objects.select_related().filter(klass=klass)
+        document_list=Document.objects.filter(klass=klass)
         subjects=document_list.values_list('subject', flat=True).distinct()
         context['subject_list']=subjects
         return context
@@ -31,13 +31,11 @@ class DocumentCreateView(CreateView):
 	form_class=Add_Document_Form
 	template_name="documents/document_form.html"
 	
-# 	def get_initial(self, **kwargs):
-# 	    initial=super(DocumentCreateView, self).get_initial()
-# 	    class_url=self.kwargs['class_url']
-# 	    class_db=Classes.objects.filter(classes=self.kwargs['class_url'])
-# 	    initial['class_db']=class_db
-# 	    return initial
-	
+	def get_initial(self, **kwargs):
+	    initial=super(DocumentCreateView, self).get_initial()
+	    initial['klass']=Klass.objects.filter(klass_name=self.kwargs['class_url'])
+	    return initial
+
 	def get_context_data(self, **kwargs):
 	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
 	    context=super(DocumentCreateView, self).get_context_data(**kwargs)
@@ -45,17 +43,14 @@ class DocumentCreateView(CreateView):
 	    context['klass']=klass
 	    context['next']=self.request.path
 	    return context
-	    
+
 	def form_valid(self, form):
-	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-	    
 	    new_document=form.save(commit=False)
-	    if new_document.subject == None:
-	        new_document.subject='Other'
 	    new_document.filename=new_document.attached_file.name
 	    new_document.save()
-	    new_document.klass.add(klass)
-	    return HttpResponseRedirect(reverse('document_view', args=(self.kwargs['class_url'],),))
+	    for k in form.cleaned_data['klass']:
+	        new_document.klass.add(k)
+ 	    return HttpResponseRedirect(reverse('document_view', args=(self.kwargs['class_url'],),))
 
 class DocumentUpdateView(UpdateView):
     model=Document
@@ -69,16 +64,21 @@ class DocumentUpdateView(UpdateView):
         context['klass']=klass
         context['next']=self.request.path
         return context
-        
+    
     def form_valid(self, form):
-        pk=self.kwargs['pk']
-        new_document=Document.objects.get(id=pk)
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+
         if self.request.POST['mod/del']=='Delete':
-            new_document.delete()
+            del_document=form.save(commit=False)
+            for k in form.cleaned_data['klass']:
+                del_document.klass.remove(k)
+            if del_document.klass.count()==0:
+                del_document.delete()
         else:
-            new_document=form.save(commit=False)
-            new_document.filename=(new_document.attached_file.name).lstrip('attachments/')
-            new_document.save()
-            new_document.klass.add(klass)
+            mod_document=form.save(commit=False)
+            a=mod_document.attached_file
+            mod_document.save()
+            mod_document.klass.clear()
+            for k in form.cleaned_data['klass']:
+                mod_document.klass.add(k)
         return HttpResponseRedirect(reverse('document_view', args=(self.kwargs['class_url'],),))
+        

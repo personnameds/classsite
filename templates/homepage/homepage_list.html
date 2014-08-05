@@ -15,9 +15,7 @@
             <span class="date">
                 {{entry.date|date:"F j, Y"}} - 
                 {{entry.entered_by.kksa_staff.teacher_name}}
-			    {% ifequal entry.entered_by user %}
-			        <a href="modify/{{entry.id}}">Edit</a>
-			    {% endifequal %}
+			    <a href="modify/{{entry.id}}">Edit</a>
                 
             </span>
         </li>

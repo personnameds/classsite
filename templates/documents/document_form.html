@@ -7,12 +7,7 @@
 		<div class="clearer"></div>		
 		
 		<form action="." method="POST" enctype="multipart/form-data">{%csrf_token%}
-			<div class="form_error">{{form.attached_file.errors.as_text}}</div>
-			<div class="form_label">Attached file:</div><div class="form_element">{{ form.attached_file }}</div>
-			<div class="form_label">Description:</div><div class="form_element">{{ form.description }}</div>
-			<div class="form_label">Applies to:</div><div class="form_element">{{ form.homework }}</div>
-			<div class="form_label">Subject:</div><div class="form_element">{{ form.subject}}</div>
-			<div class="form_input"> 
+			    {{form.as_p}}
 				<input type="submit" value="Add">
 				<input type="button" value="Cancel" onclick="location.href='/{{klass.klass_name}}/documents/'">
 			</div>
