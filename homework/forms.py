@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from homework.models import Homework
+from homework.models import Hwk_Details
 from kalendar.models import Kalendar
 from classlists.models import Klass
 from django.forms.widgets import CheckboxSelectMultiple
@@ -8,12 +8,11 @@ from django.forms.extras.widgets import SelectDateWidget
 from datetime import date, timedelta
 
 
-
-
-class Homework_Form(ModelForm):
+class Hwk_Details_Form(ModelForm):
     class Meta:
-        model=Homework
-        fields=['subject','assigned_work']
+        model=Hwk_Details
+        fields=['subject','assigned_work','due_date']
+
 
     assigned_work = forms.CharField(
                         max_length=50, 
@@ -34,3 +33,4 @@ class Homework_Form(ModelForm):
                             label='Classes:',
                             error_messages={'required':'Please choose at least one class'},
                             )
+

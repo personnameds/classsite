@@ -1,37 +1,35 @@
 {% extends "base.html" %}
 
-
-
 {% block main_content %}
 
 		<h1>Documents</h1>
 
-		{% if perms.classlists.is_teacher %}
+		{% if perms.classlists.is_kksastaff %}
 			<a href="/{{klass}}/documents/add/"><div class="add_main_button"></div></a>
 		{% endif %}
 		<div class="clearer"></div>		
 		
-		{% for subject in subject_list %}
-		    <div class="doclink_subject">{{subject}}</div>
-		    {% for document in document_list %}
-		        {% ifequal document.subject subject %}
+		{% for doc,det in combo_list %}
+			{% ifchanged doc.subject %}
+		    	<br>
+		    	<div class="doclink_subject">{{doc.subject}}</div>
+		    {% endifchanged %}
 				    <div class="doclink">
-				        <a href="{{document.attached_file.url}}">{{document.filename}}
-				        {%if document.description %}
-					        - {{document.description}}
+				        <a href="{{doc.attached_file.url}}">{{doc.filename}}
+				        {%if doc.description %}
+					        - {{doc.description}}
 				        {%endif%}
 				    </a></div>
 				    <div class="doclink_homework">
-				        {% if document.homework %}
-					        for {{document.homework}}
+				        {% if doc.homework %}
+					        for {{det.assigned_work}}
 				        {% endif %}
 				    </div>
-                        {% if perms.classlists.is_teacher %}
-                            <div class="doclink_change"><a href="modify/{{document.id}}">Edit</a></div>
+                        {% if perms.classlists.is_kksastaff %}
+                            <div class="doclink_change"><a href="modify/{{doc.id}}">Edit</a></div>
                         {% endif %}
-			    {% endifequal %}
-			    <div class="clearer"></div>	
-		    {%endfor%}
+			<div class="clearer"></div>	
 		{%endfor%}
 
 {% endblock %}
+

@@ -22,14 +22,8 @@ SUBJECT_CHOICES = (
     )
 
 class Homework(models.Model):
-    subject = models.CharField(max_length=10,choices=SUBJECT_CHOICES,blank=False,default='Math')
-    assigned_work = models.CharField(max_length=50)
     entered_by = models.ForeignKey(User, related_name='entered_by')
     entered_on=models.DateField()
-
-
-    def __unicode__(self):
-        return '%s: %s' %(self.subject, self.assigned_work)
 
     def get_absolute_url(self):
     	return "/homework/modify/%s" %(self.id)
@@ -45,8 +39,12 @@ class Hwk_Details(models.Model):
     modified_on=models.DateField(blank=True, null=True)
     deleted=models.BooleanField(default=False)
     klass=models.ForeignKey(Klass, blank=True, verbose_name='Class')
+    assigned_work = models.CharField(max_length=50)
+    subject = models.CharField(max_length=10,choices=SUBJECT_CHOICES,blank=False,default='Math')   
+
+    def get_absolute_url(self):
+    	return "/homework/modify/%s" %(self.id)
     
     def __unicode__(self):
-        return '%s: %s - %s' %(self.hwk.subject, self.hwk.assigned_work, self.klass)
-    
-   	
+		return '%s: %s' %(self.subject, self.assigned_work)
+

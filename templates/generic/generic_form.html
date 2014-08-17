@@ -4,7 +4,7 @@
 {% block main_content %}
 
 	<div class="main">
-		<h1>Add Homework</h1>
+		<h1>Add {{title}}</h1>
 
 		<form action"." method="POST">{%csrf_token%}		
 			{{form.as_p}}

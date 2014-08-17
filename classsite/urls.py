@@ -14,7 +14,7 @@ urlpatterns = patterns('',
      url(r'^(?P<class_url>\w{2})/schedule/', include('schedule.urls')),
      url(r'^(?P<class_url>\w{2})/homework/', include('homework.urls')),
      url(r'^(?P<class_url>\w{2})/documents/', include('documents.urls')),
-#     url(r'^(?P<class_url>\w{2})/links/', include('links.urls')),
+     url(r'^(?P<class_url>\w{2})/links/', include('links.urls')),
 #     url(r'^(?P<class_url>\w{2})/messages/', include('messages.urls')),
 #     url(r'^(?P<class_url>\w{2})/contact/', include('contact.urls')),
 # 

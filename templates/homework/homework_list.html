@@ -9,19 +9,18 @@ LINKS AND DOCS STILL NOT UPDATED
 		<a href="/{{klass.klass_name}}/homework/add/"><div class="add_main_button"></div></a>
 		<div class="clearer"></div>
 		
-		{% for hwk_details in hwk_details_list %}
-			
+		{% for h,d,links in combo_list %}
 			<!-- prints date -->
-			{% ifchanged hwk_details.due_date.date %}
-				<div class="hwk_date">{{hwk_details.due_date.date|date:"l F jS"}} - Day {{hwk_details.due_date.day_no}}</div> 
+			{% ifchanged d.due_date.date %}
+				<div class="hwk_date">{{d.due_date.date|date:"l F jS"}} - Day {{d.due_date.day_no}}</div> 
 			{% endifchanged %}			
 			
 			<!-- prints homework either regular or cut through for deleted -->
-			{% if not hwk_details.deleted %}
-				<a href="/{{klass.klass_name}}{{hwk_details.hwk.get_absolute_url}}"><div class="hwk_text">{{hwk_details.hwk.subject}}: {{hwk_details.hwk.assigned_work}}</div></a>
+			{% if not d.deleted %}
+				<a href="/{{klass.klass_name}}{{d.get_absolute_url}}"><div class="hwk_text">{{d.subject}}: {{d.assigned_work}}</div></a>
 			{% endif %}
-			{% if hwk_details.deleted %}
-				<a href="/{{klass.klass_name}}{{hwk_details.hwk.get_absolute_url}}"><div class="hwk_del_text">{{hwk_details.hwk.subject}}: {{hwk_details.hwk.assigned_work}}</div></a>
+			{% if d.deleted %}
+				<a href="/{{klass.klass_name}}{{d.get_absolute_url}}"><div class="hwk_del_text">{{d.subject}}: {{d.assigned_work}}</div></a>
 			{% endif %}
 
 
@@ -83,46 +82,43 @@ LINKS AND DOCS STILL NOT UPDATED
 			{% endif %}			
 			
 			<!-- prints link to links -->
+            
+            {% for l in links %}
+			    {% if not d.deleted %}
+				    {% ifchanged h %}
+					    <div class="hwk_doc_label">Related links:</div>
+				    {% endifchanged %}
+				    <a href="{{l.link}}"><div class="hwk_doc">{{l.description}}</div></a>
+			    {%endif%}
 
-			{% if not homework.deleted %}
-				{% for link in homework.link_set.all %}
-					{% ifchanged homework %}
-						<div class="hwk_doc_label">Related links:</div>
-					{% endifchanged %}
-					<a href="{{link.link}}"><div class="hwk_doc">{{link.description}}</div></a>
-				{%endfor%}
-			{% endif %}
 			
-			{% if homework.deleted %}
-				{% for link in homework.link_set.all %}
-					{% ifchanged homework %}
+			    {% if d.deleted %}
+					{% ifchanged h %}
 						<div class="hwk_del_doc_label">Related links:</div>
 					{% endifchanged %}
-					<a href="{{link.link}}"><div class="hwk_del_doc">{{link.description}}</div></a>
-				{%endfor%}
-			{% endif %}		
-
-
+					<a href="{{l.link}}"><div class="hwk_del_doc">{{l.description}}</div></a>
+			    {% endif %}		
+			{% endfor %}
 
 			<!-- prints author info -->
                 <div class="author_text">
-                    {% if hwk_details.hwk.entered_by.kksa_staff %}
-                        Added by:{% firstof hwk_details.hwk.entered_by.kksa_staff.teacher_name hwk_details.hwk.entered_by.username %} on {{hwk_details.hwk.entered_on|date:"N jS"}}
+                    {% if h.entered_by.kksa_staff %}
+                        Added by:{% firstof h.entered_by.kksa_staff.teacher_name h.entered_by.username %} on {{h.entered_on|date:"N jS"}}
                     {% else %}
-                        Added by:{% firstof hwk_details.hwk.entered_by.first_name hwk_details.hwk.entered_by.username %} on {{hwk_details.hwk.entered_on|date:"N jS"}}
+                        Added by:{% firstof h.entered_by.first_name h.entered_by.username %} on {{h.entered_on|date:"N jS"}}
                     {% endif %}       
-                    {% if hwk_details.deleted %}
-                        {% if hwk_details.modified_by.kksa_staff %}                    
-                            Deleted by:{% firstof hwk_details.modified_by.kksa_staff.teacher_name hwk_details.modified_by.username %} on  {{hwk_details.modified_on|date:"N jS"}}	
+                    {% if d.deleted %}
+                        {% if d.modified_by.kksa_staff %}                    
+                            Deleted by:{% firstof d.modified_by.kksa_staff.teacher_name d.modified_by.username %} on  {{d.modified_on|date:"N jS"}}	
                         {% else %}
-                            Deleted by:{% firstof hwk_details.modified_by.first_name hwk_details.modified_by.username %} on  {{hwk_details.modified_on|date:"N jS"}}	
+                            Deleted by:{% firstof d.modified_by.first_name d.modified_by.username %} on  {{d.modified_on|date:"N jS"}}	
                         {%endif%}
                     {% endif %}
-                    {% if hwk_details.modified_by and not hwk_details.deleted %}
-                        {% if hwk_details.modified_by.kksa_staff %}                     
-                            Modified by:{% firstof hwk_details.modified_by.kksa_staff.teacher_name hwk_details.modified_by.username %} on {{hwk_details.modified_on|date:"N jS"}}	
+                    {% if d.modified_by and not d.deleted %}
+                        {% if d.modified_by.kksa_staff %}                     
+                            Modified by:{% firstof d.modified_by.kksa_staff.teacher_name d.modified_by.username %} on {{d.modified_on|date:"N jS"}}	
                         {% else %}
-                            Modified by:{% firstof hwk_details.modified_by.first_name hwk_details.modified_by.username %} on {{hwk_details.modified_on|date:"N jS"}}	
+                            Modified by:{% firstof d.modified_by.first_name d.modified_by.username %} on {{d.modified_on|date:"N jS"}}	
                         {% endif %}
                     {% endif %}
                 </div>
