@@ -9,9 +9,9 @@ from classlists.models import Klass, KKSA_Staff
 from kalendar.models import Kalendar
 from datetime import datetime, date, timedelta
 from django.core.urlresolvers import reverse
-from classpage.views import URLMixin
 
-class HomeworkListView(URLMixin, ListView):
+
+class HomeworkListView(ListView):
     template_name="homework/homework_list.html"
     context_object_name='combo_list'
     
@@ -20,22 +20,34 @@ class HomeworkListView(URLMixin, ListView):
         
         details_list=Hwk_Details.objects.filter(klass=klass).exclude(due_date__date__lt=(date.today())).prefetch_related()
         combo_list=[]
-        for det in details_list:
-            h=det.hwk
+        for d in details_list:
+            h=d.hwk
             l=h.link_set.filter(klass=klass)
-            doc=h.document_set.filter(klass=klass)
-            t=h.topic_set.filter(klass=klass)
-            combo_list.append((h,det,l,doc,t))
+            combo_list.append((h,d,l))
         return combo_list
 
-class HomeworkCreateView(URLMixin, CreateView):
+    def get_context_data(self, **kwargs):
+        context=super(HomeworkListView, self).get_context_data(**kwargs)
+        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        context['next']=self.request.path
+        context['now']=datetime.now()
+        return context
+
+class HomeworkCreateView(CreateView):
     model=Homework
-    title='Homework'
     
-    def get_form_class(self):
-        if self.request.user.has_perm('classlists.is_kksastaff'):
-            return Hwk_Details_Staff_Form
-        return Hwk_Details_Form
+    def get_context_data(self, **kwargs):
+        klass=self.kwargs['class_url']
+        context=super(HomeworkCreateView, self).get_context_data(**kwargs)
+        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        context['next']=self.request.path
+        context['title']='Homework'
+        return context
+
+	def get_form_class(self):
+		if self.request.user.has_perm('classlists.is_kksastaff'):
+			return Hwk_Details_Staff_Form
+		return Hwk_Details_Form
 
     #Choose Klass field only available for teachers
     def get_form(self, form_class):
@@ -49,10 +61,10 @@ class HomeworkCreateView(URLMixin, CreateView):
         initial['klass']=Klass.objects.filter(klass_name=self.kwargs['class_url'])
         return initial
 
-    def get_template_names(self):
-        if self.request.user.has_perm('classlists.is_kksastaff'):
-            return 'generic/generic_doc_form.html'
-        return 'generic/generic_form.html'
+	def get_template_names(self):
+		if self.request.user.has_perm('classlists.is_kksastaff'):
+			return "homework/homework_form.html"
+		return "generic/generic_form.html"
 
     def form_valid(self, form):
         new_homework=Homework(
@@ -64,48 +76,57 @@ class HomeworkCreateView(URLMixin, CreateView):
         new_details=form.save(commit=False)
         new_details.deleted=False
         new_details.hwk=new_homework
-        
+
         if self.request.user.has_perm('classlists.is_kksastaff'):
             #creating multiple copies of the same hwk details record, one for each class
             for k in form.cleaned_data['klass']:
                 new_details.pk=None
                 new_details.klass=k
                 new_details.save()
-            
-            if form.cleaned_data['link']:
-                new_link=Link(
-                            link=form.cleaned_data['link'],
-                            description=form.cleaned_data['link_description'],
-                            homework=new_homework,
-                            subject=new_details.subject,
-                            )
-                new_link.save()
-                for k in form.cleaned_data['klass']:
-                    new_link.klass.add(k)
-                    
-            if form.cleaned_data['attached_file']:
-                new_document=Document(
-                    attached_file=form.cleaned_data['attached_file'],
-                    filename=form.cleaned_data['attached_file'].name,
-                    description=form.cleaned_data['document_description'],
-                    homework=new_homework,
-                    subject=new_details.subject,
-                    )
-                new_document.save()
-                for k in form.cleaned_data['klass']:
-                    new_document.klass.add(k)
-                    
+        	
+        	if form.cleaned_data['link']:
+        		new_link=Link(
+        					link=form.cleaned_data['link'],
+        					description=form.cleaned_data['link_description'],
+        					homework=new_homework,
+        					subject=new_details.subject,
+        					)
+        		new_link.save()
+        		for k in form.cleaned_data['klass']:
+        			new_link.klass.add(k)
+
+        	a=z
+        	if form.cleaned_data['attached_file']:
+        	    a=z
+        	    new_document=Document(
+        			attached_file=cleaned_data['attached_file'],
+        			filename=attached_file.name
+        			description=form.cleaned_data['document_description'],
+        			homework=new_homework,
+        			subject=new_details.subject,
+        			)
+        		new_document.save()
+        		for k in form.cleaned_data['klass']:
+        		    new_document.klass.add(k)
+        	
         else:
             new_details.klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
             new_details.save()
-
+        
         return HttpResponseRedirect(reverse('homework_view', args=(self.kwargs['class_url'],),))
 
-class HomeworkUpdateView(URLMixin, UpdateView):
+class HomeworkUpdateView(UpdateView):
     model=Hwk_Details
     form_class=Hwk_Details_Form
     template_name="generic/generic_modify.html"
-    title='Homework'
+
+    def get_context_data(self, **kwargs):
+        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        context=super(HomeworkUpdateView, self).get_context_data(**kwargs)
+        context['klass']=klass
+        context['next']=self.request.path
+        context['title']='Homework'
+        return context
 
     #Choose Klass field only available for teachers
     def get_form(self, form_class):

@@ -7,8 +7,9 @@ from classlists.models import Klass
 from homework.models import Homework, Hwk_Details
 from django.core.urlresolvers import reverse
 from datetime import date, timedelta
+from classpage.views import URLMixin
 
-class DocumentListView(ListView):
+class DocumentListView(URLMixin, ListView):
     template_name="documents/document_list.html"
     context_object_name="combo_list"
     
@@ -22,19 +23,12 @@ class DocumentListView(ListView):
         	else:
         		combo_list.append((d,None))
         return combo_list
-        
-    def get_context_data(self, **kwargs):
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context=super(DocumentListView, self).get_context_data(**kwargs)
-        context['klass']=klass
-        context['next']=self.request.path
-        return context
-
 
 class DocumentCreateView(CreateView):
 	model=Document
 	form_class=Add_Document_Form
-	template_name="documents/document_form.html"
+	template_name="generic/generic_doc_form.html"
+	title='Document'
 	
 	def get_initial(self, **kwargs):
 	    initial=super(DocumentCreateView, self).get_initial()
@@ -63,7 +57,8 @@ class DocumentCreateView(CreateView):
 class DocumentUpdateView(UpdateView):
     model=Document
     form_class=Add_Document_Form
-    template_name="documents/modify_document.html"
+    template_name="generic/generic_modify_doc.html"
+    title='Document'
     
     def get_context_data(self, **kwargs):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])

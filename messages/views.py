@@ -2,48 +2,44 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic.edit import CreateView
 from django.views.generic import ListView
-from messages.models import Topic, Add_Topic_Form, Msg, Add_Message_Form
-from homework.models import Homework
+from messages.models import Topic, Msg
+from messages.forms import Add_Topic_Form, Add_Message_Form
+from homework.models import Hwk_Details
 from classlists.models import Klass
 from datetime import datetime, date
+from classpage.views import URLMixin
 
-class TopicListView(ListView):
+class TopicListView(URLMixin, ListView):
     template_name="topic_list.html"
 
     def get_queryset(self, **kwargs):
         klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
         return Topic.objects.all().order_by('-last_msg').filter(klass=klass)[:15]
-        
-    def get_context_data(self, **kwargs):
-        context=super(TopicListView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']=self.request.path
-        return context
 
 class TopicCreateView(CreateView):
 	model=Topic
 	form_class=Add_Topic_Form
-	template_name="messages/topic_form.html"
+	template_name="generic/generic_form.html"
+	title='Topic'
 	
 	def get_context_data(self, **kwargs):
 	    context=super(TopicCreateView, self).get_context_data(**kwargs)
 	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-	    #context['homework']=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
-	    context['form'].fields['homework'].queryset=Homework.objects.exclude(due_date__date__lt=(date.today())).filter(klass=klass)
+	    context['form'].fields['hwk_details'].queryset=Hwk_Details.objects.filter(klass=klass)
 	    context['klass']=klass
 	    context['next']=self.request.path
 	    return context
-
 
 	def form_valid(self, form):
 	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
 	    new_topic=form.save(commit=False)
 	    new_topic.last_msg=datetime.now()
 	    new_topic.klass=klass
+	    if form.cleaned_data['hwk_details']:
+	        new_topic.homework=form.cleaned_data['hwk_details'].hwk
 	    new_topic.save()
 	    return HttpResponseRedirect(reverse('message_add_view', args=(self.kwargs['class_url'],new_topic.id,)))
-           
-
+ 
 class MessageListView(ListView):
 
 	def get_queryset(self, **kwargs):
@@ -52,9 +48,12 @@ class MessageListView(ListView):
  	
 	def get_context_data(self, **kwargs):
 	    context=super(MessageListView, self).get_context_data(**kwargs)
+	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
 	    topic=Topic.objects.get(id=int(self.kwargs['topic_id']))
 	    context['topic']=topic
-	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+	    if topic.homework:
+	        context['homework']=topic.homework.hwk_details_set.get(klass=klass)
+	    context['klass']=klass
 	    context['next']=self.request.path
 	    return context
 

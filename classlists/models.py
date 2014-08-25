@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class KKSA_Staff(models.Model):
     user=models.OneToOneField(User)
-    teacher_name=models.CharField(max_length=20)
+    teacher_name=models.CharField(max_length=20, unique=True)
     allow_contact=models.BooleanField()
     
     class Meta:
@@ -15,9 +15,10 @@ class KKSA_Staff(models.Model):
         return self.teacher_name
 
 class Klass(models.Model):
-    klass_name=models.CharField(max_length=2, verbose_name='Class')
+    klass_name=models.CharField(max_length=2, verbose_name='Class', unique=True)
     banner=models.ImageField(upload_to='banners',blank=True)
-    teacher=models.ForeignKey('KKSA_Staff', blank=True)
+    teacher=models.OneToOneField('KKSA_Staff', blank=True)
+    class_code=models.CharField(max_length=10, verbose_name='Class Code', unique=True)
     
     class Meta:
         verbose_name="Class"
@@ -31,6 +32,7 @@ class Klass(models.Model):
     banner_tag.short_description = 'Banner'
     banner_tag.allow_tags = True
 
+
 class Student(models.Model):
     student=models.OneToOneField(User, verbose_name='User Name')
     klass=models.ForeignKey('Klass', verbose_name='Class')
@@ -38,8 +40,3 @@ class Student(models.Model):
     def full_name(self):
         return '%s %s ' %(self.student.first_name, self.student.last_name)
     full_name.short_description='Name'
-
-    def email_address(self):
-        return self.student.email
-    email_address.short_description='Email Address'    
-    

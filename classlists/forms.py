@@ -1,10 +1,8 @@
 from django import forms
-from django.forms.extras.widgets import SelectDateWidget
-from classlists.models import KKSA_Staff
+from classlists.models import Klass
+from django.contrib.auth.models import User
 
-from datetime import date
-
-class Staff_Registration_Form(forms.Form):
+class Staff_Edit_Form(forms.ModelForm):
     first_name = forms.CharField(
     					label='First Name',
     					max_length=15,
@@ -30,6 +28,10 @@ class Staff_Registration_Form(forms.Form):
                             label="Allow Email Contact",
                             required=True,
                             )
+    
+    class Meta:
+    	model=User
+    	fields=['first_name','last_name','email']
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password1", "")
@@ -38,13 +40,7 @@ class Staff_Registration_Form(forms.Form):
             raise forms.ValidationError("The two password fields didn't match.")
         return password2
 
-class Create_Kalendar_Form(forms.Form):
-	first_day_school=forms.DateField(initial=date(date.today().year,9,1),widget=SelectDateWidget()) 
-	first_day=forms.DateField(initial=date(date.today().year,9,1),widget=SelectDateWidget())
-	last_day=forms.DateField(initial=date(date.today().year+1,8,31),widget=SelectDateWidget())
-
-
-class Create_Klass_Form(forms.Form):
-    teacher=forms.ModelChoiceField(label='Teacher', queryset=KKSA_Staff.objects.all())
-    klass_name=forms.CharField(label='Class Name', max_length=2)
-    class_code=forms.CharField(max_length=10)
+class Code_Edit_Form(forms.ModelForm):
+	class Meta:
+		model=Klass
+		fields=['class_code']

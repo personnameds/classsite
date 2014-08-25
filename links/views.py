@@ -49,7 +49,7 @@ class LinkCreateView(CreateView):
 	    context['form'].fields['hwk_details'].queryset=Hwk_Details.objects.filter(klass=klass)
 	    context['klass']=klass
 	    context['next']=self.request.path
-	    context['title']='Links'
+	    context['title']='Link'
 	    return context
 
   	def form_valid(self, form):

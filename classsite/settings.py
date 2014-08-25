@@ -3,6 +3,8 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+CLASS_REGISTRATION = True
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -117,7 +119,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-     'homepage',
+     'classpage',
      'registration',
      'classlists',
      'initialize',
@@ -127,8 +129,8 @@ INSTALLED_APPS = (
      'homework',
      'documents',
      'links',
-#     'messages',
-#     'contact',
+     'messages',
+     'contact',
      'schoolpage',
 )
 
@@ -170,3 +172,5 @@ LOGGING = {
 #ALLOWED_HOSTS=['.mrsanyal.com', '.sudeepsanyal.webfactional.com','.kksa.ca',]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+LOGIN_URL='/registration/login'

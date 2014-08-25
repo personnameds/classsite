@@ -2,14 +2,14 @@
 
 {% block main_content %}
 	<h1>Classpage</h1>
-    
+
     {% if perms.classlists.is_kksastaff %}
         <a href="add/"><div class="add_main_button"></div></a>
     {% endif %} 
     <div class="clearer"></div>
 
 	<ul id="posts">
-	    {% for entry in homepage_list %}
+	    {% for entry in classpage_list %}
 	    <li class="post">
 			<span>{{entry.message}}</span><br>
             <span class="date">

@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block main_content %}
-LINKS AND DOCS STILL NOT UPDATED
 
 	<!-- fix look of add button -->
 
@@ -9,7 +8,7 @@ LINKS AND DOCS STILL NOT UPDATED
 		<a href="/{{klass.klass_name}}/homework/add/"><div class="add_main_button"></div></a>
 		<div class="clearer"></div>
 		
-		{% for h,d,links in combo_list %}
+		{% for h,d,links,docs,topics in combo_list %}
 			<!-- prints date -->
 			{% ifchanged d.due_date.date %}
 				<div class="hwk_date">{{d.due_date.date|date:"l F jS"}} - Day {{d.due_date.day_no}}</div> 
@@ -29,57 +28,52 @@ LINKS AND DOCS STILL NOT UPDATED
 <!-- Add following as built on to -->
 			<!--prints link to messages -->
 
-			{% if not homework.deleted %}
-				{% for topic in homework.topic_set.all %}
-					{% ifchanged homework %}
+			{% for t in topics %}
+				{% if not d.deleted %}
+					{% ifchanged h %}
 						<div class="hwk_doc_label">Messages:</div>						
-						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/messages">
-							<div class="hwk_doc">There {{topic.msg_set.count|pluralize:'is,are'}} {{topic.msg_set.count}} message{{topic.msg_set.count|pluralize}}.</div>	
-							<div class="hwk_doc">Last message entered {{topic.last_msg|timesince}} ago.</div>
+						<a href="/{{klass.klass_name}}/messages/{{t.id}}/messages">
+							<div class="hwk_doc">There {{t.msg_set.count|pluralize:'is,are'}} {{t.msg_set.count}} message{{t.msg_set.count|pluralize}}.</div>	
+							<div class="hwk_doc">Last message entered {{t.last_msg|timesince}} ago.</div>
 						</a>
 					{% endifchanged %}	
-				{%endfor%}
-			{% endif %}
+				{%endif%}
 	
-			{% if homework.deleted %}
-				{% for topic in homework.topic_set.all %}
-					{% ifchanged homework %}
+			    {% if d.deleted %}
+					{% ifchanged hh %}
 						<div class="hwk_del_doc_label">Messages:</div>						
-						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/messages">
-								<div class="hwk_del_doc">There {{topic.msg_set.count|pluralize:'is,are'}} {{topic.msg_set.count}} message{{topic.msg_set.count|pluralize}}.</div>	
-								<div class="hwk_del_doc">Last message entered {{topic.last_msg|timesince}} ago.</div>
+						<a href="/{{klass.klass_name}}/messages/{{t.id}}/messages">
+								<div class="hwk_del_doc">There {{t.msg_set.count|pluralize:'is,are'}} {{t.msg_set.count}} message{{t.msg_set.count|pluralize}}.</div>	
+								<div class="hwk_del_doc">Last message entered {{t.last_msg|timesince}} ago.</div>
 							</a>
 					{% endifchanged %}	
-				{%endfor%}
-			{% endif %}	
+				{%endif%}
+			{% endfor %}	
 
 			<!-- prints link to documents -->
-			
-			{% if not homework.deleted %}
-				{% for documents in homework.document_set.all %}
-					{% ifchanged homework %}
+			{% for doc in docs %} 
+			    {% if not d.deleted %}
+					{% ifchanged h %}
 						<div class="hwk_doc_label">Related documents:</div>
 					{% endifchanged %}
-					<a href="{{documents.attached_file.url}}"><div class="hwk_doc">{{documents.filename}}
-						{% if documents.description %}
-							- {{documents.description}}
+					<a href="{{doc.attached_file.url}}"><div class="hwk_doc">{{doc.filename}}
+						{% if doc.description %}
+							- {{doc.description}}
 						{% endif %}
 					</div></a>
-				{%endfor%}
-			{% endif %}
+				{%endif%}
 			
-			{% if homework.deleted %}
-				{% for documents in homework.document_set.all %}
-					{% ifchanged homework %}
+			    {% if d.deleted %}
+					{% ifchanged h %}
 						<div class="hwk_del_doc_label">Related documents:</div>
 					{% endifchanged %}
-					<a href="/{{klass.klass_name}}/documents/"><div class="hwk_del_doc">{{documents.filename}}
-						{% if documents.description %}
-							- {{documents.description}}
+					<a href="/{{klass.klass_name}}/documents/"><div class="hwk_del_doc">{{doc.filename}}
+						{% if doc.description %}
+							- {{doc.description}}
 						{% endif %}
 					</div></a>
-				{%endfor%}
-			{% endif %}			
+				{%endif%}
+			{% endfor %}			
 			
 			<!-- prints link to links -->
             

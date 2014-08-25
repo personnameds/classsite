@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.forms import ModelForm, ValidationError, ModelMultipleChoiceField
 from django.forms.widgets import CheckboxSelectMultiple
 
-class Homepage(models.Model):
+class Classpage(models.Model):
     message=models.TextField()
     date=models.DateField(blank=True, null=True)
     klass=models.ForeignKey(Klass, blank=True, null=True, verbose_name='Class')
@@ -15,10 +15,10 @@ class Homepage(models.Model):
     entered_by_display.short_description='Entered By'
 
     class Meta:
-        verbose_name='Class Homepage Message'
-        verbose_name_plural='Class Homepage Messages'        
+        verbose_name='Classpage'
+        verbose_name_plural='Classpage'        
 
-class Homepage_Form(ModelForm):
+class Classpage_Form(ModelForm):
     klass=ModelMultipleChoiceField(
                             queryset=Klass.objects,
                             widget=CheckboxSelectMultiple(),
@@ -27,5 +27,5 @@ class Homepage_Form(ModelForm):
                             )
                             
     class Meta:
-        model=Homepage
+        model=Classpage
         fields =['message']

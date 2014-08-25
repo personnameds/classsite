@@ -32,6 +32,10 @@
 					<li><a href="/{{klass.klass_name}}/messages">Messages</a></li>
 					<li><a href="/{{klass.klass_name}}/contact">Contact</a></li>
 					
+					{% if user.kksa_staff %}
+							<li><a href="/{{klass.klass_name}}/classlists">Info</a></li>
+					{%endif%}
+										
        		        {% if user.is_authenticated %}
        		            <li class="account"><a href="/registration/logout/">
        		                {%if user.kksa_staff %}

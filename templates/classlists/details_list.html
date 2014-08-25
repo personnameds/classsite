@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	<div class="main">
+		{% if student_list %}
+			<h1>{{klass.klass_name}} Details</h1>
+		{% else %}
+			<h1>{{teacher.teacher_name}} Details</h1>
+		{% endif %}
+
+			<table>
+	    	    <tr>
+	    		    <span class="post">
+	    		        <td>Teacher:&nbsp;&nbsp;&nbsp;&nbsp;</td>
+	    		        <td>First Name &nbsp;&nbsp;&nbsp;&nbsp;</td>
+	    		        <td>Last Name &nbsp;&nbsp;&nbsp;&nbsp;</td>
+	    		        <td>Username</td>
+	    		    </span>
+	    		</tr>
+	    		<tr>
+	    			<span class="post">
+	    			    <td></td>
+						<td>{{teacher.first_name}}</td>
+						<td>{{teacher.last_name}}</td>
+						<td>{{teacher.username}}</td>
+				    <span class="date">
+					    <td><a href="staff_edit">Edit</a></td>
+            		</span>
+        		</tr>
+        	</table>
+			<br>
+			{% if student_list %}
+				<class="post">
+					<span>Class Code: {{klass.class_code}}</span>
+					<span class="date">
+						<a href="code_edit">Change Class Code</a>
+					</span>
+			{% endif %}
+			
+		{% if student_list %}
+		<br><br>
+		Students:
+		<br>
+		    <table>
+	    		<tr>
+	    		    <span class="post">
+	    		        <td>First Name &nbsp;&nbsp;&nbsp;&nbsp;</td>
+	    		        <td>Last Name &nbsp;&nbsp;&nbsp;&nbsp;</td>
+	    		        <td>Username</td>
+	    		    </span>
+	    		</tr>
+	    		{% for s in student_list %}
+	    			<tr>
+	    			    <span class="post">
+						    <td>{{s.student.first_name}}</td>
+						    <td>{{s.student.last_name}}</td>
+						    <td>{{s.student.username}}</td>
+            			</span>
+            			<span class="date">
+            				 <td><a href="student_edit/{{s.student.id}}">Edit</a></td>
+            			</span>
+        			</tr>
+        		{% endfor %}
+    		</table>
+   		{% endif %}
+{% endblock %}
+

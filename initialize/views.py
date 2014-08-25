@@ -8,6 +8,7 @@ from day_no.models import Day_No
 from kalendar.models import Kalendar
 from django.contrib.auth.models import User, Group, Permission
 from datetime import date, timedelta
+from django.conf import settings
 
 class InitInfoTemplateView(TemplateView):
     template_name='initialize/init_info.html'
@@ -30,7 +31,9 @@ class InitInfoTemplateView(TemplateView):
                 context['kalendar']=False
         except:
             pass
-            
+        
+        context['reg_status']=settings.CLASS_REGISTRATION
+        
         return context
         
 class InitStaffFormView(FormView):
@@ -45,21 +48,10 @@ class InitStaffFormView(FormView):
         lastname=lastname.replace(" ","")
         teacher_name=form.cleaned_data["teacher_name"]
         user_name=teacher_name.replace(" ","").replace(".","")
-        
-        #creates a username using the teacher name
-        i=1
-        username=user_name.lower()
-        #I don't think this works
-        while True:
-            if not User.objects.filter(username=username):
-                break
-            #add numbers if teacher name is taken            
-            username=(user_name+str(i-1)).lower()
-            i=i+1
 
         #adds user and creates staff at the same time
         new_user=User.objects.create_user(
-                                        username=username,
+                                        username=username.lower(),
                                         first_name=firstname.title(),
                                         last_name=lastname.title(),
                                         email=form.cleaned_data['email'],
@@ -87,12 +79,13 @@ class InitStaffFormView(FormView):
 
 class InitKlassFormView(FormView):
     form_class=Create_Klass_Form
-    template_name='initialize/init_klass.html'
+    template_name='generic/generic_form.html'
 
     def form_valid(self, form):
         klass_name=form.cleaned_data['klass_name']
-        teacher=form.cleaned_data['teacher']       
-        new_klass=Klass(klass_name=klass_name, teacher=teacher)
+        teacher=form.cleaned_data['teacher']     
+        class_code=form.cleaned_data['class_code']  
+        new_klass=Klass(klass_name=klass_name, teacher=teacher, class_code=class_code)
         new_klass.save()
         
         #days are hardcoded in

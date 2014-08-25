@@ -2,10 +2,7 @@
 
 {% block main_content %}
 
-        <h1>Welcome to {{class_url|upper}}'s Website</h1>
+        <h1>Welcome to {{user.student.klass.klass_name|upper}}'s Website</h1>
 	
-  		
-  		An email has been sent to you with your username and password.
-  		
-  		
+  		Your username is: {{user.username}} <br>
 {% endblock %}
