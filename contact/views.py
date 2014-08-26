@@ -23,13 +23,13 @@ class ContactFormView(URLMixin, FormView):
 	def form_valid(self, form):
 	    sender_name=form.cleaned_data['name']+' sent from KKSA.ca'
 	    subject=form.cleaned_data['subject']
-	    message=form.cleaned_data['message']
+	    message=form.cleaned_data['message']+"\n"+sender_name
 	    sender_email=form.cleaned_data['email']
 	    staff=form.cleaned_data['staff']
 	    recipient=[staff.user.email,]
 
-	    email=EmailMessage(subject, message, sender_name,
+	    email=EmailMessage(subject, message, 'sudeepsanyal@sudeepsanyal.webfactional.com',
 	                    recipient, headers={'Reply-To':sender_email})
 	    email.send()
 
-	    return HttpResponseRedirect(reverse('homepage-list-view', args=(self.kwargs['class_url'],),))
+	    return HttpResponseRedirect(reverse('classpage-list-view', args=(self.kwargs['class_url'],),))
