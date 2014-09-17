@@ -25,7 +25,7 @@ class TopicCreateView(CreateView):
 	def get_context_data(self, **kwargs):
 	    context=super(TopicCreateView, self).get_context_data(**kwargs)
 	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-	    context['form'].fields['hwk_details'].queryset=Hwk_Details.objects.filter(klass=klass)
+	    context['form'].fields['hwk_details'].queryset=Hwk_Details.objects.filter(klass=klass).exclude(due_date__date__lt=(date.today())).prefetch_related().order_by('due_date')
 	    context['klass']=klass
 	    context['next']=self.request.path
 	    return context

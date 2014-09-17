@@ -93,9 +93,9 @@ a:visited{color: #2A75A9; text-decoration: none;}
 }
 #nav a{
 	display: block;
-	font-size: 16px;
+	font-size: 15 px;
 	line-height: 40px;
-	padding: 0 10px;
+	padding: 0 8px;
 	text-decoration: none;
 	color: #525252;
 }
@@ -351,6 +351,7 @@ a:visited{color: #2A75A9; text-decoration: none;}
 	text-align: center;
 	background: #E0E0E0;
 	padding: 4px 4px 4px 14px;
+	position: relative;
 	margin: 1px;
 }
 .kal_entries{

@@ -3,14 +3,14 @@ from django.views.generic import TemplateView
 from kalendar.models import Kalendar
 from day_no.models import Day_No
 from classlists.models import Klass
-
+from django.shortcuts import get_object_or_404
 from datetime import date, timedelta
 
 class ScheduleTemplateView(TemplateView):
 	template_name='schedule/schedule.html'
 	
 	def get_context_data(self, **kwargs):
-	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+	    klass=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
 	    week=[0]*5
 	    days=[0]*5
 	    
@@ -41,3 +41,4 @@ class ScheduleTemplateView(TemplateView):
 	    context['next']=self.request.path
 	    
 	    return context
+

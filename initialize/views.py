@@ -51,7 +51,7 @@ class InitStaffFormView(FormView):
 
         #adds user and creates staff at the same time
         new_user=User.objects.create_user(
-                                        username=username.lower(),
+                                        username=user_name.lower(),
                                         first_name=firstname.title(),
                                         last_name=lastname.title(),
                                         email=form.cleaned_data['email'],

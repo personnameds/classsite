@@ -6,6 +6,7 @@ from links.forms import Add_Link_Form
 from classlists.models import Klass
 from homework.models import Hwk_Details
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
 
 from datetime import date, timedelta
 
@@ -14,7 +15,7 @@ class LinkListView(ListView):
     context_object_name='combo_list'    
     
     def get_queryset(self):
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        klass=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
         links_list=Link.objects.prefetch_related().filter(klass=klass).order_by('subject')
         combo_list=[]
         for l in links_list:
@@ -46,7 +47,7 @@ class LinkCreateView(CreateView):
 	def get_context_data(self, **kwargs):
 	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
 	    context=super(LinkCreateView, self).get_context_data(**kwargs)
-	    context['form'].fields['hwk_details'].queryset=Hwk_Details.objects.filter(klass=klass)
+	    context['form'].fields['hwk_details'].queryset=Hwk_Details.objects.filter(klass=klass).exclude(due_date__date__lt=(date.today())).prefetch_related().order_by('due_date')
 	    context['klass']=klass
 	    context['next']=self.request.path
 	    context['title']='Link'

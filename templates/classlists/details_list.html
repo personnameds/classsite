@@ -3,8 +3,8 @@
 
 {% block main_content %}
 	<div class="main">
-		{% if student_list %}
-			<h1>{{klass.klass_name}} Details</h1>
+		{% if klass_taught %}
+			<h1>{{klass_taught.klass_name}} Details</h1>
 		{% else %}
 			<h1>{{teacher.teacher_name}} Details</h1>
 		{% endif %}
@@ -30,15 +30,15 @@
         		</tr>
         	</table>
 			<br>
-			{% if student_list %}
+			{% if klass_taught %}
 				<class="post">
-					<span>Class Code: {{klass.class_code}}</span>
+					<span>Class Code: {{klass_taught.class_code}}</span>
 					<span class="date">
 						<a href="code_edit">Change Class Code</a>
 					</span>
 			{% endif %}
 			
-		{% if student_list %}
+		{% if klass_taught %}
 		<br><br>
 		Students:
 		<br>

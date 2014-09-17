@@ -1,19 +1,5 @@
 classite v6
 
-TO DO
-
-CHECK ALL URLS AND HTML FOR STAFF VS TEACHER
-
-UPDATE ALL APPS TO USE MIXIN AND VIEW.TITLE
-
-
-CSS/HTML
-    -Check Contact
-        -email field not showing up same as textfields
-        -message box says message at bottom would prefer top
-
-GET TO IT
-
 Classlists
 	-Username is not recreated
 
@@ -22,10 +8,6 @@ Generic Form
 
 Banner
     -default banner hardcoded in, need to erase class banners for it to show
-
-Contact
-	-NEEDS TESTING
-	-need email address through KKSA.CA
 	
 Messages
     -not fully tested
@@ -54,9 +36,6 @@ Documents
 Classlists
     -resize banner images when uploaded (saved link in readitlater)
     -banner image in admin is hardcoded so wont work but neat idea
-    -staff members can choose to be on email list or not
-    -minister of communication???
-    
     
 Day_No
     -Uses day version in kalendar, sure there is a better way but it works

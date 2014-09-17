@@ -4,10 +4,13 @@ from django.contrib.auth.models import User
 class KKSA_Staff(models.Model):
     user=models.OneToOneField(User)
     teacher_name=models.CharField(max_length=20, unique=True)
-    allow_contact=models.BooleanField()
+    allow_contact=models.BooleanField(default=False)
     
     class Meta:
-        permissions=(('is_kksastaff', 'Is on KKSA Staff'),)
+        permissions=(
+                    ('is_kksastaff', 'Is on KKSA Staff'),
+                    ('can_edit_class','Can Edit Class Lists'),
+                    )
         verbose_name='Staff'
         verbose_name_plural='Staff'
         

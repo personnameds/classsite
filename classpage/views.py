@@ -6,10 +6,11 @@ from classpage.models import Classpage, Classpage_Form
 from classlists.models import Klass
 from django import forms
 from datetime import date
+from django.shortcuts import get_object_or_404
 
 class URLMixin(object):
 	def get_klass(self):
-		return Klass.objects.get(klass_name=self.kwargs['class_url'])
+		return get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
 	
 	def get_next(self):
 		return self.request.path

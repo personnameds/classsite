@@ -15,22 +15,27 @@ class Class_Details_ListView(ListView):
     context_object_name="student_list"
     
     def get_queryset(self):
-        if Klass.objects.filter(teacher=self.request.user):
-            klass=Klass.objects.get(teacher=self.request.user)
-            student_list=Student.objects.filter(klass=klass)#.order_by('student__last_name')
+        user=self.request.user
+        if user.has_perm('can_edit_class')==True:
+            klass_taught=Klass.objects.get(klass_name=self.kwargs['class_url'])
+            student_list=Student.objects.filter(klass=klass_taught)
+            return student_list
+        elif Klass.objects.filter(teacher=user.kksa_staff):
+            klass_taught=Klass.objects.get(teacher=user.kksa_staff)
+            student_list=Student.objects.filter(klass=klass_taught)#.order_by('student__last_name')
             return student_list
         else:
             return None
         
     def get_context_data(self, **kwargs):
-        teacher=self.request.user
-        if Klass.objects.filter(teacher=teacher):
-            klass=Klass.objects.get(teacher=teacher)
-        else:
-            klass=self.kwargs['class_url']
+        user=self.request.user
         context=super(Class_Details_ListView, self).get_context_data(**kwargs)
-        context['klass']=klass #Klass is not only dependent on URL
-        context['teacher']=teacher
+        if Klass.objects.filter(teacher=user.kksa_staff):
+            klass_taught=Klass.objects.get(teacher=user.kksa_staff)
+            context['klass_taught']=klass_taught
+
+        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        context['teacher']=user
         context['next']=self.request.path
         return context
 

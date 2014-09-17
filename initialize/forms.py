@@ -16,7 +16,7 @@ class Staff_Registration_Form(forms.Form):
 
     teacher_name = forms.CharField(
     		    		label='Teacher Name',
-    					max_length=15,
+    					max_length=20,
     					)
 
     email=forms.EmailField(
@@ -28,7 +28,7 @@ class Staff_Registration_Form(forms.Form):
     
     allow_contact=forms.BooleanField(
                             label="Allow Email Contact",
-                            required=True,
+                            required=False,
                             )
 
     def clean_password2(self):

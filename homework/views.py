@@ -10,15 +10,16 @@ from kalendar.models import Kalendar
 from datetime import datetime, date, timedelta
 from django.core.urlresolvers import reverse
 from classpage.views import URLMixin
+from django.shortcuts import get_object_or_404
 
 class HomeworkListView(URLMixin, ListView):
     template_name="homework/homework_list.html"
     context_object_name='combo_list'
     
     def get_queryset(self):
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        klass=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
         
-        details_list=Hwk_Details.objects.filter(klass=klass).exclude(due_date__date__lt=(date.today())).prefetch_related()
+        details_list=Hwk_Details.objects.filter(klass=klass).exclude(due_date__date__lt=(date.today())).prefetch_related().order_by('due_date')
         combo_list=[]
         for det in details_list:
             h=det.hwk
