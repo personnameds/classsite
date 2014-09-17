@@ -1,11 +1,27 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+
+class KKSA_Staff(models.Model):
+    user=models.OneToOneField(User)
+    teacher_name=models.CharField(max_length=20, unique=True)
+    allow_contact=models.BooleanField(default=False)
+    
+    class Meta:
+        permissions=(
+                    ('is_kksastaff', 'Is on KKSA Staff'),
+                    ('can_edit_class','Can Edit Class Lists'),
+                    )
+        verbose_name='Staff'
+        verbose_name_plural='Staff'
+        
+    def __unicode__(self):
+        return self.teacher_name
 
 class Klass(models.Model):
-    klass_name=models.CharField(max_length=2, unique=True)
+    klass_name=models.CharField(max_length=2, verbose_name='Class', unique=True)
     banner=models.ImageField(upload_to='banners',blank=True)
+    teacher=models.OneToOneField('KKSA_Staff', blank=True)
+    class_code=models.CharField(max_length=10, verbose_name='Class Code', unique=True)
     
     class Meta:
         verbose_name="Class"
@@ -14,30 +30,16 @@ class Klass(models.Model):
     def __unicode__(self):
 		return self.klass_name
 
-# class Student(models.Model):
-#     # for more info on how to use and access related information
-#     # for more info on how to display inline in admin
-#     # https://docs.djangoproject.com/en/1.5/topics/auth/customizing/#extending-user
-# 
-#     user=models.OneToOneField(User)
-#     klass=models.ForeignKey('Klass', verbose_name='Class') 
-# 
-#     def __unicode__(self):
-#         return u'%s %s in %s' % (self.user.first_name, self.user.last_name, self.klass)
+    def banner_tag(self):
+        return u'<img src="%s" />' %('/media/banners/'+'banner_sizing_1.jpg')
+    banner_tag.short_description = 'Banner'
+    banner_tag.allow_tags = True
 
-# @receiver(post_save, sender=User)
-# def create_student(sender, instance, created, **kwargs):
-#     if created:
-#         Student.objects.create(user=instance, klass=instance.klass)
 
-class Teacher(models.Model):
-    user=models.OneToOneField(User)
-    klass=models.ForeignKey('Klass', verbose_name='Class',blank=True,null=True)
-    teacher_name=models.CharField(max_length=20)
-
-    class Meta:
-        permissions=(('is_teacher', 'Is a teacher'),)
-        
-    def __unicode__(self):
-        return self.teacher_name
-        
+class Student(models.Model):
+    student=models.OneToOneField(User, verbose_name='User Name')
+    klass=models.ForeignKey('Klass', verbose_name='Class')
+    
+    def full_name(self):
+        return '%s %s ' %(self.student.first_name, self.student.last_name)
+    full_name.short_description='Name'

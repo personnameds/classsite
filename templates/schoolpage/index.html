@@ -28,8 +28,8 @@
 			<div id="account">
 		        {% if user.is_authenticated %}
 		            Hi
-       		        {%if user.teacher %}
-                        {{user.teacher.teacher_name }}
+       		        {%if user.kksa_staff %}
+                        {{user.kksa_staff.teacher_name }}
                         <a href="add/"><div class="add_button"></div></a>
             	    {%elif user.first_name %}
                         {{ user.first_name }}
@@ -43,6 +43,12 @@
                 {% endif %} 			
 
 			</div>
+
+			<div id="content">
+				{% block main_content %}{% endblock %}
+			</div>
+			<div id="to_top"></div>
+
 			<ul id="posts">
                 {% for entry in schoolpage_list %}
 				<li class="post">
@@ -50,7 +56,7 @@
 					<br>
 					<span class="date">
                         {{entry.date|date:"F j, Y"}} - 
-                        {{entry.entered_by.teacher.teacher_name}}
+                        {{entry.entered_by.kksa_staff.teacher_name}}
 			            {% ifequal entry.entered_by user %}
 			                <a href="modify/{{entry.id}}">Edit</a>
 			            {% endifequal %}
@@ -58,9 +64,14 @@
 				</li>
 				{%endfor%}
 			</ul>
+			
+			
+
+			
 			<div id="footer">
-				<span class="credit1"><a href='http://sasha.yaro.cc' target='_blank'>Design and Development: Sasha Y.</a></span>
 				<span class="credit2">Django Web Development: S. Sanyal</span>
+				<span class="credit1"><a href='http://sasha.yaro.cc' target='_blank'>HTML/CSS Design and Development: Sasha Y.</a></span>
+
 			</div>
 		</div>
 	</body>

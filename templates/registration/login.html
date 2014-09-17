@@ -19,7 +19,10 @@
 					<label>Password:</label>
 					<input style="margin: 3px auto; text-align: left;" id="password" type="password" name="password">
 					<input type="submit" value="Login">
-					<!--<input type="button" value="Register"> -->
+
+					{% if reg_status%}
+					    <input type="button" value="Register" onClick="location.href='/registration/newuser';">
+					{% endif %}
 					<input type="hidden" name="next" value={{ next }} />
 				</form>
 			</div>

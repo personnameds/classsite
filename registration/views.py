@@ -4,9 +4,10 @@ from django.contrib.auth.models import User
 from django.views.generic import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from django.core.mail import send_mail
-from registration.forms import Registration_Form, PasswordChange_Form
-from classlists.models import Klass
+from django.conf import settings
+from registration.forms import Registration_Form
+from classlists.models import Klass, Student
+from django.core.urlresolvers import reverse
 
 class LoginUserView(FormView):
     form_class=AuthenticationForm
@@ -14,8 +15,8 @@ class LoginUserView(FormView):
     
     def get_context_data(self, **kwargs):
         context=super(LoginUserView, self).get_context_data(**kwargs)
-      
-        context['next']=self.request.path
+        context['reg_status']=settings.CLASS_REGISTRATION
+        #no next for context because uses next that was given
         return context
     
     def form_valid(self, form):
@@ -36,20 +37,19 @@ def LogoutUserView(request):
 
 class RegistrationFormView(FormView):
     form_class=Registration_Form
-    template_name='registration/registration.html'
+    template_name='generic/generic_form.html'
+    title='Registration'
 
+    #no klass variable because determines klass after class_code is entered
     def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
         context=super(RegistrationFormView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']='/'+self.kwargs['class_url']
-            
+        context['next']='/'
         return context 
 
     def form_valid(self, form):
         new_user=form.save(commit=False)
         
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        #klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
             
         firstname=form.cleaned_data["first_name"]
         lastname=form.cleaned_data['last_name']
@@ -75,84 +75,23 @@ class RegistrationFormView(FormView):
         new_user.set_password(form.cleaned_data["password1"])
         new_user.first_name=firstname.title()
         new_user.last_name=lastname.title()
-        new_user.klass=klass
         new_user.save()
+
+        user=authenticate(username=username, password=form.cleaned_data["password1"])
         
-        #need to add group permissions
-        
-        
-        #sends them an email Fail Silently is TRUE
-        send_mail('Welcome to the Class '+klass.klass_name+' Website ',
- 					new_user.first_name+' '+new_user.last_name+'\n'+'Username:'
- 					+new_user.username+'\n'+'Password:'+form.cleaned_data["password1"]+'\n', 
- 					'sudeepsanyal@sudeepsanyal.webfactional.com',
- 					[new_user.email,'sudeepsanyal@sudeepsanyal.webfactional.com'],
- 					)
-        return HttpResponseRedirect('welcome')
+        if user is not None:
+            login(self.request, user)
+
+        new_student=Student(student=new_user,klass=Klass.objects.get(class_code=form.cleaned_data["class_code"]))
+        new_student.save()
+        return HttpResponseRedirect(reverse('welcome-view'))
 
 class WelcomeView(TemplateView):
     template_name='registration/welcome.html'
 
     def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
+        user=self.request.user
         context=super(WelcomeView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']='/'+self.kwargs['class_url']
+        context['user']=user
+        context['klass']=user.student.klass
         return context  
-
-class ChangedView(TemplateView):
-    template_name='registration/changed.html'
-
-    def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
-        context=super(ChangedView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']='/'+self.kwargs['class_url']
-        return context  
-
-class NotChangedView(TemplateView):
-    template_name='registration/notchanged.html'
-
-    def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
-        context=super(NotChangedView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']='/'+self.kwargs['class_url']
-        return context  
-
-
-
-class PasswordChangeFormView(FormView):
-    form_class=PasswordChange_Form
-    template_name='registration/passwordchange.html'
-
-    def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
-        context=super(PasswordChangeFormView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']='/'+self.kwargs['class_url']
-        return context
-        
-     
-    def form_valid(self, form):
-
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-
-        username=form.cleaned_data['username']            
-        firstname=form.cleaned_data["first_name"]
-        lastname=form.cleaned_data['last_name']
-        email=form.cleaned_data['email']
-        
-        if (self.request.user.username == username) and (self.request.user.first_name == firstname) and (self.request.user.last_name == lastname) and (self.request.user.email == email):
-            self.request.user.set_password(form.cleaned_data["password1"])
-            self.request.user.save()
-            send_mail('Password Change for '+klass.klass_name+' Website ',
- 					'Username:'+username+'\n'+'Password:'+form.cleaned_data["password1"]+'\n', 
- 					'sudeepsanyal@sudeepsanyal.webfactional.com',
- 					[email,'sudeepsanyal@sudeepsanyal.webfactional.com'],
- 					)  
-            return HttpResponseRedirect('changed')          
-        else:
-            return HttpResponseRedirect('notchanged')  
-
-   

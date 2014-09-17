@@ -1,6 +1,4 @@
 from django.db import models
-from django.forms import ModelForm, TextInput, ModelChoiceField,CheckboxSelectMultiple
-
 from homework.models import Homework
 from classlists.models import Klass
 
@@ -28,18 +26,9 @@ class Link(models.Model):
 	link=models.URLField()
 	description=models.CharField(max_length=30)
 	homework=models.ForeignKey(Homework, blank=True, null=True)
-	klass=models.ManyToManyField(Klass, blank=True, null=True)
+	klass=models.ManyToManyField(Klass, blank=False)
 	subject=models.CharField(max_length=10,choices=SUBJECT_CHOICES, blank=True, null=True)
-
+	
 	def __unicode__(self):
 		return '%s %s' %(self.description, self.link)
-
-class Add_Link_Form(ModelForm):
-	class Meta:
-		model=Link
-		widgets={
-			'description':TextInput(attrs={'size':'30'}),
-			#'class_db':CheckboxSelectMultiple(),
-			}
-		exclude=('class_db')
 

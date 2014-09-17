@@ -1,117 +1,187 @@
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from homework.models import Homework, Homework_Form
-from classlists.models import Klass, Teacher
+from homework.models import Hwk_Details, Homework
+from links.models import Link
+from documents.models import Document
+from homework.forms import Hwk_Details_Form, Hwk_Details_Staff_Form
+from classlists.models import Klass, KKSA_Staff
 from kalendar.models import Kalendar
 from datetime import datetime, date, timedelta
 from django.core.urlresolvers import reverse
+from classpage.views import URLMixin
+from django.shortcuts import get_object_or_404
 
-
-class HomeworkListView(ListView):
-    template_name="homework_list.html"
+class HomeworkListView(URLMixin, ListView):
+    template_name="homework/homework_list.html"
+    context_object_name='combo_list'
     
     def get_queryset(self):
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        return Homework.objects.select_related().exclude(due_date__date__lte=(date.today())).filter(klass=klass)
+        klass=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
         
-    def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
-        context=super(HomeworkListView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']=self.request.path
-        context['now']=datetime.now()
-        return context
+        details_list=Hwk_Details.objects.filter(klass=klass).exclude(due_date__date__lt=(date.today())).prefetch_related().order_by('due_date')
+        combo_list=[]
+        for det in details_list:
+            h=det.hwk
+            l=h.link_set.filter(klass=klass)
+            doc=h.document_set.filter(klass=klass)
+            t=h.topic_set.filter(klass=klass)
+            combo_list.append((h,det,l,doc,t))
+        return combo_list
 
-
-class HomeworkCreateView(CreateView):
+class HomeworkCreateView(URLMixin, CreateView):
     model=Homework
-    form_class=Homework_Form
-    template_name="homework/homework_form.html"
+    title='Homework'
     
-    def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
-        context=super(HomeworkCreateView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']=self.request.path
-        return context
+    def get_form_class(self):
+        if self.request.user.has_perm('classlists.is_kksastaff'):
+            return Hwk_Details_Staff_Form
+        return Hwk_Details_Form
+
+    #Choose Klass field only available for teachers
+    def get_form(self, form_class):
+        form=super(HomeworkCreateView, self).get_form(form_class)
+        if not self.request.user.has_perm('classlists.is_kksastaff'):
+            form.fields.pop('klass')
+        return form
     
     def get_initial(self, **kwargs):
         initial=super(HomeworkCreateView, self).get_initial()
-        
-        klass=self.kwargs['class_url']
-        klass=Klass.objects.filter(klass_name=self.kwargs['class_url'])
-        
-        initial['klass']=klass
+        initial['klass']=Klass.objects.filter(klass_name=self.kwargs['class_url'])
         return initial
 
-#     def get_form_kwargs(self):
-#         kwargs=super(HomeworkCreateView, self).get_form_kwargs()
-#         kwargs.update({'request':self.request, 'klass':self.kwargs['class_url']})
-#         return kwargs
+    def get_template_names(self):
+        if self.request.user.has_perm('classlists.is_kksastaff'):
+            return 'generic/generic_doc_form.html'
+        return 'generic/generic_form.html'
 
     def form_valid(self, form):
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        new_homework=form.save(commit=False)
-        new_homework.entered_by=self.request.user
-        new_homework.entered_on=datetime.today()
-        new_homework.deleted=False
+        new_homework=Homework(
+                        entered_by=self.request.user,
+                        entered_on=datetime.today(),
+                        )
         new_homework.save()
-        new_homework.klass.add(klass)
-        form.save_m2m()
         
+        new_details=form.save(commit=False)
+        new_details.deleted=False
+        new_details.hwk=new_homework
+        
+        if self.request.user.has_perm('classlists.is_kksastaff'):
+            #creating multiple copies of the same hwk details record, one for each class
+            for k in form.cleaned_data['klass']:
+                new_details.pk=None
+                new_details.klass=k
+                new_details.save()
+            
+            if form.cleaned_data['link']:
+                new_link=Link(
+                            link=form.cleaned_data['link'],
+                            description=form.cleaned_data['link_description'],
+                            homework=new_homework,
+                            subject=new_details.subject,
+                            )
+                new_link.save()
+                for k in form.cleaned_data['klass']:
+                    new_link.klass.add(k)
+                    
+            if form.cleaned_data['attached_file']:
+                new_document=Document(
+                    attached_file=form.cleaned_data['attached_file'],
+                    filename=form.cleaned_data['attached_file'].name,
+                    description=form.cleaned_data['document_description'],
+                    homework=new_homework,
+                    subject=new_details.subject,
+                    )
+                new_document.save()
+                for k in form.cleaned_data['klass']:
+                    new_document.klass.add(k)
+                    
+        else:
+            new_details.klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+            new_details.save()
+
         return HttpResponseRedirect(reverse('homework_view', args=(self.kwargs['class_url'],),))
 
+class HomeworkUpdateView(URLMixin, UpdateView):
+    model=Hwk_Details
+    form_class=Hwk_Details_Form
+    template_name="generic/generic_modify.html"
+    title='Homework'
 
-class HomeworkUpdateView(UpdateView):
-    model=Homework
-    form_class=Homework_Form
-    template_name="homework/modify_homework.html"
+    #Choose Klass field only available for teachers
+    def get_form(self, form_class):
+        form=super(HomeworkUpdateView, self).get_form(form_class)
+        if not self.request.user.has_perm('classlists.is_kksastaff'):
+            form.fields.pop('klass')
+        return form
     
     def get_initial(self, **kwargs):
         initial=super(HomeworkUpdateView, self).get_initial()
-    
-        pk=self.kwargs['pk']
-        h=Homework.objects.get(id=pk)
-        initial['due_date']=h.due_date.date
-        
+        #gets the homework object for the single detail
+        homework=self.object.hwk
+        klass_list=[]
+        #loops through all the details for that homework to get all the classes
+        for d in homework.hwk_details_set.all():
+            klass_list.append(d.klass)
+        initial['klass']=klass_list
         return initial
 
-    def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']    
-        pk=self.kwargs['pk']
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        
-        context=super(HomeworkUpdateView, self).get_context_data(**kwargs)
-        context['klass']=klass
-        context['next']=self.request.path
-        return context
-
-#     def get_form_kwargs(self):
-#         kwargs=super(HomeworkUpdateView, self).get_form_kwargs()
-#         kwargs.update({'request':self.request, 'klass':self.kwargs['class_url']})
-#         return kwargs
-
     def form_valid(self, form):
-        pk=self.kwargs['pk']
-        h=Homework.objects.get(id=pk)
-        klass=self.kwargs['class_url']
+        
+        #Delete homework
         if self.request.POST['mod/del']=='Delete':
-            if Teacher.objects.filter(user=self.request.user).exists():
-                h.delete()
-            else:
-                del_homework=form.save(commit=False)
-                del_homework.modified_by=self.request.user
-                del_homework.modified_on=datetime.today()
-                del_homework.deleted=True
-                del_homework.save()
-            return HttpResponseRedirect(reverse('homework_view', args=(self.kwargs['class_url'],),))
-        else:
-            mod_homework=form.save(commit=False)
-            mod_homework.modified_by=self.request.user
-            mod_homework.modified_on=datetime.today()
-            mod_homework.deleted=False
-            mod_homework.save()
-            form.save_m2m()
-            return HttpResponseRedirect(reverse('homework_view', args=(self.kwargs['class_url'],),))
             
+            del_detail=self.object
+            del_homework=self.object.hwk
+            del_details_list=del_homework.hwk_details_set.all()
+            #If Teacher
+            if self.request.user.has_perm('classlists.is_kksastaff'):
+                #delete the details for the homework
+                for k in form.cleaned_data['klass']:
+                    del_details_list.filter(klass=k).delete()
+                ##if no details left then delete the homework too
+                if del_homework.hwk_details_set.count()==0:
+                    del_homework.delete()
+                    
+            #if not a teacher
+            else:
+                del_detail.modified_by=self.request.user
+                del_detail.modified_on=datetime.today()
+                del_detail.deleted=True
+                del_detail.save()
+                        
+            return HttpResponseRedirect(reverse('homework_view', args=(self.kwargs['class_url'],),))
+        
+                
+        #Modifying homework
+        else: ##modifying the homework
+
+
+            mod_homework=self.object.hwk
+            mod_details_list=mod_homework.hwk_details_set.all()
+            
+            mod_detail=form.save(commit=False)   
+            mod_detail.modified_by=self.request.user
+            mod_detail.modified_on=datetime.today()
+            mod_detail.deleted=False
+            #If Teacher
+            if self.request.user.has_perm('classlists.is_kksastaff'):
+                for k in form.cleaned_data['klass']:
+                    #if modify detail doesn't exist then create it
+                    if not mod_details_list.filter(klass=k):
+                         mod_detail.pk=None
+                         mod_detail.hwk=mod_homework
+                    else:
+                        mod_detail.pk=mod_details_list.get(klass=k).pk
+                        
+                    mod_detail.klass=k
+                    mod_detail.save()
+            #if not a teacher
+            else:
+                mod_detail.klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+                mod_detail.modified_by=self.request.user
+                mod_detail.modified_on=datetime.today()
+                mod_detail.deleted=False
+                mod_detail.save()                
+            
+            return HttpResponseRedirect(reverse('homework_view', args=(self.kwargs['class_url'],),))

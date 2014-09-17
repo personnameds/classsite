@@ -2,126 +2,117 @@
 
 {% block main_content %}
 
-
 	<!-- fix look of add button -->
 
 		<h1>Homework</h1>
 		<a href="/{{klass.klass_name}}/homework/add/"><div class="add_main_button"></div></a>
 		<div class="clearer"></div>
 		
-		{% for homework in homework_list %}
-			
+		{% for h,d,links,docs,topics in combo_list %}
 			<!-- prints date -->
-			{% ifchanged homework.due_date.date %}
-				<div class="hwk_date">{{homework.due_date.date|date:"l F jS"}}</div> 
+			{% ifchanged d.due_date.date %}
+				<div class="hwk_date">{{d.due_date.date|date:"l F jS"}} - Day {{d.due_date.day_no}}</div> 
 			{% endifchanged %}			
 			
 			<!-- prints homework either regular or cut through for deleted -->
-			{% if not homework.deleted %}
-				<a href="/{{klass.klass_name}}{{homework.get_absolute_url}}"><div class="hwk_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
+			{% if not d.deleted %}
+				<a href="/{{klass.klass_name}}{{d.get_absolute_url}}"><div class="hwk_text">{{d.subject}}: {{d.assigned_work}}</div></a>
 			{% endif %}
-			{% if homework.deleted %}
-				<a href="/{{klass.klass_name}}{{homework.get_absolute_url}}"><div class="hwk_del_text">{{homework.subject}}: {{homework.assigned_work}}</div></a>
+			{% if d.deleted %}
+				<a href="/{{klass.klass_name}}{{d.get_absolute_url}}"><div class="hwk_del_text">{{d.subject}}: {{d.assigned_work}}</div></a>
 			{% endif %}
+
 
 <!-- don't need to double up just need to add spans -->
 
 <!-- Add following as built on to -->
 			<!--prints link to messages -->
 
-			{% if not homework.deleted %}
-				{% for topic in homework.topic_set.all %}
-					{% ifchanged homework %}
+			{% for t in topics %}
+				{% if not d.deleted %}
+					{% ifchanged h %}
 						<div class="hwk_doc_label">Messages:</div>						
-						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/messages">
-							<div class="hwk_doc">There {{topic.msg_set.count|pluralize:'is,are'}} {{topic.msg_set.count}} message{{topic.msg_set.count|pluralize}}.</div>	
-							<div class="hwk_doc">Last message entered {{topic.last_msg|timesince}} ago.</div>
+						<a href="/{{klass.klass_name}}/messages/{{t.id}}/messages">
+							<div class="hwk_doc">There {{t.msg_set.count|pluralize:'is,are'}} {{t.msg_set.count}} message{{t.msg_set.count|pluralize}}.</div>	
+							<div class="hwk_doc">Last message entered {{t.last_msg|timesince}} ago.</div>
 						</a>
 					{% endifchanged %}	
-				{%endfor%}
-			{% endif %}
+				{%endif%}
 	
-			{% if homework.deleted %}
-				{% for topic in homework.topic_set.all %}
-					{% ifchanged homework %}
+			    {% if d.deleted %}
+					{% ifchanged hh %}
 						<div class="hwk_del_doc_label">Messages:</div>						
-						<a href="/{{klass.klass_name}}/messages/{{topic.id}}/messages">
-								<div class="hwk_del_doc">There {{topic.msg_set.count|pluralize:'is,are'}} {{topic.msg_set.count}} message{{topic.msg_set.count|pluralize}}.</div>	
-								<div class="hwk_del_doc">Last message entered {{topic.last_msg|timesince}} ago.</div>
+						<a href="/{{klass.klass_name}}/messages/{{t.id}}/messages">
+								<div class="hwk_del_doc">There {{t.msg_set.count|pluralize:'is,are'}} {{t.msg_set.count}} message{{t.msg_set.count|pluralize}}.</div>	
+								<div class="hwk_del_doc">Last message entered {{t.last_msg|timesince}} ago.</div>
 							</a>
 					{% endifchanged %}	
-				{%endfor%}
-			{% endif %}	
+				{%endif%}
+			{% endfor %}	
 
 			<!-- prints link to documents -->
-			
-			{% if not homework.deleted %}
-				{% for documents in homework.document_set.all %}
-					{% ifchanged homework %}
+			{% for doc in docs %} 
+			    {% if not d.deleted %}
+					{% ifchanged h %}
 						<div class="hwk_doc_label">Related documents:</div>
 					{% endifchanged %}
-					<a href="{{documents.attached_file.url}}"><div class="hwk_doc">{{documents.filename}}
-						{% if documents.description %}
-							- {{documents.description}}
+					<a href="{{doc.attached_file.url}}"><div class="hwk_doc">{{doc.filename}}
+						{% if doc.description %}
+							- {{doc.description}}
 						{% endif %}
 					</div></a>
-				{%endfor%}
-			{% endif %}
+				{%endif%}
 			
-			{% if homework.deleted %}
-				{% for documents in homework.document_set.all %}
-					{% ifchanged homework %}
+			    {% if d.deleted %}
+					{% ifchanged h %}
 						<div class="hwk_del_doc_label">Related documents:</div>
 					{% endifchanged %}
-					<a href="/{{klass.klass_name}}/documents/"><div class="hwk_del_doc">{{documents.filename}}
-						{% if documents.description %}
-							- {{documents.description}}
+					<a href="/{{klass.klass_name}}/documents/"><div class="hwk_del_doc">{{doc.filename}}
+						{% if doc.description %}
+							- {{doc.description}}
 						{% endif %}
 					</div></a>
-				{%endfor%}
-			{% endif %}			
+				{%endif%}
+			{% endfor %}			
 			
 			<!-- prints link to links -->
+            
+            {% for l in links %}
+			    {% if not d.deleted %}
+				    {% ifchanged h %}
+					    <div class="hwk_doc_label">Related links:</div>
+				    {% endifchanged %}
+				    <a href="{{l.link}}"><div class="hwk_doc">{{l.description}}</div></a>
+			    {%endif%}
 
-			{% if not homework.deleted %}
-				{% for link in homework.link_set.all %}
-					{% ifchanged homework %}
-						<div class="hwk_doc_label">Related links:</div>
-					{% endifchanged %}
-					<a href="{{link.link}}"><div class="hwk_doc">{{link.description}}</div></a>
-				{%endfor%}
-			{% endif %}
 			
-			{% if homework.deleted %}
-				{% for link in homework.link_set.all %}
-					{% ifchanged homework %}
+			    {% if d.deleted %}
+					{% ifchanged h %}
 						<div class="hwk_del_doc_label">Related links:</div>
 					{% endifchanged %}
-					<a href="{{link.link}}"><div class="hwk_del_doc">{{link.description}}</div></a>
-				{%endfor%}
-			{% endif %}		
-
-
+					<a href="{{l.link}}"><div class="hwk_del_doc">{{l.description}}</div></a>
+			    {% endif %}		
+			{% endfor %}
 
 			<!-- prints author info -->
                 <div class="author_text">
-                    {% if homework.entered_by.teacher %}
-                        Added by:{% firstof homework.entered_by.teacher.teacher_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
+                    {% if h.entered_by.kksa_staff %}
+                        Added by:{% firstof h.entered_by.kksa_staff.teacher_name h.entered_by.username %} on {{h.entered_on|date:"N jS"}}
                     {% else %}
-                        Added by:{% firstof homework.entered_by.first_name homework.entered_by.username %} on {{homework.entered_on|date:"N jS"}}
+                        Added by:{% firstof h.entered_by.first_name h.entered_by.username %} on {{h.entered_on|date:"N jS"}}
                     {% endif %}       
-                    {% if homework.deleted %}
-                        {% if homework.modified_by.teacher %}                    
-                            Deleted by:{% firstof homework.modified_by.teacher.teacher_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
+                    {% if d.deleted %}
+                        {% if d.modified_by.kksa_staff %}                    
+                            Deleted by:{% firstof d.modified_by.kksa_staff.teacher_name d.modified_by.username %} on  {{d.modified_on|date:"N jS"}}	
                         {% else %}
-                            Deleted by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on  {{homework.modified_on|date:"N jS"}}	
+                            Deleted by:{% firstof d.modified_by.first_name d.modified_by.username %} on  {{d.modified_on|date:"N jS"}}	
                         {%endif%}
                     {% endif %}
-                    {% if homework.modified_by and not homework.deleted %}
-                        {% if homework.modified_by.teacher %}                     
-                            Modified by:{% firstof homework.modified_by.teacher.teacher_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
+                    {% if d.modified_by and not d.deleted %}
+                        {% if d.modified_by.kksa_staff %}                     
+                            Modified by:{% firstof d.modified_by.kksa_staff.teacher_name d.modified_by.username %} on {{d.modified_on|date:"N jS"}}	
                         {% else %}
-                            Modified by:{% firstof homework.modified_by.first_name homework.modified_by.username %} on {{homework.modified_on|date:"N jS"}}	
+                            Modified by:{% firstof d.modified_by.first_name d.modified_by.username %} on {{d.modified_on|date:"N jS"}}	
                         {% endif %}
                     {% endif %}
                 </div>

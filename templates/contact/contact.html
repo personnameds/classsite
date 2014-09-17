@@ -5,14 +5,7 @@
 		<h1>Contact</h1>				
 		
 		<form action="." method="POST">{%csrf_token%}
-			<div class="form_error">{{form.subject.errors.as_text}}</div>
-			<div class="form_label">Subject:</div><div class="form_element">{{form.subject}}</div>
-			<div class="form_error">{{form.email.errors.as_text}}</div>
-			<div class="form_label">Your E-mail:</div><div class="form_element">{{form.email}}</div>
-			<div class="form_label">Teacher:</div><div class="form_element">{{form.teacher}}</div>
-			<div class="form_error">{{form.message.errors.as_text}}</div>
-			<div class="form_label">Message:</div><div class="form_element">{{form.message}}</div>
-			
+            {{form.as_p}}
 			<div class="form_input">
 				<input type="submit" value="Send">
 			</div>

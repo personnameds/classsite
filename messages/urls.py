@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import patterns, include, url
+from django.conf.urls import patterns, include, url
 from messages.views import TopicCreateView, MessageCreateView, MessageListView, ReplyMessageCreateView, TopicListView, DeleteMessageView
 from django.contrib.auth.decorators import login_required
 #from classsite3.feed import TopicsFeed

@@ -1,6 +1,4 @@
 from django.db import models
-from django.forms import ModelForm, TextInput, ModelChoiceField#,CheckboxSelectMultiple
-
 from homework.models import Homework
 from classlists.models import Klass
 
@@ -24,22 +22,17 @@ SUBJECT_CHOICES = (
     ('Misc','Misc.'),
     )
 
+def upload_to(instance, filename):
+     return 'documents/%s/%s' % (instance.subject, filename)
+
 class Document(models.Model):
-	attached_file=models.FileField(upload_to='attachments') ##for whatever reason upload_to='documents' not recognized
-	filename=models.CharField(max_length=300)	
+	attached_file=models.FileField(upload_to=upload_to)
+	filename=models.CharField(max_length=300)
 	description=models.CharField(max_length=30, blank=True)
 	homework=models.ForeignKey(Homework, blank=True, null=True)
-	klass=models.ManyToManyField(Klass, blank=True, null=True)
-	subject=models.CharField(max_length=10,choices=SUBJECT_CHOICES, blank=True, null=True)
-
-	def __unicode__(self):
-		return self.filename
-		
-class Add_Document_Form(ModelForm):
-	class Meta:
-		model=Document
-		widgets={
-			'description':TextInput(attrs={'size':'30'}),
-			#'class_db':CheckboxSelectMultiple(),
-			}
-		exclude=('filename','klass')
+	klass=models.ManyToManyField(Klass, blank=True, verbose_name='Class')
+	subject=models.CharField(
+	                        max_length=10,
+	                        choices=SUBJECT_CHOICES,
+	                        default='Misc',
+	                        )	

@@ -4,7 +4,7 @@ from kalendar.models import Kalendar, Update_Day_No_Kalendar_Form, Event, Add_Ev
 from classlists.models import Klass
 from django.views.generic.edit import UpdateView, CreateView
 from django.views.generic import ListView
-
+from django.shortcuts import get_object_or_404
 from datetime import date, timedelta
  
 
@@ -74,28 +74,26 @@ class EventUpdateView(UpdateView):
 
 class KalendarListView(ListView):
     template_name="kalendar/kalendar_list.html"
-    context_object_name='kalendar_list'
-
+    context_object_name='combo_list'
+    
     def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
         kal_type=self.kwargs['kal_type']
         context=super(KalendarListView, self).get_context_data(**kwargs)
         
-        
         context['kal_type']=kal_type
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        context['klass']=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
         context['next']=self.request.path
 
         #first, last of entire kalendar dates and current viewing date
         month=int(self.kwargs.get('month', date.today().month))
         year=int(self.kwargs.get('year', date.today().year))
-        firstest_date=Kalendar.objects.all().order_by('date')[0].date
-        lastest_date=Kalendar.objects.all().order_by('-date')[0].date
+        
+        kal_total_list=Kalendar.objects.all().order_by('date')
+        firstest_date=kal_total_list.first().date
+        lastest_date=kal_total_list.last().date
         viewing_date=date(year,month,1)
 
-        
-        
-        #code to add blank inserts only for very first month and very last month
+        #code to add blank inserts only for very first month
         insert_counter=0
         if viewing_date.month == firstest_date.month:
             if viewing_date.weekday() > 0 and viewing_date.weekday() < 5:
@@ -108,9 +106,10 @@ class KalendarListView(ListView):
         context['lastest_date']=lastest_date       
         context['viewing_date']=viewing_date
         return context
-
+    
     def get_queryset(self):
-                
+        klass=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
+        
         month=int(self.kwargs.get('month', date.today().month))
         year=int(self.kwargs.get('year', date.today().year))
         
@@ -122,6 +121,7 @@ class KalendarListView(ListView):
             first_kal_date=first_date+timedelta(days=-first_date.weekday())
         else:
             first_kal_date=first_date+timedelta(days=+(7-first_date.weekday()))
+        
         #finds last day of month
         if month !=12:
             last_date=date(year,(month+1),1)-timedelta(days=1)
@@ -132,14 +132,14 @@ class KalendarListView(ListView):
             last_kal_date=last_date+timedelta(days=+(4-last_date.weekday()))
         else:
             last_kal_date=last_date+timedelta(days=-(last_date.weekday()-4))
-	
-        return Kalendar.objects.filter(date__gte=first_kal_date, 
-                                       date__lte=last_kal_date,
-                                       ).order_by('date')
-
-
-
-
+        
+        kalendar_list=Kalendar.objects.filter(date__gte=first_kal_date, date__lte=last_kal_date,).order_by('date')
+        
+        combo_list=[]
+        for k in kalendar_list:
+            d=k.hwk_details_set.filter(klass=klass)
+            combo_list.append((k,d))
+        return combo_list
 
 class UpdateDayNoKalendarView(UpdateView):
     form_class=Update_Day_No_Kalendar_Form

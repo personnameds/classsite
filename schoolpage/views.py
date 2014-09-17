@@ -27,6 +27,8 @@ class SchoolpageCreateView(CreateView):
 	    	
 	def get_context_data(self, **kwargs):
 	    context=super(SchoolpageCreateView, self).get_context_data(**kwargs)
+	    klass_list=Klass.objects.all().order_by('klass_name')
+	    context['klass_list']=klass_list
 	    context['next']=self.request.path 
 	    return context
 	
@@ -44,6 +46,8 @@ class SchoolpageUpdateView(UpdateView):
 
     def get_context_data(self, **kwargs):
         context=super(SchoolpageUpdateView, self).get_context_data(**kwargs)
+        klass_list=Klass.objects.all().order_by('klass_name')
+        context['klass_list']=klass_list
         context['next']=self.request.path
         return context
         

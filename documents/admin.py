@@ -1,19 +1,10 @@
 from django.contrib import admin
 from documents.models import Document
 
-class DocumentAdmin(admin.ModelAdmin):
+# class DocumentAdmin(admin.ModelAdmin):
+#     list_display=('filename','description','subject','klass_list',)
+#     list_filter=('klass','subject')
+# 
+# admin.site.register(Document, DocumentAdmin)
 
-
-    def get_list_display(self, request):
-        return ('filename','klass',)
-
-    def changelist_view(self, request, extra_context=None):
-        self.list_filter=('klass',)
-        return super(DocumentAdmin, self).changelist_view(request, extra_context)
-
-admin.site.register(Document, DocumentAdmin)
-
-
-
-
-
+admin.site.register(Document)

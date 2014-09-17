@@ -8,16 +8,25 @@ class Schoolpage(models.Model):
     date=models.DateField(blank=True, null=True)
     entered_by=models.ForeignKey(User, blank=True, null=True)
 
-    def __unicode__(self):
-        return u'%s : %s' % (self.message, self.entered_by)
+    class Meta:
+        verbose_name='School Message'
+        verbose_name_plural='School Messages'
+
+    def entered_by_display(self):
+        return self.entered_by.kksa_staff.teacher_name
+    entered_by_display.short_description='Entered By'
+
 
 class Schoolpage_Form(ModelForm):
     class Meta:
-        model=Schoolpage
-        
+        model=Schoolpage      
+
+
+##Do I need this???
     def __init__(self, request, *args, **kwargs):
         self.request=request
         super(Schoolpage_Form, self).__init__(*args, **kwargs)
+
 
     def clean_entered_by(self):
         entered_by=self.cleaned_data['entered_by']

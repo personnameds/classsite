@@ -32,10 +32,14 @@
 					<li><a href="/{{klass.klass_name}}/messages">Messages</a></li>
 					<li><a href="/{{klass.klass_name}}/contact">Contact</a></li>
 					
+					{% if user.kksa_staff %}
+							<li><a href="/{{klass.klass_name}}/classlists">Info</a></li>
+					{%endif%}
+										
        		        {% if user.is_authenticated %}
        		            <li class="account"><a href="/registration/logout/">
-       		                {%if user.teacher %}
-                                {{user.teacher.teacher_name }} &#8260
+       		                {%if user.kksa_staff %}
+                                {{user.kksa_staff.teacher_name }} &#8260
             	            {%elif user.first_name %}
                                 {{ user.first_name }} &#8260
             	            {%else%}
@@ -49,7 +53,11 @@
 				</ul>
 			</div>
 			<div id="banner">
-				<div class="banner-container"><img src="{{ MEDIA_URL }}{{klass.banner}}" alt=""></div>
+				{% if klass.banner %}
+				    <div class="banner-container"><img src="{{ MEDIA_URL }}{{klass.banner}}" alt=""></div>
+                {% else %}
+				    <div class="banner-container"><img src="{{ MEDIA_URL }}banners/default.jpg" alt=""></div>
+				{% endif %}
 			</div>
 			<div id="content">
 				{% block main_content %}{% endblock %}

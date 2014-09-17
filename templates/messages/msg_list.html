@@ -7,9 +7,12 @@
 	<div class="main">
 		<h1>Messages</h1>	
 		
-		</h2>{{topic.topic}}</h2>
+		<h2>{{topic.topic}} </h2> 
+		{% if homework %}
+		    <h3> Applies to - {{homework}}</h3>
+		{% endif %}
 		<a href="/{{klass.klass_name}}/messages/{{topic.id}}/add_message"><div class="add_message_button"></div></a>
-		<div class="message_text">Applies to - {{topic.homework}}</div>		
+		
 		<div class="clearer"></div>	
 		
 		
@@ -35,15 +38,15 @@
 					</a>
 					{% endifequal %}
 					
-					{% if perms.classlists.is_teacher %}
+					{% if perms.classlists.is_kksastaff %}
 					    {% ifnotequal m.author user %}
 					    <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{m.id}}/delete">
 						<span class="message_reply_change">Delete</span>
 					    </a>
 					    {% endifnotequal %}		
 					{% endif %}
-					{% if m.author.teacher %}
-						    Written by {{m.author.teacher.teacher_name}} {{m.entered_on|timesince}} ago		
+					{% if m.author.kksa_staff %}
+						    Written by {{m.author.kksa_staff.teacher_name}} {{m.entered_on|timesince}} ago		
 					{% else %}
 					    Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
 					{% endif %}
@@ -61,15 +64,15 @@
 						</a>
 						{% endifequal %}
 						
-						{% if perms.classlists.is_teacher %}
+						{% if perms.classlists.is_kksastaff %}
 					        {% ifnotequal r.author user %}
 					        <a href="/{{klass.klass_name}}/messages/{{topic.id}}/{{r.id}}/delete">
 						    <span class="message_reply_delete">Delete</span>
 					        </a>
 					        {% endifnotequal %}		
 					    {% endif %}
-						{% if r.author.teacher %}
-						    Written by {{r.author.teacher.teacher_name}} {{r.entered_on|timesince}} ago												    
+						{% if r.author.kksa_staff %}
+						    Written by {{r.author.kksa_staff.teacher_name}} {{r.entered_on|timesince}} ago												    
 						{% else %}  
 						    Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
                         {% endif %}

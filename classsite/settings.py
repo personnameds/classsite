@@ -3,6 +3,8 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+CLASS_REGISTRATION = True
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -94,7 +96,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'classsite.urls'
@@ -117,19 +119,19 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admin',
     'django.contrib.admindocs',
-    'homepage',
-    'registration',
-    'classlists',
-    'initialize',
-    'day_no',
-    'kalendar',
-    'schedule',
-    'homework',
-    'documents',
-    'links',
-    'messages',
-    'contact',
-    'schoolpage',
+     'classpage',
+     'registration',
+     'classlists',
+     'initialize',
+     'day_no',
+     'kalendar',
+     'schedule',
+     'homework',
+     'documents',
+     'links',
+     'messages',
+     'contact',
+     'schoolpage',
 )
 
 
@@ -161,12 +163,14 @@ LOGGING = {
         },
     }
 }
-# EMAIL_HOST='smtp.webfaction.com'
-# EMAIL_HOST_USER='sudeepsanyal'
-# EMAIL_HOST_PASSWORD='assandra3#'
-# DEFAULT_FROM_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
-# SERVER_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
+EMAIL_HOST='smtp.webfaction.com'
+EMAIL_HOST_USER='kksa'
+EMAIL_HOST_PASSWORD='assandra3#'
+DEFAULT_FROM_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
+SERVER_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
 
-ALLOWED_HOSTS=['.mrsanyal.com', '.sudeepsanyal.webfactional.com','.kksa.ca',]
+ALLOWED_HOSTS=['127.0.0.1','localhost','.mrsanyal.com', '.sudeepsanyal.webfactional.com','.kksa.ca',]
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+LOGIN_URL='/registration/login'

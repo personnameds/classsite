@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+	<h1>{{klass.klass_name}}</h1>
+
+    {% if perms.classlists.is_kksastaff %}
+        <a href="add/"><div class="add_main_button"></div></a>
+    {% endif %} 
+    <div class="clearer"></div>
+
+	<ul id="posts">
+	    {% for entry in classpage_list %}
+	    <li class="post">
+			<span>{{entry.message}}</span><br>
+            <span class="date">
+                {{entry.date|date:"F j, Y"}} - 
+                {{entry.entered_by.kksa_staff.teacher_name}}
+			    <a href="modify/{{entry.id}}">Edit</a>
+                
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
