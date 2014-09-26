@@ -3,7 +3,7 @@
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-CLASS_REGISTRATION = True
+CLASS_REGISTRATION = False
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
