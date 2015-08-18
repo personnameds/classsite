@@ -1,15 +1,22 @@
 from django.contrib import admin
 
-from classlists.models import Klass, KKSA_Staff, Student
+from .models import Student, School_Staff, Klass
 
-class KlassAdmin(admin.ModelAdmin):
-    list_display=('klass_name','teacher','class_code')
-    readonly_fields = ('banner_tag',)
 
 class StudentAdmin(admin.ModelAdmin):
-    list_display=('full_name','student','klass',)
-    list_filter=('klass',)
+	list_display=('full_name','user','klass')
+	list_filter=('klass',)
+
+admin.site.register(Student, StudentAdmin)
+
+
+class School_StaffAdmin(admin.ModelAdmin):
+	list_display=('teacher_name','user','allow_contact')
+		
+admin.site.register(School_Staff, School_StaffAdmin)
+
+class KlassAdmin(admin.ModelAdmin):
+	list_display=('klass_name','klass_code')
 
 admin.site.register(Klass, KlassAdmin)
-admin.site.register(KKSA_Staff)
-admin.site.register(Student, StudentAdmin)
+
