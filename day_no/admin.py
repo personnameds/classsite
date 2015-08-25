@@ -4,7 +4,7 @@ from schoolsetup.models import Schedule_Setup
 
 class PeriodInline(admin.TabularInline):
 	model=Period
-	extra=Schedule_Setup.objects.all()[0].periods_in_day
+	extra=3 #Schedule_Setup.objects.all()[0].periods_in_day
 
 class Day_NoAdmin(admin.ModelAdmin):
 	fields=['day_name','klass']

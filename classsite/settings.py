@@ -104,18 +104,3 @@ USE_TZ = True
  
 STATIC_URL = '/static/'
 
-# Django settings for classsite project.
-# CLASS_REGISTRATION = False
-# 
-# EMAIL_HOST='smtp.webfaction.com'
-# EMAIL_HOST_USER='kksa'
-# EMAIL_HOST_PASSWORD='assandra3#'
-# DEFAULT_FROM_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
-# SERVER_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
-# 
-# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-# 
-# LOGIN_URL='/registration/login'
-# 
-
-
