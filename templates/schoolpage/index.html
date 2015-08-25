@@ -2,7 +2,8 @@
 <html>
 	<head>
 		<title>Welcome to KKSA.ca!</title>
-		<link rel="stylesheet" href="{{STATIC_URL}}lib/index_styles.css" />
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'lib/index_styles.css' %}" />
 		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery-1.10.1.min.js"></script>
 		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery-ui-1.10.3.custom.min.js"></script>
 		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery.timer.js"></script>

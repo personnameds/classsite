@@ -7,28 +7,30 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('schoolsetup', '__first__'),
         ('classlists', '0001_initial'),
-        ('schoolsetup', '0002_auto_20150818_1314'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Day_No',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
                 ('day_name', models.CharField(max_length=2)),
-                ('klass', models.ForeignKey(to='classlists.Klass')),
+                ('klass', models.ForeignKey(to='classlists.Klass', verbose_name='Class')),
             ],
             options={
-                'verbose_name': 'Day Number',
+                'verbose_name': 'Day #',
             },
         ),
         migrations.CreateModel(
             name='Period',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
                 ('activity', models.CharField(max_length=12)),
-                ('details', models.ForeignKey(to='schoolsetup.Period_Details')),
+                ('modified', models.BooleanField(default=False, verbose_name='Modified')),
+                ('day_no', models.ForeignKey(to='day_no.Day_No', verbose_name='Day #')),
+                ('details', models.ForeignKey(to='schoolsetup.Period_Details', verbose_name='Period #')),
             ],
         ),
     ]

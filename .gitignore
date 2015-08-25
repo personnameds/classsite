@@ -1,0 +1,7 @@
+manage.py
+settings.py
+*.pyc
+z*
+z*/
+static/
+migrations/

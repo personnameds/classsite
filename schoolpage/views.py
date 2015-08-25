@@ -5,7 +5,6 @@ from .models import Schoolpage
 class SchoolpageListView(ListView):
 	template_name='schoolpage/index.html'
 	context_object_name='schoolpage_list'
-	a=z
 	
 	def get_queryset(self):
 		return Schoolpage.objects.all().order_by('-date')[:5]

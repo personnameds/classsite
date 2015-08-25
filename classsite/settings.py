@@ -39,7 +39,10 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'classlists',
     'schoolsetup',
-    'day_no'
+    'day_no',
+    'schoolpage',
+    'kalendar',
+    'schedule',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -58,7 +61,7 @@ ROOT_URLCONF = 'classsite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
