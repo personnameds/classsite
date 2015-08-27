@@ -1,10 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Klass(models.Model):
-	klass_name=models.CharField(max_length=12, verbose_name='Class', unique=True)
-	klass_code=models.CharField(max_length=10, verbose_name='Class Code')
+	name=models.CharField(max_length=12, verbose_name='Class', unique=True)
+	url=models.CharField(max_length=4, verbose_name='Class Url', unique=True)
+	code=models.CharField(max_length=10, verbose_name='Class Code')
 	#teacher
 	#banner
 	
@@ -13,7 +13,7 @@ class Klass(models.Model):
 		verbose_name_plural='Classes'
 	
 	def __str__(self):
-		return self.klass_name
+		return self.name
 		
 class Student(models.Model):
     user=models.OneToOneField(User, verbose_name='User Name')

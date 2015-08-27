@@ -1,0 +1,21 @@
+{% extends "schoolpage/index.html" %}
+
+{% block main_content %}
+
+	<div class="main">
+		<h1">Add Message to the KKSA Page</h1>
+		<div class="clearer"></div>		
+		
+		<div class='form_error'>{{form.message.errors.as_text}}</div>
+
+		<form action="{% url 'schoolpage-create-view' %}" method="POST">{%csrf_token%}
+			<div class="form_label">Message:</div><div class="form_element">{{form.message}}</div>
+			<div class="form_input">
+				<input type="submit" value="Save">
+				<input type="button" value="Cancel" onclick="location.href='/'">
+			</div>
+		</form>
+	</div>
+
+{% endblock %}
+

@@ -16,7 +16,7 @@ class School_StaffAdmin(admin.ModelAdmin):
 admin.site.register(School_Staff, School_StaffAdmin)
 
 class KlassAdmin(admin.ModelAdmin):
-	list_display=('klass_name','klass_code')
+	list_display=('name','code','url')
 
 admin.site.register(Klass, KlassAdmin)
 
