@@ -2,10 +2,8 @@
 
 
 {% block main_content %}
-
 	<div class="main">
 		<h1>Add {{view.title}}</h1>
-        URL {{url}}
 		<form action"." method="POST">{%csrf_token%}		
 			{{form.as_p}}
 			<div class="form_input"> 
@@ -16,7 +14,3 @@
 	</div>
 
 {% endblock %}
-
-
-	<!--	<form action="{% url 'schoolpage-update-view' schoolpage.id %}" method="POST">{%csrf_token%}
-	-->
