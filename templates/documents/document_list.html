@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+		<h1>Documents</h1>
+
+		{% if perms.documents.add_document %}
+			<a href="{%url 'document-create-view' klass.name %}"><div class="add_main_button"></div></a>
+		{% endif %}
+		<div class="clearer"></div>		
+		
+		{% for doc in document_list %}
+			{% ifchanged doc.subject %}
+		    	<br>
+		    	<div class="doclink_subject">{{doc.subject}}</div>
+		    {% endifchanged %}
+				    <div class="doclink">
+				        <a href="{{doc.attached_file.url}}">{{doc.filename}}
+				        {%if doc.description %}
+					        - {{doc.description}}
+				        {%endif%}
+				    </a></div>
+				    <div class="doclink_homework">
+				        {% if doc.homework %}
+					        for {{doc.homework.work}}
+				        {% endif %}
+				    </div>
+                        {% if perms.documents.change_document %}
+                            <div class="doclink_change"><a href="{%url 'document-update-view' klass.name doc.id %}">Edit</a></div>
+                        {% endif %}
+			<div class="clearer"></div>	
+		{%endfor%}
+
+{% endblock %}
+

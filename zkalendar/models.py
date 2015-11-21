@@ -36,7 +36,7 @@ class Kalendar(models.Model):
 class Update_Day_No_Kalendar_Form(ModelForm):
 	class Meta:
 		model=Kalendar
-		fields=('date', 'day_no')
+		fields=('day_no',)
 
 class Event(models.Model):
     description= models.CharField(max_length=25)

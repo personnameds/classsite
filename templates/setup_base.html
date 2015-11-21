@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Welcome to KKSA.ca!</title>
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'lib/index_styles.css' %}" />
+		<script type="text/javascript" src="{% static 'lib/jquery-1.11.3.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery-ui-1.10.3.custom.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+		<div id="side_bar">
+			<h3>Setup Options</h3>
+			<ul>
+				<li><a href="/">Home</a></li>
+				<li><a href="{% url 'school-setup-view' %}">Setup Info</a></li>
+				<li><a href="{% url 'kalendar-setup-view' %}">Calendar Setup</a></li>
+				<li><a href="{% url 'schedule-setup-view' %}">Schedule Setup</a></li>
+				<li><a href="{% url 'class-setup-view' %}">Class Setup</a></li>
+				<li><a href="{% url 'staff-setup-view' %}">Staff Setup</a></li>
+			</ul>
+		</div>
+		<div id="container">
+            {% block main_content %}{% endblock %}
+
+		</div>
+	</body>
+</html>

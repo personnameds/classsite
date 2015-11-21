@@ -1,0 +1,22 @@
+{% extends "setup_base.html" %}
+
+{% block main_content %}
+
+	<div class="main">
+		<h1">Add a Class</h1>
+		<div class="clearer"></div>		
+		
+		<div class='form_error'>{{form.message.errors.as_text}}</div>
+
+		<form action="{% url 'class-update-view' klass.pk %}" method="POST">{%csrf_token%}
+			{{form.as_p}}
+			<div class="form_input"> 
+					<input type="submit" name="mod/del" value="Modify">
+					<input type="submit" name="mod/del" value="Delete">
+					<input type="button" value="Cancel" onclick="location.href='/setup'">
+			</div>
+		</form>
+	</div>
+
+
+{% endblock %}

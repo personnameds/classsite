@@ -2,9 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Klass(models.Model):
-	name=models.CharField(max_length=12, verbose_name='Class', unique=True)
-	url=models.CharField(max_length=4, verbose_name='Class Url', unique=True)
-	code=models.CharField(max_length=10, verbose_name='Class Code')
+	name=models.CharField(max_length=12, verbose_name='Class Name', help_text="Short is better, Displayed name of class",unique=True)
+	url=models.CharField(max_length=4, verbose_name='Class Url', unique=True, help_text="Keep it 4 letters and lower case")
+	code=models.CharField(max_length=10, verbose_name='Class Code',help_text="Code for students to register with class")
+	schedule=models.ForeignKey('schedule.Schedule_Setup')
 	#teacher
 	#banner
 	
@@ -14,7 +15,7 @@ class Klass(models.Model):
 	
 	def __str__(self):
 		return self.name
-		
+
 class Student(models.Model):
     user=models.OneToOneField(User, verbose_name='User Name')
     klass=models.ForeignKey('Klass', verbose_name='Class')
@@ -28,8 +29,8 @@ class Student(models.Model):
 		
 class School_Staff(models.Model):
     user=models.OneToOneField(User)
-    teacher_name=models.CharField(max_length=20, unique=True)
-    allow_contact=models.BooleanField(default=False)
+    teacher_name=models.CharField(max_length=25, unique=True)
+    allow_contact=models.BooleanField(default=False, blank=True)
     
     class Meta:
         verbose_name='Staff'
@@ -38,4 +39,7 @@ class School_Staff(models.Model):
     def __str__(self):
     	return self.teacher_name
 
-
+class StaffCode(models.Model):
+    code=models.CharField(max_length=12, verbose_name='Staff Code', help_text="To register you need the code")
+    school=models.CharField(max_length=50, primary_key=True)
+  

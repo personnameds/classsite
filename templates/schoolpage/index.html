@@ -16,8 +16,12 @@
 			<h3>Classes:</h3>
 			<ul>
 				{% for klass in klass_list %}
-				    <li><a href="{{klass.url}}">{{klass.name}}</a></li>
+				    <li><a href="{%url 'classpage-list-view' klass.url %}">{{klass.name}}</a></li>
 				{% endfor %}
+				{% if perms.schoolsetup.add_school_setup %}
+				    <li><a href="{% url 'admin:index' %}">Admin</a></li>
+			        <li><a href="{% url 'school-setup-view' %}">Setup</a></li>
+				{% endif %}
 			</ul>
 			<h3>References:</h3>
 			<ul>

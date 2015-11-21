@@ -1,0 +1,21 @@
+{% extends "setup_base.html" %}
+
+{% block main_content %}
+
+	<div class="main">
+		<h1">Add a Staff Code</h1>
+		<div class="clearer"></div>		
+		
+		<div class='form_error'>{{form.message.errors.as_text}}</div>
+
+		<form action="{% url 'staffcode-create-view' %}" method="POST">{%csrf_token%}
+			{{form.as_p}}
+			<div class="form_input">
+				<input type="submit" value="Save">
+				<input type="button" value="Cancel" onclick="location.href='/setup'">
+			</div>
+		</form>
+	</div>
+
+
+{% endblock %}

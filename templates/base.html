@@ -10,39 +10,30 @@
 		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
 		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
+	    {%block head_content%}{%endblock%}
 	</head>
+
+<script>
+{% block script_content %}{% endblock %}
+
+</script>
 
 	<body>
 		<div id="wrapper">
 			<div id="nav">
 				<ul>
-					<li id="current"><a href="/{{klass.name}}">{{klass.name|upper}}</a>
-						<ul>
-							<li><a href="/">KKSA</a></li>
-						</ul>
-					</li>
-					<li><a href="/{{klass.name}}/homework">Homework</a></li>
-					<li><a href="/{{klass.name}}/calendar/class">Calendars</a>
-						<ul>
-							<li><a href="/{{klass.name}}/calendar/kksa">School</a></li>
-							<li><a href="/{{klass.name}}/calendar/class">Class</a></li>
-						</ul>
-					</li>
-					<li><a href="/{{klass.name}}/schedule">Schedule</a></li>
-					<li><a href="/{{klass.name}}/documents">Documents</a></li>
-					<li><a href="/{{klass.name}}/links">Links</a></li>
+					<li id="current"><a href="{%url 'schoolpage-list-view' %}">Home</a></li>
+					<li><a href="{%url 'homework-list-view' klass.name %}">Homework</a></li>
+					<li><a href="{%url 'kalendar-list-view' klass.name %}">Calendar</a></li>
+					<li><a href="{%url 'schedule-view' klass.name %}">Schedule</a></li>
+					<li><a href="{%url 'document-list-view' klass.name %}">Documents</a></li>
+					<li><a href="{%url 'link-list-view' klass.name %}">Links</a></li>
 					<li><a href="/{{klass.name}}/messages">Messages</a></li>
 					<li><a href="/{{klass.name}}/contact">Contact</a></li>
 					{% if user.is_staff %}
-						<li><a href="/setup">Setup</a>
-							<ul>
-								<li><a href="/setup/staff">Staff</a></li>
-								<li><a href="/setup/other">Other</a></li>
-							</ul>
-					{% elif user.school_staff %}
-						<li><a href="/{{klass.name}}/classlists">Info</a></li>
+						<li><a href="{%url 'school-setup-view' %}">Setup</a></li>
 					{%endif%}
-										
+														
        		        {% if user.is_authenticated %}
        		            <li class="account"><a href="/logout/">
        		                {%if user.school_staff %}

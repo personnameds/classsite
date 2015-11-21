@@ -1,4 +1,5 @@
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
 from documents.models import Document

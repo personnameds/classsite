@@ -1,0 +1,44 @@
+{% extends "setup_base.html" %}
+
+{% block main_content %}
+				<ul id="posts">
+				<li class="post">
+				    {{school_name}} Setup Information:
+				</li>
+                <li class="post">
+                    {%if kalendar %}
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;Calendar is setup.
+                    {% else %}
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;Calendar is not setup.
+                    {% endif %}
+				</li>
+				<li class="post">
+                    Schedule Information:
+                    {% if kalendar %}
+                        {%if schedule_setups %}
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;The following schedule{{schedule_setups |pluralize}} have been setup:
+                            {% for schedule_setup in schedule_setups %}
+                                <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{schedule_setup.name}}
+                            {% endfor %}
+                        {% else %}
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;No Schedules have been setup.
+                        {% endif %}
+                    {% else %}
+                        <br>The Calendar needs to be setup first.
+                    {% endif %}
+                </li>    
+                <li class="post">
+                    Classes:
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;{{klass_count}} class{{klass_count|pluralize:"es"}} have been setup.
+                </li>
+                 <li class="post">
+                    Staff List:
+                    {% if staffcode %}
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;The staff code is setup
+                    {% else %}
+                        <br>Nope
+                    {% endif %}
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;{{staff_count}} staff member{{staff_count|pluralize}} ha{{staff_count|pluralize:"s,ve"}} been setup.
+                </li>               
+				</ul>
+{% endblock %}

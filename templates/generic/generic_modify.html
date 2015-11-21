@@ -5,8 +5,8 @@
 
 	<div class="main">
 		<h1>Modify {{view.title}}</h1>
-
-		<form action"." method="POST">{%csrf_token%}		
+        
+		<form action="{% url view.named_url klass.url object.pk %}" method="POST">{%csrf_token%}		
 			{{form.as_p}}
 			<div class="form_input"> 
 					<input type="submit" name="mod/del" value="Modify">

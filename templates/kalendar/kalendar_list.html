@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+<div class="kalendar_main">
+
+	    <h1>{{klass.name}} Calendar</h1>
+
+		{%for k, event, det in combo_list%}
+			<!-- month name, arrows, day names -->
+			{%if forloop.first%}
+				
+				<!-- Navigating of Month Arrows etc -->
+				{%ifnotequal viewing_date.month firstest_date.month%}
+					<a href="{%url 'kalendar-view' klass.name prev_year prev_month %}"><div class="kal_left_arrow"></div></a>
+				{%else%}
+					<div class="kal_no_arrow"></div>
+				{%endifnotequal%}
+                <!-- end of front arrow -->
+                
+                <!-- puts the name of the month -->				
+				<div class="kal_month">{{viewing_date|date:"F"}}</div>
+
+                <!--after arrow -->				
+				<!-- arrows don't work if first month is same as last month because doesn't check for year -->
+				{%ifnotequal viewing_date.month lastest_date.month%}			
+                    <a href="{%url 'kalendar-view' klass.name next_year next_month %}"><div class="kal_right_arrow"></div></a>
+				{%else%}
+					<div class="kal_no_arrow"></div>
+				{%endifnotequal%}
+                <!-- end of back arrow -->				
+				<div class="clearer"></div>
+				
+				<div class="kal_day_label">Monday</div>
+				<div class="kal_day_label">Tuesday</div>
+				<div class="kal_day_label">Wednesday</div>
+				<div class="kal_day_label">Thursday</div>
+				<div class="kal_day_label">Friday</div>
+				
+	
+            <!-- the actual kalendar -->
+			
+                {%for i in insert_counter %}
+                    <div class="kal_blank_day_block"></div>
+                {%endfor%}
+            {%endif%}
+            
+			<div class="kal_day_block">
+			{%ifequal viewing_date.month k.date.month%}
+
+
+				<!-- Day Number and Add Event Links-->
+				{% if perms.kalendar.add_event %}
+					<a href="{%url 'event-create-view' klass.name k.id %}">
+					    <div class="kal_date">{{k.date|date:"j"}}
+					</a>	
+					{%if perms.kalendar.change_kalendar %}
+					    <a href="{%url 'dayno-update-view' klass.name k.id %}">
+						    <div class="kal_day_no">({{k.day_no}})</div>
+					    </a>
+					{% else %}
+					    <div class="kal_day_no">({{k.day_no}})</div>
+					{% endif %}
+						
+				{%else %}
+					<div class="kal_date">{{k.date|date:"j"}}
+					<div class="kal_day_no">({{k.day_no}})</div>
+				{%endif%}
+
+				</div>
+				<!-- Events -->				
+				<div class="kal_entries">	
+					<!-- class calendar -->
+                    {% for e in event %}
+                        {% if perms.kalendar.change_event %}
+                            <a href="{%url 'event-update-view' klass.name e.id %}">
+                                {{e.description}}<br>
+                            </a>
+                        {%else%}
+                            {{e.description}}<br>
+                        {%endif%}
+                    {% endfor %}
+					<!-- kksa calendar -->
+
+				<!-- End of Events -->		    
+				<!-- Homework -->	   			
+				{% for d in det %}
+					<a href="/{{klass.name}}/homework"/>
+						{{d.homework.subject}}:{{d.homework.work}}<br>
+					</a>
+				{% endfor %}
+				<!-- End of homework -->	
+				</div>
+<!-- Will have to check if Permissions work? -->
+
+
+            <!-- Kalendar days from another month -->				
+			{%else%}
+				<div class="kal_date_other_month">{{k.date|date:"j"}}
+					<div class="kal_day_no">({{k.day_no}})</div>
+				</div>
+				
+				<!-- Events -->	
+				<div class="kal_entries_other_month">
+					{%ifnotequal kal_type 'kksa' %}
+					    {% for e in k.event_set.all %}
+					        {% if klass in e.klass.all %}
+						        {% if perms.classlists.is_kksastaff %}
+						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
+						        {%else%}
+						            {{e.description}}<br>
+						        {%endif%}
+					        {%endif%}
+					    {% endfor %}
+					{%else%}
+						{% for e in k.event_set.all %}
+					        {% if e.kksa %}
+						        {% if perms.classlists.is_kksastaff %}
+						            <a href="/{{klass.klass_name}}/calendar/{{kal_type}}/modify_event/{{e.id}}/">{{e.description}}<br></a>
+						        {%else%}
+						            {{e.description}}<br>
+						        {%endif%}
+					        {%endif%}
+					    {% endfor %}
+					{%endifnotequal%}
+				<!-- End of Events -->	
+				
+				<!-- Homework -->	
+					    
+				{%ifnotequal kal_type 'kksa' %}    			
+					{% for h in k.homework_set.all %}
+					    {% if klass in h.klass.all %}
+					            <a href="{%url 'homework-list-view' klass.name %}">
+						        {{h.hwk_details.subject}}:{{h.hwk_details.assigned_work}}<br>
+						        </a>
+						{% endif %}
+					{%endfor%}
+				{%endifnotequal%}
+				<!-- End of homework -->	
+
+				</div>
+			{%endifequal%}			
+
+			</div>
+			{%ifequal k.date.weekday 4%}
+				<div class="clearer"></div>				
+			{%endifequal%}
+
+		{%endfor%}
+
+		<div class="clearer"></div>
+		
+</div>
+		
+{% endblock %}

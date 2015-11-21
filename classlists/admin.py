@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Student, School_Staff, Klass
+from .models import Student, School_Staff, Klass, StaffCode
 
 
 class StudentAdmin(admin.ModelAdmin):
@@ -16,7 +16,12 @@ class School_StaffAdmin(admin.ModelAdmin):
 admin.site.register(School_Staff, School_StaffAdmin)
 
 class KlassAdmin(admin.ModelAdmin):
-	list_display=('name','code','url')
+	list_display=('name','code','url','schedule')
+	list_filter=('schedule',)
+
+class StaffCodeAdmin(admin.ModelAdmin):
+	list_display=('code',)
 
 admin.site.register(Klass, KlassAdmin)
+admin.site.register(StaffCode, StaffCodeAdmin)
 

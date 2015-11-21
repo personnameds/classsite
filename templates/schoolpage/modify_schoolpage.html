@@ -9,8 +9,6 @@
 		<div class='form_error'>{{form.entered_by.errors.as_text}}</div>
 		<div class='form_error'>{{form.message.errors.as_text}}</div>
 		
-		
-		What is up with the action thing????
 		<form action="{% url 'schoolpage-update-view' schoolpage.id %}" method="POST">{%csrf_token%}
 			<div class="form_label">Message:</div><div class="form_element">{{form.message}}</div>
 			<div class="form_input"> 

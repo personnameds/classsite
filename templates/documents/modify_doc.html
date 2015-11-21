@@ -5,7 +5,7 @@
 	<div class="main">
 		<h1>Modify {{view.title}}</h1>
 
-		<form action="." method="POST" enctype="multipart/form-data">{%csrf_token%}		
+		<form action="." method="POST" enctype="multipart/form-data">{%csrf_token%}	
 			{{form.as_p}}
 			<div class="form_input"> 
 					<input type="submit" name="mod/del" value="Modify">

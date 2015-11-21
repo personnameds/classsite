@@ -1,30 +1,13 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from .models import Classpage, Classpage_AddForm, Classpage_ModifyForm
+from .models import Classpage, Classpage_Form
 from django.shortcuts import get_object_or_404
 from classlists.models import Klass
 from datetime import date
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-
-### Want to reverse or resolve the namedurl for the classbased view to use in action form
-### so named url in action of form
-### also used named url when you hit the cancel button
-### can't I also used the named url for next????
-### couldn't I also use the class_url as an argument so I do not need the context data and urlmixin??
-class URLMixin(object):
-	def get_klass(self):
-		return get_object_or_404(Klass,name=self.kwargs['class_url'])
-	
-	def get_next(self):
-		return self.request.path
-	
-	def get_context_data(self, **kwargs):
-		ctx=super(URLMixin, self).get_context_data(**kwargs)
-		ctx['klass']=self.get_klass()
-		ctx['next']=self.get_next()
-		return ctx
+from classsite.views import URLMixin
 
 class ClasspageListView(URLMixin, ListView):
 	template_name='classpage/classpage_list.html'
@@ -35,9 +18,10 @@ class ClasspageListView(URLMixin, ListView):
 
 class ClasspageCreateView(URLMixin, CreateView):
 	model=Classpage
-	form_class=Classpage_AddForm
+	form_class=Classpage_Form
 	template_name='generic/generic_form.html'
 	title='Class Message'
+	named_url='classpage-create-view'
 	
 	def get_initial(self, **kwargs):
 		initial=super(ClasspageCreateView, self).get_initial()
@@ -56,20 +40,15 @@ class ClasspageCreateView(URLMixin, CreateView):
 
 class ClasspageUpdateView(URLMixin, UpdateView):
     model=Classpage
-    form_class=Classpage_ModifyForm
+    form_class=Classpage_Form
     template_name="generic/generic_modify.html"
     title='Class Message'
+    named_url='classpage-update-view'
     
     def get_initial(self, **kwargs):
         initial=super(ClasspageUpdateView, self).get_initial()
         initial['klass']=self.object.klass.all()
         return initial
-
-#	  Limits the choices of modelchoiceformfield
-#     def get_form(self, form_class):
-#         form=super(ClasspageUpdateView, self).get_form(form_class)
-#         form.fields['klass'].queryset=self.object.klass.all()
-#         return form
 
     def form_valid(self, form):
         new_classpage=form.save(commit=False)

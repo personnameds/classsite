@@ -8,7 +8,7 @@ from datetime import date
 from django.http import HttpResponseRedirect
 
 class SchoolpageListView(ListView):
-	template_name='schoolpage/schoolpage_list.html'
+	template_name='schoolpage/index.html'
 	context_object_name='schoolpage_list'
 	
 	def get_queryset(self):

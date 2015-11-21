@@ -1,0 +1,39 @@
+{% extends "setup_base.html" %}
+
+{% block main_content %}
+
+				<ul id="posts">
+				<li class="post">
+                    {{school_name}} Staff List:
+                </li>
+                {%if staffcode %}
+                    <li class="post">
+                        The Staff Code is: {{staffcode.code}} 
+                        <br><a href="{% url 'staffcode-update-view' staffcode.pk %}">Change the Staff Code</a>
+                    </li>
+
+                {% else %}
+                    <li class="post">
+                    <br>No Staff Code has been created
+                    <br><a href="{% url 'staffcode-create-view' %}">Add a Staff Code</a>
+                    </li>
+                {% endif %}
+
+                {%if staff_list %}
+                    <li class="post">
+                        {% for staff in staff_list %}
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;{{staff.teacher_name}}
+                        {% endfor %}
+                {% else %}
+                    <li class="post">
+                    No staff members have been added.
+                    
+                {% endif %}  
+                <br><br><a href="{% url 'staff-create-view' %}">Add a Staff Member</a>
+                </li>
+                
+                
+
+			    </ul>
+
+{% endblock %}

@@ -26,7 +26,7 @@ class Classpage(models.Model):
         verbose_name_plural='Class Messages'
         ordering=['-date']
 
-class Classpage_AddForm(ModelForm):
+class Classpage_Form(ModelForm):
     klass=ModelMultipleChoiceField(
                             queryset=Klass.objects,
                             widget=CheckboxSelectMultiple(),
@@ -34,17 +34,6 @@ class Classpage_AddForm(ModelForm):
                             error_messages={'required':'Please choose at least one class'},
                             )
 
-    class Meta:
-        model=Classpage
-        fields =['message']
-
-class Classpage_ModifyForm(ModelForm):
-    klass=ModelMultipleChoiceField(
-                            queryset=Klass.objects,
-                            widget=CheckboxSelectMultiple(),
-                            label='Classes:',
-                            error_messages={'required':'Please choose at least one class'},
-                            )
     class Meta:
         model=Classpage
         fields =['message']

@@ -39,11 +39,13 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'classlists',
     'schoolsetup',
-    'day_no',
     'schoolpage',
     'kalendar',
     'schedule',
     'classpage',
+    'homework',
+    'documents',
+    'links',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -107,10 +109,10 @@ USE_TZ = True
 #https://docs.djangoproject.com/en/1.8/howto/static-files/
 STATICFILES_DIR=(os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 STATIC_URL = '/static/'
-
-#STATIC_URL = '/static/'
-#STATIC_ROOT='/Users/Sudeep/Programming/classsite/static_root/'
+MEDIA_URL='/media/'
 
 LOGIN_REDIRECT_URL='/'
 LOGIN_URL='/login/'
+SCHOOL='KKSA'
