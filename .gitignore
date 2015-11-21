@@ -8,3 +8,4 @@ migrations/
 static_root/
 settings.py
 /media_root/
+classsite/settings.py
