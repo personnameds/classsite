@@ -66,7 +66,7 @@ a:visited{color: #2A75A9; text-decoration: none;}
 
 #wrapper{
 	width: 900px;
-	margin: 0 auto;
+	margin: 50px auto;
 }
 #container{
 	width: auto;
@@ -225,12 +225,11 @@ a:visited{color: #2A75A9; text-decoration: none;}
 	overflow: hidden;
 }
 #register{
-	width: 200px;
+	width: 400px;
 	height: auto;
 	padding: 5px 25px 25px 25px;
 	background: #FFFFFF;
 	margin: 40px auto;
-	text-align: center;
 	overflow: hidden;
 }
 #to_top{
@@ -673,4 +672,13 @@ a:visited{color: #2A75A9; text-decoration: none;}
 	height: 30px;
 }
 
-/* NEW messages */
+.gear{	
+	margin: 0 0 5px 5px;
+	float: right;
+	background: url('../img/layout/gear.png') no-repeat scroll 0px 0px;
+	width: 35px;
+	height: 35px;
+	cursor: pointer;
+}
+.gear:hover{
+	background: url('../img/layout/gear-curr.png') repeat;

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+	<h1>Classlist for {{klass.name}}</h1>
+    
+    {% if perms.classlists.add_student %}
+        <a href="{%url 'student-create-view' klass.name %}"><div class="add_main_button"></div></a>
+    {% endif %} 
+    
+    <div class="clearer"></div>
+
+	<ul id="posts">
+	    {% for student in classlist %}
+	        <li class="post">{{student.user.first_name}} {{student.user.last_name}} {{student.user.username}} {{student.user.email}} <a href="{%url 'student-update-view' klass.name student.user.id %}">Edit</a></li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

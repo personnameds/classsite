@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login to KKSA.ca</title>
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'lib/styles.css' %}" />
+		<script type="text/javascript" src="{% static 'lib/jquery-1.10.1.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery-ui-1.10.3.custom.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+		<div id="container">
+			<div id="login">
+				<h1>Login</h1>
+				{% if form.errors %}
+				    <p>Your username and password didn't match. Please try again. </p>
+				{% endif %}
+				
+				{% if next %}
+				    {% if user.is_authenticated %}
+				        <p>Your account doesn't have access to this page.</p>
+				    {% endif %}
+				{% endif %}
+				
+				<form method="post" action="{%url 'django.contrib.auth.views.login' %}">{%csrf_token%}
+					<label>Username:</label>
+					<input style="margin: 3px auto; text-align: left;" id="username" type="text" name="username">
+					<label>Password:</label>
+					<input style="margin: 3px auto; text-align: left;" id="password" type="password" name="password">
+					<input type="submit" value="Login">
+
+					{% if reg_status %}
+					    <input type="button" value="Register" onClick="location.href='/registration/newuser';">
+					    <input type="button" value="Register Staff" onClick="location.href='/registration/newstaff';">					
+					{% endif %}
+
+					<input type="hidden" name="next" value="{{ next }}" />
+				</form>
+			</div>
+		</div>
+	</body>
+</html>

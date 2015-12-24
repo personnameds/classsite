@@ -15,6 +15,13 @@
                             &nbsp;&nbsp;&nbsp;&nbsp;Code: {{klass.code}}
                             &nbsp;&nbsp;&nbsp;&nbsp;Schedule: {{klass.schedule}}
                             &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'class-update-view' klass.id %}">Edit</a>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {% for teacher in klass.teachers.all %}
+                                &nbsp;&nbsp;&nbsp;&nbsp;{{teacher.teacher_name}}
+                            {% endfor %}
+                            <br>
+                            
                     {% endfor %}
                     </li>
                     <li class="post">

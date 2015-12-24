@@ -28,14 +28,19 @@
 					<li><a href="{%url 'schedule-view' klass.name %}">Schedule</a></li>
 					<li><a href="{%url 'document-list-view' klass.name %}">Documents</a></li>
 					<li><a href="{%url 'link-list-view' klass.name %}">Links</a></li>
-					<li><a href="/{{klass.name}}/messages">Messages</a></li>
-					<li><a href="/{{klass.name}}/contact">Contact</a></li>
+					<li><a href="{%url 'topic-list-view' klass.name %}">Messages</a></li>
+					<li><a href="{%url 'contact-view' klass.name %}">Contact</a></li>
+					{% if user.school_staff %}
+					    <li><a href="{%url 'classlists-view' klass.name %}">{{klass.name}}</a></li>
+			        {% endif %}
 					{% if user.is_staff %}
 						<li><a href="{%url 'school-setup-view' %}">Setup</a></li>
 					{%endif%}
 														
        		        {% if user.is_authenticated %}
-       		            <li class="account"><a href="/logout/">
+       		            {#NEED TO ADD SOMETIME #}
+    		          {#  <a href="{%url 'user-settings-view' %}"><div class="gear"></div></a> #}
+       		            <li class="account"><a href="{%url 'logout-view' %}">
        		                {%if user.school_staff %}
                                 {{user.school_staff.teacher_name }} &#8260
             	            {%elif user.first_name %}
@@ -50,6 +55,7 @@
 					</li>
 				</ul>
 			</div>
+<!-- 
 			<div id="banner">
 				{% if klass.banner %}
 				    <div class="banner-container"><img src="{{ MEDIA_URL }}{{klass.banner}}" alt=""></div>
@@ -57,6 +63,7 @@
 				    <div class="banner-container"><img src="{{ MEDIA_URL }}banners/default.jpg" alt=""></div>
 				{% endif %}
 			</div>
+ -->
 			<div id="content">
 				{% block main_content %}{% endblock %}
 				

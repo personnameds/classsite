@@ -3,10 +3,12 @@
 
 {% block main_content %}
 	<div class="main">
-		<h1>Add {{view.title}}</h1>
+		<h1>Change Schedule for Day {{day_no.day_name}}</h1>
+		
 		<form action="." method="POST">{%csrf_token%}		
-			{% for f in form %}
-			    {{details.0.name}}: {{f}}
+			{{formset.management_form}}
+			{% for detail,form in form_with_details %}
+			    {{detail.name}}{{form}}
 			{% endfor %}
 			<div class="form_input"> 
 				<input type="submit" value="Add">

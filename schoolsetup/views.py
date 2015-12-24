@@ -1,7 +1,7 @@
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView, FormView
 from schedule.models import Schedule_Setup, Schedule_SetupForm
-from schedule.models import Period_Details
+from schedule.models import Period_Details, Period_Activity
 from kalendar.models import Kalendar_Setup, Kalendar_SetupForm, Kalendar, Day_No
 from classlists.models import Klass, StaffCode, School_Staff
 from classlists.forms import School_StaffForm
@@ -160,6 +160,8 @@ class PeriodDetailsCreateView(CreateView):
 
         return HttpResponseRedirect(reverse('schedule-setup-view',))
 
+## Class SETUP
+
 class KlassSetupView(TemplateView):
     template_name='schoolsetup/class_info.html'
     
@@ -173,14 +175,32 @@ class KlassSetupView(TemplateView):
 class KlassCreateView(CreateView):
     model=Klass
     template_name='schoolsetup/add_klass.html'
-    fields=['name','url','code','schedule']
-    success_url=reverse_lazy('class-setup-view')
+    fields=['name','url','code','schedule','teachers']
+    
+    def form_valid(self, form):
+        klass=form.save()
+        klass.save()
+        
+        setup=klass.schedule
+        days_in_cycle=Kalendar_Setup.objects.get(name=settings.SCHOOL).days_in_cycle
+        for i in range(1,days_in_cycle+1):
+            for j in range(1,setup.periods_in_day+1):
+                new_activity=Period_Activity(
+                    activity='TBD',
+                    klass=klass,
+                    org=True,
+                    org_date=date.today(),
+                    details=Period_Details.objects.get(setup=setup, number=j),
+                    day_no=Day_No.objects.get(day_name=i),
+                    )
+                new_activity.save()      
+
+        return HttpResponseRedirect(reverse('class-setup-view'))
 
 class KlassUpdateView(UpdateView):
     model=Klass
     template_name='schoolsetup/change_klass.html'
-    fields=['name','url','code','schedule']
-    
+    fields=['name','url','code','schedule','teachers']
     
     def form_valid(self, form):
         klass=form.save(commit=False)

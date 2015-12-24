@@ -1,11 +1,6 @@
-manage.py
-*.pyc
-z*
-z*/
 static/
 migrations/
 /migrations/
 static_root/
-settings.py
+env/
 /media_root/
-classsite/settings.py

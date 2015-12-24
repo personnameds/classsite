@@ -46,6 +46,9 @@ INSTALLED_APPS = (
     'homework',
     'documents',
     'links',
+    'msgs',
+    'contact',
+    'registration',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,3 +119,8 @@ MEDIA_URL='/media/'
 LOGIN_REDIRECT_URL='/'
 LOGIN_URL='/login/'
 SCHOOL='KKSA'
+REGISTRATION_STATUS=True
+
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST='127.0.0.1'
+EMAIL_PORT=2525

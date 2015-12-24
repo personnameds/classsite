@@ -21,13 +21,13 @@
 			<div class="pertime_head">Time</div>
 			
 			{% for w in week %}
-	{#			{% if perms.schedule.change_period_activity %}                              #}
-	{#				    <a href="{%url 'activity-day-update' klass.name w.day_no.pk %}">	#}			
-	{#					    <div class='weekday'>Day {{w.day_no.day_name}}</div>			#}
-	{#				    </a>                                                                #}
-	{#			{% else %}                                                                  #}
+				{% if perms.schedule.change_period_activity %}                              
+					    <a href="{%url 'activity-day-update' klass.name w.day_no.pk %}">				
+						    <div class='weekday'>Day {{w.day_no.day_name}}</div>			
+					    </a>                                                                
+				{% else %}                                                                  
 					<div class='weekday'>Day {{w.day_no.day_name}}</div>
-	{#			{% endif %}                                                                 #}
+				{% endif %}                                                                 
 			{% endfor %}
 			<div class="clearer"></div>
 			
@@ -35,25 +35,13 @@
 			    <div class="pertime">{{detail.name}}</div>
 				<div class="pertime">{{detail.start_time}} - {{detail.end_time}}</div>
 				{% for act, day_no in activity %}
-				    {% if act %}
-				        {% for a in act %}
-				            {% if perms.schedule.add_period_activity %}
-				                <a href="{%url 'activity-update-view' klass.name detail.pk a.pk %}">
-				                    <div class='per_day'>{{a.activity}}</div>
-				                </a>
-				            {% else %}
-				                <div class='per_day'>{{a.activity}}</div>
-				            {% endif %}
-				        {% endfor %}
-				    {% else %}
-				    		{% if perms.schedule.change_period_activity %}
-                                <a href="{%url 'activity-create-view' klass.name detail.pk day_no.pk %}">
-				                    <div class='per_day'>TBD</div>
-				                </a>
-				            {% else %}
-				                <div class='per_day'>TBD</div>
-				            {% endif %}
-				    {% endif %}
+                    {% if perms.schedule.add_period_activity %}
+                        <a href="{%url 'activity-update-view' klass.name detail.pk act.pk %}">
+                            <div class='per_day'>{{act.activity}}</div>
+                        </a>
+                    {% else %}
+                        <div class='per_day'>{{act.activity}}</div>
+                    {% endif %}
 				{% endfor %}
 			<div class="clearer"></div>			
 			{% endfor %}

@@ -11,8 +11,9 @@ class Schedule_SetupAdmin(admin.ModelAdmin):
     inlines=[PeriodDetailsInline,]
 
 class Period_ActivityAdmin(admin.ModelAdmin):
-	fields=('details','klass','activity','day_no','org','ord_date',)
+	fields=('details','klass','activity','day_no','org','org_date',)
 	list_display=('details','klass','activity','day_no','org','org_date')
+	list_filter=('klass','day_no',)
 
 admin.site.register(Period_Activity,Period_ActivityAdmin)
 admin.site.register(Schedule_Setup, Schedule_SetupAdmin)

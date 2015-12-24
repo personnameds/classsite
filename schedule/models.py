@@ -1,5 +1,5 @@
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ModelForm, BooleanField
 
 class Schedule_Setup(models.Model):
     name=models.CharField(max_length=15, verbose_name='Schedule Name')
@@ -43,6 +43,8 @@ class Period_Activity(models.Model):
 		verbose_name_plural='Period Activities'
 
 class Period_ActivityForm(ModelForm):
+    permanent=BooleanField(label='Permanent Change',required=False)
+    
     class Meta:
         model=Period_Activity
         fields=['activity',]
@@ -52,4 +54,11 @@ class Schedule_SetupForm(ModelForm):
         model=Schedule_Setup
         fields =['name','periods_in_day',]
  
+class Day_ActivityForm(ModelForm):
+    class Meta:
+        model=Period_Activity
+        fields=['activity',]
 
+    def __init__(self, *args, **kwargs):
+        super(Day_ActivityForm, self).__init__(*args, **kwargs)
+        self.fields['activity'].label=False

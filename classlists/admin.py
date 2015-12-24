@@ -16,12 +16,18 @@ class School_StaffAdmin(admin.ModelAdmin):
 admin.site.register(School_Staff, School_StaffAdmin)
 
 class KlassAdmin(admin.ModelAdmin):
-	list_display=('name','code','url','schedule')
-	list_filter=('schedule',)
-
+	list_display=('name','code','url','schedule','teacher_list')
+	list_filter=('schedule','teachers')
+	
+	def teacher_list(self, obj):
+	    teacher_list=[]
+	    for t in obj.teachers.all():
+	        teacher_list.append(t.teacher_name)
+	    return ', '.join(teacher_list)
+	teacher_list.short_description='Teachers'
+	
 class StaffCodeAdmin(admin.ModelAdmin):
 	list_display=('code',)
 
 admin.site.register(Klass, KlassAdmin)
 admin.site.register(StaffCode, StaffCodeAdmin)
-

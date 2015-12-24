@@ -38,7 +38,7 @@ class HomeworkCreateView(URLMixin, CreateView):
     template_name='generic/generic_form.html'
     named_url='homework-create-view'
     
-    def get_form(self, form_class):
+    def get_form(self, form_class=Homework_Form):
         form=super(HomeworkCreateView, self).get_form(form_class)
         if not self.request.user.has_perm('homework.can_add_multi_classes'):
             form.fields.pop('klass')
@@ -78,7 +78,7 @@ class HomeworkUpdateView(URLMixin, UpdateView):
     template_name='generic/generic_modify.html'
     named_url='homework-update-view'
     
-    def get_form(self, form_class):
+    def get_form(self, form_class=Homework_Form):
         form=super(HomeworkUpdateView, self).get_form(form_class)
         if not self.request.user.has_perm('homework.can_add_multi_classes'):
             form.fields.pop('klass')
