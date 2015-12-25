@@ -1,74 +1,41 @@
-classite v6
+classite v7
 
-Classlists
-	-Username is not recreated
+Schedule 
+	-finish perm and temp changes
+	-perm and temp changes to day update
+	-look ahead
 
-Generic Form
-    cancel button only goes to classpage
+Classpage, Schoolpage
+	-image files
 
-Banner
-    -default banner hardcoded in, need to erase class banners for it to show
-	
 Messages
-    -not fully tested
-    -homework list uses _set
-    -admin????
-    -edit messages????
-    -if 0 messages topic should delete
-    -needs overhaul
     -messages to multiple classes?
 
 Links
-	-admin make it better??
-	-subject doesn't need "other" should default to misc. check out documents
-	-modify and check one class all related classes get modified (same as document)
 
 Homework
-    -Add Homework Due Date should be a multi-select widget
-    -Admin tweaking, show full details per homework in the display
-    -RSS Feed
+
     
 Documents
-    -Admin?
-    -Files need to delete if no longer used
-	-modify and check one class all related classes get modified (Same as link)
+
 
 Classlists
-    -resize banner images when uploaded (saved link in readitlater)
-    -banner image in admin is hardcoded so wont work but neat idea
+
     
 Day_No
-    -Uses day version in kalendar, sure there is a better way but it works
+
 
 Schedule
-    -look ahead?
 
 Kalendar
-    -Not using mixin and generic forms
-    -Kalendar and Events work - old code
-    -Kalendar change multiple days at once
-    -KKSA and Class calendar????
+	-add google calendar
 
-Initialize
-	-Integrate into classlists
-    -needs to be redone
-    -initialize is only for me
-    -if fail security login redirect not setup
-    -need to automate day creation based on schedule format, right now hardcoded
+SchoolSetup
+
     
 Schoolpage
-    -modelform and views do I need that stuff
-    -use generic forms
 
-Overall
-    -use generic forms where you can
-    -look through settings.py things
-    -make class select prettier
-    -memcached
-    -No hard coded urls (reverse)
-    -Get_absolute_url
-        -need to use and add so I can click from admin to see on website
-    -feeds
+
 
 
     
