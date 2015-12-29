@@ -38,18 +38,19 @@ class ScheduleView(URLMixin, TemplateView):
 	    #Finds kalendar object for Tuesday to Friday
 	    for i in range(1,5):
 	        week.append(Kalendar.objects.get(id=(week[0].id+i)))
-	    
-	    friday=week[4].date 
-	    
+	        
+	    friday=week[4].date
+
 	    ##clean up non-permanents from last week
-	    Period_Activity.objects.filter(org=False, org_date__lt=monday).delete()
-	    
+	    if date.today().weekday()<5:
+	        Period_Activity.objects.filter(org=False, del_date__lt=monday).delete()
+
 	    for p in range(periods_in_day):
 	        per_detail=Period_Details.objects.get(setup=setup, number=p+1)
 	        per_activity=[]
 	        for i in range(5):   
 	            ##gets period_activities for klass, details and day_no and if org_date is on or before Friday of this week 
-	            per_activity.append((Period_Activity.objects.get(klass=klass, details=per_detail, day_no=week[i].day_no, org_date__lte=friday),week[i].day_no))
+	            per_activity.append((Period_Activity.objects.get(klass=klass, details=per_detail, day_no=week[i].day_no, del_date__lte=friday),week[i].day_no))
 	        periods[p]=(per_detail, per_activity)
 
 	    context['week']=week
@@ -59,33 +60,39 @@ class ScheduleView(URLMixin, TemplateView):
 class ActivityUpdateView(URLMixin, UpdateView):
     form_class=Period_ActivityForm
     model=Period_Activity
-    template_name='generic/generic_only_modify2.html'
+    template_name='schedule/activity_period_update_form.html'
     title='Activity'
 
     def form_valid(self, form):
         new_activity=form.save(commit=False)
-        perm=form.cleaned_data['permanent']
+        perm=self.request.POST['temp/perm']
         
-        org_activity=Period_Activity.objects.get(pk=self.kwargs['pk'])
-        
+        old_activity=Period_Activity.objects.get(pk=self.kwargs['pk'])
         ## Perm to Perm and Temp to Temp taken care of with simple save
         
         ## Perm to Temp
-        if not perm and org_activity.org==True:
+        if perm=='Temporary' and old_activity.org==True:
             
             ##date should be Monday of next week
-            next_monday=get_monday()
-            if next_monday < date.today():
-                next_monday=next_monday+timedelta(days=+7)
-            org_activity.org_date=next_monday
-            org_activity.save()
+            next_monday=get_monday()+timedelta(days=+7)
+            old_activity.del_date=next_monday
+            old_activity.save()
             
             new_activity.pk=None
             new_activity.org=False
-            new_activity.org_date=date.today()
+            if date.today().weekday()<5:
+                new_activity.del_date=date.today()
+            else:
+                new_activity.del_date=get_monday()
     
-        ## what happens if make non-perm to permanent change
-    
+        ## Temp to Perm
+        if perm=='Permanent' and old_activity.org==False:
+            old_org_activity=Period_Activity.objects.get(details=old_activity.details, day_no=old_activity.day_no, org=True)
+            old_org_activity.delete()
+            new_activity.org=True
+            new_activity.del_date=date.today()
+        
+        ##Saves new activity regardless of choice
         new_activity.save()
 
         return HttpResponseRedirect(reverse('schedule-view', args=(self.kwargs['class_url'],)))
@@ -93,6 +100,8 @@ class ActivityUpdateView(URLMixin, UpdateView):
 class ActivityDayUpdateView(URLMixin, FormView):
     form_class=Day_ActivityForm
     template_name='schedule/activity_day_update_form.html'
+
+        #self.fields['permanent']=BooleanField(label='Permanent Change',required=False)
 
     def get_form_class(self):
         klass=Klass.objects.get(name=self.kwargs['class_url'])
@@ -119,6 +128,10 @@ class ActivityDayUpdateView(URLMixin, FormView):
         klass=Klass.objects.get(name=self.kwargs['class_url'])
         day_no=Day_No.objects.get(day_name=self.kwargs['dayno_pk'])
         setup=klass.schedule
+        
+        #Erase all temp day's
+        Period_Activity.objects.filter(org=False, day_no=day_no, klass=klass).delete()
+
         i=0
         for f in form:
             i+=1
@@ -126,6 +139,7 @@ class ActivityDayUpdateView(URLMixin, FormView):
             new_activity=Period_Activity.objects.get(day_no=day_no,details=details)
             form_activity=f.save(commit=False)
             new_activity.activity=form_activity.activity
+            new_activity.del_date=date.today()
             new_activity.save()
  
         return HttpResponseRedirect(reverse('schedule-view', args=(self.kwargs['class_url'],)))

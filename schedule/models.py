@@ -31,7 +31,7 @@ class Period_Activity(models.Model):
 	activity=models.CharField(max_length=12, verbose_name='Activity')
 	klass=models.ForeignKey('classlists.Klass', verbose_name='Class', blank=True)
 	org=models.BooleanField(default=True,verbose_name='Original', blank=True)
-	org_date=models.DateField(blank=True)
+	del_date=models.DateField(blank=True)
 	details=models.ForeignKey('Period_Details', blank=True)
 	day_no=models.ForeignKey('kalendar.Day_No', blank=True)
 	
@@ -43,8 +43,6 @@ class Period_Activity(models.Model):
 		verbose_name_plural='Period Activities'
 
 class Period_ActivityForm(ModelForm):
-    permanent=BooleanField(label='Permanent Change',required=False)
-    
     class Meta:
         model=Period_Activity
         fields=['activity',]

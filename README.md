@@ -1,8 +1,7 @@
 classite v7
 
 Schedule 
-	-finish perm and temp changes
-	-perm and temp changes to day update
+    -update whole day only works as permanent change
 	-look ahead
 
 Classpage, Schoolpage
