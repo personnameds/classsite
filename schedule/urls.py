@@ -1,10 +1,11 @@
-from django.conf.urls import patterns, include, url
-from schedule.views import ScheduleTemplateView
+from django.conf.urls import patterns, url
+from .views import ScheduleView, ActivityUpdateView, ActivityDayUpdateView
 from django.contrib.auth.decorators import permission_required
-from day_no.views import UpdateDayNoView
 
-urlpatterns = patterns('',
-	url(r'^$', ScheduleTemplateView.as_view(), name='schedule_view'),
-	url(r'^modify/(?P<pk>\d+)/(?P<kid>\d+)$', permission_required('classlists.is_kksastaff', login_url='/registration/login/')(UpdateDayNoView.as_view())),
+urlpatterns = [
+	url(r'^$', ScheduleView.as_view(), name='schedule-view'),
+	url(r'^updateactivity/(?P<perdet_pk>\d+)/(?P<pk>\d+)/$', permission_required('schedule.change_period_activity')(ActivityUpdateView.as_view()), name='activity-update-view'),
+	url(r'^dayupdate/(?P<dayno_pk>\d+)/$', permission_required('schedule.change_period_activity')(ActivityDayUpdateView.as_view()), name='activity-day-update'),
 
-	)
+    ]
+    

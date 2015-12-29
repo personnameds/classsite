@@ -1,7 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from kalendar.models import Kalendar
-from classlists.models import Klass
 
 SUBJECT_CHOICES = (
     ('Language','Language'),
@@ -18,33 +16,35 @@ SUBJECT_CHOICES = (
     ('Music','Music'),    
     ('Health','Health'),
     ('Library','Library'),
-    ('Misc','Misc.'),
+    ('Misc.','Misc.'),
     )
 
 class Homework(models.Model):
-    entered_by = models.ForeignKey(User, related_name='entered_by')
+    entered_by = models.ForeignKey(User)
     entered_on=models.DateField()
+    subject=models.CharField(max_length=15,choices=SUBJECT_CHOICES,blank=False,default='Math')
+    work=models.CharField(
+            max_length=50,
+            error_messages={'required':'Please enter what needs to be done'},
+            verbose_name='Assigned Work:',
+            )
 
-    def get_absolute_url(self):
-    	return "/homework/modify/%s" %(self.id)
-
+    
     class Meta:
-		verbose_name='Homework'
-		verbose_name_plural='Homework'
+        verbose_name='Homework'
+        verbose_name_plural='Homework'
+        permissions=(("can_add_multi_classes", "Can add to multiple classes"),)
 
+    def __str__(self):
+        return '%s: %s' %(self.subject, self.work)
+   
 class Hwk_Details(models.Model):
-    hwk=models.ForeignKey(Homework)
-    due_date=models.ForeignKey(Kalendar)
-    modified_by=models.ForeignKey(User, related_name='modified_by',null=True, blank=True)
+    homework=models.ForeignKey(Homework)
+    due_date=models.ForeignKey('kalendar.Kalendar')
+    modified_by=models.ForeignKey(User, blank=True, null=True)
     modified_on=models.DateField(blank=True, null=True)
     deleted=models.BooleanField(default=False)
-    klass=models.ForeignKey(Klass, blank=True, verbose_name='Class')
-    assigned_work = models.CharField(max_length=50)
-    subject = models.CharField(max_length=10,choices=SUBJECT_CHOICES,blank=False,default='Math')   
-
-    def get_absolute_url(self):
-    	return "/homework/modify/%s" %(self.id)
+    klass=models.ForeignKey('classlists.Klass', verbose_name='Class')
     
-    def __unicode__(self):
-		return '%s: %s' %(self.subject, self.assigned_work)
-
+    def __str__(self):
+        return '%s: %s' %(self.homework.subject, self.homework.work)

@@ -1,115 +1,21 @@
+from django.views.generic import ListView
+from django.views.generic.edit import UpdateView, CreateView
+from classsite.views import URLMixin
+from .models import Kalendar, Day_No, Kalendar_Setup, Change_Day_NoForm, Event_Form, Event
+from datetime import date, timedelta
+from classlists.models import Klass 
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from kalendar.models import Kalendar, Update_Day_No_Kalendar_Form, Event, Add_Event_Form 
-from classlists.models import Klass
-from django.views.generic.edit import UpdateView, CreateView
-from django.views.generic import ListView
-from django.shortcuts import get_object_or_404
-from datetime import date, timedelta
- 
+from django.conf import settings
 
-class EventCreateView(CreateView):
- 	model=Event
- 	form_class=Add_Event_Form
- 
- 	def get_context_data(self, **kwargs):
- 	    context=super(EventCreateView, self).get_context_data(**kwargs)
- 	    context['event_date']=date(int(self.kwargs['year']),int(self.kwargs['month']),int(self.kwargs['day']))	
- 	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
- 	    context['next']=self.request.path
- 	    context['kal_type']=self.kwargs['kal_type']
- 	    return context
-
-   	def form_valid(self, form):
- 		
- 		klass=self.kwargs['class_url']
- 		kal_type=self.kwargs['kal_type']
- 		
- 		event_date=date(int(self.kwargs['year']),int(self.kwargs['month']),int(self.kwargs['day']))
- 		new_event=form.save(commit=True)
- 		new_event.event_date=Kalendar.objects.get(date=event_date)
- 		if new_event.kksa:
- 		    for k in Klass.objects.all():
- 		        new_event.klass.add(k)
- 		    new_event.save()
- 		else:
- 		    new_event.save()
- 		
- 		return HttpResponseRedirect(reverse('kalendar_view', args=(klass, kal_type, event_date.year,event_date.month)))
-
-
-
-class EventUpdateView(UpdateView):
-    model=Event
-    form_class=Add_Event_Form
-    template_name="kalendar/modify_event.html"
-
-    def get_context_data(self, **kwargs):
- 	    context=super(EventUpdateView, self).get_context_data(**kwargs)
- 	    context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
- 	    context['next']=self.request.path
- 	    context['kal_type']=self.kwargs['kal_type']
- 	    return context
- 	
- 	
-    def get_initial(self, **kwargs):
-	    initial=super(EventUpdateView, self).get_initial()
-	    pk=self.kwargs['pk']
-	    initial['event_date']=Event.objects.get(id=pk).event_date
-	    return initial
-    
-    def form_valid(self, form):
-        klass=self.kwargs['class_url']
-        kal_type=self.kwargs['kal_type'] 		
-        
-        pk=self.kwargs['pk']
-        new_event=Event.objects.get(id=pk)
-        event_date=new_event.event_date
-        if self.request.POST['mod/del']=='Delete':
-            new_event.delete()
-        else:
-            new_homepage=form.save()
-        return HttpResponseRedirect(reverse('kalendar_view', args=(klass, kal_type, event_date.date.year,event_date.date.month)))     
-
-
-class KalendarListView(ListView):
+class KalendarListView(URLMixin, ListView): 
     template_name="kalendar/kalendar_list.html"
     context_object_name='combo_list'
-    
-    def get_context_data(self, **kwargs):
-        kal_type=self.kwargs['kal_type']
-        context=super(KalendarListView, self).get_context_data(**kwargs)
-        
-        context['kal_type']=kal_type
-        context['klass']=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
-        context['next']=self.request.path
-
-        #first, last of entire kalendar dates and current viewing date
-        month=int(self.kwargs.get('month', date.today().month))
-        year=int(self.kwargs.get('year', date.today().year))
-        
-        kal_total_list=Kalendar.objects.all().order_by('date')
-        firstest_date=kal_total_list.first().date
-        lastest_date=kal_total_list.last().date
-        viewing_date=date(year,month,1)
-
-        #code to add blank inserts only for very first month
-        insert_counter=0
-        if viewing_date.month == firstest_date.month:
-            if viewing_date.weekday() > 0 and viewing_date.weekday() < 5:
-                insert_counter=viewing_date.weekday()
-
-        #can't loop over an integer in template so this creates a list of that number
-        context['insert_counter']=[i+1 for i in range(insert_counter)]
-
-        context['firstest_date']=firstest_date
-        context['lastest_date']=lastest_date       
-        context['viewing_date']=viewing_date
-        return context
+    model=Kalendar
     
     def get_queryset(self):
-        klass=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
-        
+        klass=get_object_or_404(Klass,name=self.kwargs['class_url'])
         month=int(self.kwargs.get('month', date.today().month))
         year=int(self.kwargs.get('year', date.today().year))
         
@@ -137,86 +43,157 @@ class KalendarListView(ListView):
         
         combo_list=[]
         for k in kalendar_list:
-            d=k.hwk_details_set.filter(klass=klass)
-            combo_list.append((k,d))
-        return combo_list
-
-class UpdateDayNoKalendarView(UpdateView):
-    form_class=Update_Day_No_Kalendar_Form
-    model=Kalendar
-    template_name='kalendar/modify_kalendar_form.html'
+            combo_list.append((k,k.event_set.filter(klass=klass),k.hwk_details_set.filter(klass=klass)))
+        return combo_list  
     
     def get_context_data(self, **kwargs):
-        klass=self.kwargs['class_url']
-        context=super(UpdateDayNoKalendarView, self).get_context_data(**kwargs)
-        context['klass']=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context['next']=self.request.path
-        return context
-    
-    def get_object(self):
-        object=super(UpdateDayNoKalendarView, self).get_object()
-        return object
+        context=super(KalendarListView, self).get_context_data(**kwargs)
+        month=int(self.kwargs.get('month', date.today().month))
+        year=int(self.kwargs.get('year', date.today().year))
         
+        kal_total_list=Kalendar.objects.all().order_by('date')
+        firstest_date=kal_total_list.first().date
+        lastest_date=kal_total_list.last().date
+        viewing_date=date(year,month,1)
+        
+        insert_counter=0
+        if viewing_date.month == firstest_date.month:
+            if viewing_date.weekday() > 0 and viewing_date.weekday() < 5:
+                insert_counter=viewing_date.weekday()
+            
+        #can't loop over an integer in template so this creates a list of that number
+        context['insert_counter']=[i+1 for i in range(insert_counter)]
+
+        context['firstest_date']=firstest_date
+        context['lastest_date']=lastest_date       
+        context['viewing_date']=viewing_date
+        
+        if month != 12:
+            context['next_month']=month+1
+            context['next_year']=year
+        else:
+            context['next_month']=1
+            context['next_year']=year+1
+        if month != 1:
+            context['prev_month']=month-1
+            context['prev_year']=year
+        else:
+            context['prev_month']=12
+            context['prev_year']=year-1
+            
+        return context
+
+class DayNoUpdateView(URLMixin, UpdateView):
+    form_class=Change_Day_NoForm
+    model=Kalendar
+    template_name='generic/generic_only_modify.html'
+    title='Day Number'
+    named_url='dayno-update-view'
+    
+    def get_initial(self, **kwargs):
+        initial=super(DayNoUpdateView, self).get_initial()
+        
+        initial['date_from']=self.object
+        initial['date_until']=self.object
+        return initial
+    
     def form_valid(self, form):
     
-	    klass=self.kwargs['class_url']
-	    kal_type=self.kwargs['kal_type']
+	    date_from=form.cleaned_data['date_from']
+	    date_until=form.cleaned_data['date_until']
+	    date_range=Kalendar.objects.filter(date__range=(date_from.date, date_until.date))
+
+	    old_dayno=date_from.day_no
+	    new_dayno=form.cleaned_data['day_no']
 	    
-	    new_kalendar_object=form.save(commit=False)
-	    new_day_no=new_kalendar_object.day_no
-	    date_to_change=new_kalendar_object.date
-	    kal_to_change=Kalendar.objects.get(date=date_to_change)
-	    id_to_change=kal_to_change.id
+	    total_daynos=Kalendar_Setup.objects.get(name=settings.SCHOOL).days_in_cycle
+	    day=[None]*(total_daynos+1)
+	    day[0]=Day_No.objects.get(day_name='H')
+	    for i in range(1,total_daynos+1):
+	        day[i]=Day_No.objects.get(day_name=str(i))
 	    
-	    ##make first change to kalendar
+	    for j in date_range:
+	        j.day_no=new_dayno
+	        j.save()
 	    
+        ##Find the day number for the next day so that the calendar can be updated
 	    ##change from # to H
-	    if (kal_to_change.day_no != 'H') and (new_day_no == 'H'):
-	        pre_day_no=kal_to_change.day_no
-	        changed_day=Kalendar(id=id_to_change, date=kal_to_change.date, day_no=new_day_no)
-	        changed_day.save()
-	        new_day_no=pre_day_no
+	    if (old_dayno != day[0]) and (new_dayno == day[0]):
+	        next_dayno=old_dayno
+	        
+	    ##change from # to # or from H to #
+	    elif new_dayno != day[0]:
+	        if new_dayno == day[total_daynos]:
+	            next_dayno = day[1]
+	        else:
+	            next_dayno = day[int(new_dayno.day_name)+1]
 	    
-	    ##change from # to #
-	    elif (kal_to_change.day_no != 'H') and (new_day_no != 'H'):
-	        changed_day=Kalendar(id=id_to_change, date=kal_to_change.date, day_no=new_day_no)
-	        changed_day.save()
-	        
-	        if new_day_no == '5':
-	            new_day_no = '1'
-	        else:
-	            new_day_no = str(int(new_day_no)+1)
-	        
-	    ##change from H to #
-	    elif (kal_to_change.day_no == 'H') and (new_day_no != 'H'):
-	        changed_day=Kalendar(id=id_to_change, date=kal_to_change.date, day_no=new_day_no)
-	        changed_day.save()
-	        if new_day_no == '5':
-	            new_day_no = '1'
-	        else:
-	            new_day_no = str(int(new_day_no)+1)
-	            
 	    ##change from H to H
-	    elif (kal_to_change.day_no == 'H') and (new_day_no == 'H'):
-	        changed_day=Kalendar(id=id_to_change, date=kal_to_change.date, day_no=new_day_no)
-	        changed_day.save()
-	        new_day_no=False
+	    elif (old_dayno == day[0]) and (new_dayno == day[0]):
+	        next_dayno=False
 	        
-	    ##rest of kalendar
-	    if new_day_no:
-	        for	k in Kalendar.objects.filter(date__gt=date_to_change).iterator():
+	        
+	    ##Recreates rest of calendar
+	    if next_dayno:
+	        for	k in Kalendar.objects.filter(date__gt=date_until.date).iterator():
 	            ##check if day being changed is H
-	            if k.day_no == 'H':
-	                ##makes no changes
+	            if k.day_no == day[0]:
 	                pass
-	            
-	            ##if a day 1 to 5 changes the day number and then updates new day to the next day number
-	            elif k.day_no != 'H':
-	                changed_day=Kalendar(id=k.id, date=k.date, day_no=new_day_no)
-	                changed_day.save()
 	                
-	                if new_day_no == '5':
-	                    new_day_no = '1'
+	            ##if a day 1 to 5 changes the day number and then updates new day to the next day number
+	            elif k.day_no != day[0]:
+	                k.day_no=next_dayno
+	                k.save()
+
+	                if next_dayno == day[total_daynos]:
+	                    next_dayno = day[1]
 	                else:
-	                    new_day_no = str(int(new_day_no)+1)
-	    return HttpResponseRedirect(reverse('kalendar_view', args=(klass, kal_type, new_kalendar_object.date.year,new_kalendar_object.date.month)))
+	                    next_dayno = day[int(next_dayno.day_name)+1]
+	                    
+	    return HttpResponseRedirect(reverse('kalendar-view', args=(self.kwargs['class_url'],date_from.date.year,date_from.date.month)))
+
+class EventCreateView(URLMixin, CreateView):
+    form_class=Event_Form
+    model=Event
+    template_name='generic/generic_form2.html'
+    title='Event'
+    named_url='event-create-view'
+
+    def get_initial(self, **kwargs):
+        initial=super(EventCreateView, self).get_initial()
+        initial['klass']=Klass.objects.filter(name=self.kwargs['class_url'])
+        return initial
+
+    def form_valid(self, form):
+        new_event=form.save(commit=False)
+        new_event.event_date=Kalendar.objects.get(pk=self.kwargs['pk'])
+        new_event.save()
+        for klass in form.cleaned_data['klass']:
+            new_event.klass.add(klass)
+            
+        return HttpResponseRedirect(reverse('kalendar-view', args=(self.kwargs['class_url'],new_event.event_date.date.year,new_event.event_date.date.month)))
+
+class EventUpdateView(URLMixin, UpdateView):
+    form_class=Event_Form
+    model=Event
+    template_name='generic/generic_modify.html'
+    title='Event'
+    named_url='event-update-view'
+
+    def form_valid(self, form):
+    
+        if self.request.POST['mod/del'] == 'Delete':
+            del_event=self.object
+            for klass in form.cleaned_data['klass']:
+                del_event.klass.remove(klass)
+            if del_event.klass.all().count()==0:
+                del_event.delete()
+        
+        else:
+            new_event=form.save(commit=False)
+            new_event.event_date=Kalendar.objects.get(pk=self.kwargs['pk'])
+            new_event.save()
+            for klass in form.cleaned_data['klass']:
+                new_event.klass.add(klass)
+            
+        return HttpResponseRedirect(reverse('kalendar-view', args=(self.kwargs['class_url'],self.object.event_date.date.year,self.object.event_date.date.month)))

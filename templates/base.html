@@ -1,45 +1,48 @@
+{% load staticfiles %}
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>KKSA {{klass.klass_name|upper}}</title>
-		<link rel="stylesheet" href="{{ STATIC_URL }}lib/styles.css" />
-		<script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-1.10.1.min.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-ui-1.10.3.custom.min.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}lib/jquery.timer.js"></script>
-		<script type="text/javascript" src="{{ STATIC_URL }}lib/scripts.js"></script>
-	    <link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
+		<title>KKSA {{klass.name|upper}}</title>
+		
+		<link rel="stylesheet" href="{% static 'lib/styles.css' %}" />
+		<script type="text/javascript" src="{% static 'lib/jquery-1.11.3.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery-ui-1.10.3.custom.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
+	    {%block head_content%}{%endblock%}
 	</head>
-	
+
+<script>
+{% block script_content %}{% endblock %}
+
+</script>
+
 	<body>
 		<div id="wrapper">
 			<div id="nav">
 				<ul>
-					<li id="current"><a href="/{{klass.klass_name}}">{{klass.klass_name|upper}}</a>
-						<ul>
-							<li><a href="/">KKSA</a></li>
-						</ul>
-					</li>
-					<li><a href="/{{klass.klass_name}}/homework">Homework</a></li>
-					<li><a href="/{{klass.klass_name}}/calendar/class">Calendars</a>
-						<ul>
-							<li><a href="/{{klass.klass_name}}/calendar/kksa">School</a></li>
-							<li><a href="/{{klass.klass_name}}/calendar/class">Class</a></li>
-						</ul>
-					</li>
-					<li><a href="/{{klass.klass_name}}/schedule">Schedule</a></li>
-					<li><a href="/{{klass.klass_name}}/documents">Documents</a></li>
-					<li><a href="/{{klass.klass_name}}/links">Links</a></li>
-					<li><a href="/{{klass.klass_name}}/messages">Messages</a></li>
-					<li><a href="/{{klass.klass_name}}/contact">Contact</a></li>
-					
-					{% if user.kksa_staff %}
-							<li><a href="/{{klass.klass_name}}/classlists">Info</a></li>
+					<li id="current"><a href="{%url 'schoolpage-list-view' %}">Home</a></li>
+					<li><a href="{%url 'homework-list-view' klass.name %}">Homework</a></li>
+					<li><a href="{%url 'kalendar-list-view' klass.name %}">Calendar</a></li>
+					<li><a href="{%url 'schedule-view' klass.name %}">Schedule</a></li>
+					<li><a href="{%url 'document-list-view' klass.name %}">Documents</a></li>
+					<li><a href="{%url 'link-list-view' klass.name %}">Links</a></li>
+					<li><a href="{%url 'topic-list-view' klass.name %}">Messages</a></li>
+					<li><a href="{%url 'contact-view' klass.name %}">Contact</a></li>
+					{% if user.school_staff %}
+					    <li><a href="{%url 'classlists-view' klass.name %}">{{klass.name}}</a></li>
+			        {% endif %}
+					{% if user.is_staff %}
+						<li><a href="{%url 'school-setup-view' %}">Setup</a></li>
 					{%endif%}
-										
+														
        		        {% if user.is_authenticated %}
-       		            <li class="account"><a href="/registration/logout/">
-       		                {%if user.kksa_staff %}
-                                {{user.kksa_staff.teacher_name }} &#8260
+       		            {#NEED TO ADD SOMETIME #}
+    		          {#  <a href="{%url 'user-settings-view' %}"><div class="gear"></div></a> #}
+       		            <li class="account"><a href="{%url 'logout-view' %}">
+       		                {%if user.school_staff %}
+                                {{user.school_staff.teacher_name }} &#8260
             	            {%elif user.first_name %}
                                 {{ user.first_name }} &#8260
             	            {%else%}
@@ -47,11 +50,12 @@
             			    {%endif%}
        		                Logout</a>
                     {% else %}
-            	        <li class="account"><a href="/registration/login/?next={{next}}">Login</a>
+            	        <li class="account"><a href="/login/?next={{next}}">Login</a>
                     {% endif %} 		
 					</li>
 				</ul>
 			</div>
+<!-- 
 			<div id="banner">
 				{% if klass.banner %}
 				    <div class="banner-container"><img src="{{ MEDIA_URL }}{{klass.banner}}" alt=""></div>
@@ -59,6 +63,7 @@
 				    <div class="banner-container"><img src="{{ MEDIA_URL }}banners/default.jpg" alt=""></div>
 				{% endif %}
 			</div>
+ -->
 			<div id="content">
 				{% block main_content %}{% endblock %}
 				

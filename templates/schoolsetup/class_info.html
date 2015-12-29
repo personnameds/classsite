@@ -1,0 +1,39 @@
+{% extends "setup_base.html" %}
+
+{% block main_content %}
+
+				<ul id="posts">
+				<li class="post">
+                    {{school_name}} Classes:
+                </li>
+            
+                {%if klass_list %}
+                    <li class="post">
+                    {% for klass in klass_list %}
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;{{klass.name}} 
+                            &nbsp;&nbsp;&nbsp;&nbsp;Url: {{klass.url}}
+                            &nbsp;&nbsp;&nbsp;&nbsp;Code: {{klass.code}}
+                            &nbsp;&nbsp;&nbsp;&nbsp;Schedule: {{klass.schedule}}
+                            &nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'class-update-view' klass.id %}">Edit</a>
+                            <br>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            {% for teacher in klass.teachers.all %}
+                                &nbsp;&nbsp;&nbsp;&nbsp;{{teacher.teacher_name}}
+                            {% endfor %}
+                            <br>
+                            
+                    {% endfor %}
+                    </li>
+                    <li class="post">
+                        <br><a href="{% url 'class-create-view' %}">Add another Class</a>
+                    </li>
+                {% else %}
+                    <li class="post">
+                    <br>No classes have been created
+                    <br><a href="{% url 'class-create-view' %}">Add a Class</a>
+                    </li>
+                {% endif %}
+
+			    </ul>
+
+{% endblock %}

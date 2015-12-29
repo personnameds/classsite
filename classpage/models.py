@@ -1,22 +1,30 @@
 from django.db import models
-from classlists.models import Klass
 from django.contrib.auth.models import User
-from django.forms import ModelForm, ValidationError, ModelMultipleChoiceField
+from classlists.models import School_Staff, Klass
+from django.forms import ModelForm, ModelMultipleChoiceField
 from django.forms.widgets import CheckboxSelectMultiple
 
 class Classpage(models.Model):
     message=models.TextField()
-    date=models.DateField(blank=True, null=True)
-    klass=models.ForeignKey(Klass, blank=True, null=True, verbose_name='Class')
-    entered_by=models.ForeignKey(User, blank=True, null=True)
+    date=models.DateField()
+    klass=models.ManyToManyField('classlists.Klass', verbose_name='Class')
+    entered_by=models.ForeignKey(User)
+
+    def klass_display(self):
+    	return ", ".join([k.name for k in self.klass.all()])
+    klass_display.short_description='Classes'
 
     def entered_by_display(self):
-        return self.entered_by.kksa_staff.teacher_name
+        if School_Staff.objects.filter(user=self.entered_by).exists():
+            return self.entered_by.school_staff.teacher_name
+        else:
+            return self.entered_by.first_name
     entered_by_display.short_description='Entered By'
 
     class Meta:
-        verbose_name='Classpage'
-        verbose_name_plural='Classpage'        
+        verbose_name='Class Message'
+        verbose_name_plural='Class Messages'
+        ordering=['-date']
 
 class Classpage_Form(ModelForm):
     klass=ModelMultipleChoiceField(
@@ -25,7 +33,7 @@ class Classpage_Form(ModelForm):
                             label='Class:',
                             error_messages={'required':'Please choose at least one class'},
                             )
-                            
+
     class Meta:
         model=Classpage
         fields =['message']

@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+
+	<div class="main">
+		<h1>Add {{view.title}}</h1>
+		
+        <form action="{% url 'document-create-view' klass.url %}" method="POST" enctype="multipart/form-data">{%csrf_token%}
+			{{form.as_p}}
+			<div class="form_input"> 
+				<input type="submit" value="Add">
+				<input type="button" value="Cancel" onclick="location.href='/{{klass.name}}'">
+			</div>
+		</form>
+	</div>
+
+{% endblock %}

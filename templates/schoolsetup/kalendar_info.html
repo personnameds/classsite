@@ -1,0 +1,34 @@
+{% extends "setup_base.html" %}
+
+{% block main_content %}
+
+				<ul id="posts">
+				<li class="post">
+                    {{school_name}} Calendar Setup:
+                </li>
+                <li class="post">
+                    {%if kalendar_setup %}
+                            <br>Calendar is Setup 
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;Days in a Cycle:{{kalendar_setup.days_in_cycle}} 
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;Periods in a Day:{{kalendar_setup.first_day_class}}
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'kalendar-setup-create-view' %}">Change Calendar Setup</a> (Only one setup per school)
+                            <br>
+                    {% else %}
+                        <br>Calendar not setup
+                        <br><a href="{% url 'kalendar-setup-create-view' %}">Add a Calendar Setup</a>
+                    {% endif %}
+				</li>
+
+				<li class="post">
+				    {% if day_no_list %}
+				        Day #'s:
+				        {% for day_no in day_no_list %}
+				            <br>&nbsp;&nbsp;&nbsp;&nbsp;Day {{day_no.day_name}}
+				        {% endfor%}
+				    {% else %}
+				        Day numbers are automatically created after you setup the calendar.
+				    {% endif %}
+				</li>
+			    </ul>
+
+{% endblock %}

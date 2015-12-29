@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	
+	<!-- fix look of add button -->
+
+		<h1>Messages</h2>
+		<h2>Topics</h2>
+        
+        <a href="{%url 'topic-create-view' klass.name %}"><div class="add_topic_button"></div></a>
+
+		{% for topic in topic_list %}
+            <a href="{%url 'message-list-view' klass.name topic.id %}">
+				{%if forloop.first %}
+					<div class="topic_first">
+						<div class="topic_text">{{topic.topic}}</div>
+						<div class="topic_date">Last message entered {{topic.last_msg|timesince}} ago</div>
+					</div>
+				{%else%}
+					<div class="topic">
+						<div class="topic_text">{{topic.topic}}</div>
+						<div class="topic_date">Last message entered {{topic.last_msg|timesince}} ago</div>
+					</div>
+				{%endif%}
+			</a>
+
+		{%endfor%}
+
+
+{% endblock %}

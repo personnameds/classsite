@@ -4,12 +4,12 @@
 
 		<h1>Documents</h1>
 
-		{% if perms.classlists.is_kksastaff %}
-			<a href="/{{klass}}/documents/add/"><div class="add_main_button"></div></a>
+		{% if perms.documents.add_document %}
+			<a href="{%url 'document-create-view' klass.name %}"><div class="add_main_button"></div></a>
 		{% endif %}
 		<div class="clearer"></div>		
 		
-		{% for doc,det in combo_list %}
+		{% for doc in document_list %}
 			{% ifchanged doc.subject %}
 		    	<br>
 		    	<div class="doclink_subject">{{doc.subject}}</div>
@@ -22,11 +22,11 @@
 				    </a></div>
 				    <div class="doclink_homework">
 				        {% if doc.homework %}
-					        for {{det.assigned_work}}
+					        for {{doc.homework.work}}
 				        {% endif %}
 				    </div>
-                        {% if perms.classlists.is_kksastaff %}
-                            <div class="doclink_change"><a href="modify/{{doc.id}}">Edit</a></div>
+                        {% if perms.documents.change_document %}
+                            <div class="doclink_change"><a href="{%url 'document-update-view' klass.name doc.id %}">Edit</a></div>
                         {% endif %}
 			<div class="clearer"></div>	
 		{%endfor%}

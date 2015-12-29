@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	
+	<!-- fix look of add button -->
+	<div class="main">
+		<h1>Messages</h1>
+		<h2>{{topic.topic}}</h2>	
+		
+		<div class='form_error'>{{form.errors}}</div>
+		<div class="clearer"></div>			
+
+		<form action"." method="POST">{%csrf_token%}
+			
+			<div class="form_label">Message:</div><div class="form_element">{{ form.msg_text }}</div>
+			<div class="form_input">
+				<input type="submit" value="Add">
+				<input type="button" value="Cancel" onclick="location.href='/{{klass.name}}/messages/'">
+			</div>
+		</form>
+		
+		<br>
+
+		  
+		{% for m in msg_list %}
+			
+				{% if forloop.first %}
+					<div class="message_text_first">{{m.msg_text}}</div>					
+				{%else%}
+					<div class="message_text">{{m.msg_text}}</div>						
+				{%endif %}
+
+				<div class="message_info">
+					
+					{% ifnotequal m.author user %}
+					<a href="{%url 'reply-message-view' klass.name topic.id m.id %}">
+						<span class="message_reply_change">Reply</span>
+					</a>
+					{% endifnotequal %}
+					
+					{% ifequal m.author user %}
+					<a href="{%url 'delete-message-view' klass.name topic.id m.id %}">
+						<span class="message_reply_change">Delete</span>
+					</a>
+					{% endifequal %}
+					
+					{% if perms.msgs.delete_msg %}
+					    {% ifnotequal m.author user %}
+					    <a href="{%url 'delete-message-view' klass.name topic.id m.id %}">
+						<span class="message_reply_change">Delete</span>
+					    </a>
+					    {% endifnotequal %}		
+					{% endif %}
+					
+					Written by {{m.author.first_name}} {{m.entered_on|timesince}} ago
+					
+				</div>
+
+				{%for r in m.msg_set.all%}	
+					<div class="reply_text">{{r.msg_text}}</div>
+				
+				
+					<div class="message_info">
+						
+						{% ifequal r.author user %}
+						<a href="{%url 'delete-message-view' klass.name topic.id m.id %}">
+							<span class="message_reply_delete">Delete</span>
+						</a>
+						{% endifequal %}
+						
+						{% if perms.msgs.delete_msg %}
+					        {% ifnotequal r.author user %}
+					        <a href="{%url 'delete-message-view' klass.name topic.id m.id %}">
+						    <span class="message_reply_delete">Delete</span>
+					        </a>
+					        {% endifnotequal %}		
+					    {% endif %}
+						
+						
+						
+						Written by {{r.author.first_name}} {{r.entered_on|timesince}} ago
+						
+					</div>
+					
+
+				{%endfor%}
+	
+
+		{%endfor%}
+		
+		
+	</div>
+	
+
+{% endblock %}
+

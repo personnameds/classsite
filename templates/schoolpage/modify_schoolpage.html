@@ -9,12 +9,8 @@
 		<div class='form_error'>{{form.entered_by.errors.as_text}}</div>
 		<div class='form_error'>{{form.message.errors.as_text}}</div>
 		
-		<form action="." method="POST">{%csrf_token%}
+		<form action="{% url 'schoolpage-update-view' schoolpage.id %}" method="POST">{%csrf_token%}
 			<div class="form_label">Message:</div><div class="form_element">{{form.message}}</div>
-			{{form.entered_by}}
-			{{form.klass}}
-			{{form.date}}
-
 			<div class="form_input"> 
 					<input type="submit" name="mod/del" value="Modify">
 					<input type="submit" name="mod/del" value="Delete">

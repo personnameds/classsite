@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block main_content %}
+
+	<div class="main">
+		<h1>Modify {{view.title}}</h1>
+
+		<form action="." method="POST" enctype="multipart/form-data">{%csrf_token%}	
+			{{form.as_p}}
+			<div class="form_input"> 
+					<input type="submit" name="mod/del" value="Modify">
+					<input type="submit" name="mod/del" value="Delete">
+					<input type="button" value="Cancel" onclick="location.href='/{{klass.klass_name}}'">
+			</div>
+		</form>
+	</div>
+
+{% endblock %}

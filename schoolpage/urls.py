@@ -1,11 +1,10 @@
 from django.conf.urls import patterns, url
-
-from schoolpage.views import SchoolpageListView, SchoolpageCreateView, SchoolpageUpdateView
 from django.contrib.auth.decorators import permission_required
+from .views import SchoolpageListView, SchoolpageCreateView, SchoolpageUpdateView
 
-
-urlpatterns=patterns('',
-    url(r'^$', SchoolpageListView.as_view(), name='schoolpage-list-view'),
-    url(r'^add/$', permission_required('classlists.is_kksastaff', login_url='/registration/login/')(SchoolpageCreateView.as_view())), 
-    url(r'^modify/(?P<pk>\d+)/$', permission_required('classlists.is_kksastaff', login_url='/registration/login/')(SchoolpageUpdateView.as_view())), 
-     )
+##TO DO Permissions
+urlpatterns = [
+	url(r'^$', SchoolpageListView.as_view(), name='schoolpage-list-view'),
+	url(r'^add/$', permission_required('schoolpage.add_schoolpage')(SchoolpageCreateView.as_view()), name='schoolpage-create-view'),
+	url(r'^modify/(?P<pk>\d+)/$', permission_required('schoolpage.change_schoolpage')(SchoolpageUpdateView.as_view()), name='schoolpage-update-view'),
+]

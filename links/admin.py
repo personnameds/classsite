@@ -9,10 +9,8 @@ class LinksAdmin(admin.ModelAdmin):
     def klass_list(self, obj):
         klass_list=[]
         for k in obj.klass.all():
-            klass_list.append(k.klass_name)
-        return string.join(klass_list,', ')
-    klass_list.short_description='Classes' 
+            klass_list.append(k.name)
+        return ', '.join(klass_list)
+    klass_list.short_description='Classes'
 
 admin.site.register(Link, LinksAdmin)
-
-

@@ -1,98 +1,73 @@
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from links.models import Link 
-from links.forms import Add_Link_Form
+from .models import Link, Add_LinkForm
+from classsite.views import URLMixin
 from classlists.models import Klass
 from homework.models import Hwk_Details
-from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
+from datetime import date
 
-from datetime import date, timedelta
-
-class LinkListView(ListView):
+class LinkListView(URLMixin, ListView):
     template_name="links/link_list.html"
-    context_object_name='combo_list'    
+    context_object_name='link_list'    
     
     def get_queryset(self):
-        klass=get_object_or_404(Klass,klass_name=self.kwargs['class_url'])
-        links_list=Link.objects.prefetch_related().filter(klass=klass).order_by('subject')
-        combo_list=[]
-        for l in links_list:
-            if l.homework:
-                combo_list.append((l,l.homework.hwk_details_set.get(klass=klass)))
-            else:
-                combo_list.append((l,None))
-        return combo_list
+        klass=get_object_or_404(Klass,name=self.kwargs['class_url'])
+        link_list=Link.objects.prefetch_related().filter(klass=klass).order_by('subject')
+        return link_list
 
-    def get_context_data(self, **kwargs):
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-        context=super(LinkListView, self).get_context_data(**kwargs)
-        context['klass']=klass
-        context['next']=self.request.path
-        return context
-
-
-
-class LinkCreateView(CreateView):
+class LinkCreateView(URLMixin, CreateView):
 	model=Link
-	form_class=Add_Link_Form
+	form_class=Add_LinkForm
 	template_name='generic/generic_form.html'
+	title='Link'
+	named_url='link-create-view'
 	
 	def get_initial(self, **kwargs):
 	    initial=super(LinkCreateView, self).get_initial()
-	    initial['klass']=Klass.objects.filter(klass_name=self.kwargs['class_url'])
+	    initial['klass']=Klass.objects.filter(name=self.kwargs['class_url'])
 	    return initial
-
+	
 	def get_context_data(self, **kwargs):
-	    klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+	    klass=Klass.objects.get(name=self.kwargs['class_url'])
 	    context=super(LinkCreateView, self).get_context_data(**kwargs)
 	    context['form'].fields['hwk_details'].queryset=Hwk_Details.objects.filter(klass=klass).exclude(due_date__date__lt=(date.today())).prefetch_related().order_by('due_date')
-	    context['klass']=klass
-	    context['next']=self.request.path
-	    context['title']='Link'
 	    return context
+	
+	def form_valid(self, form):
+	    new_link=form.save(commit=False)
+	    if new_link.subject==None:
+	        new_link.subject='Other'
+	    if form.cleaned_data['hwk_details']:
+	        new_link.homework=form.cleaned_data['hwk_details'].homework
+	    new_link.save()
+	    for k in form.cleaned_data['klass']:
+	        new_link.klass.add(k)
+	    
+	    return HttpResponseRedirect(reverse('link-list-view', args=(self.kwargs['class_url'],)))
 
-  	def form_valid(self, form):
-  	    new_link=form.save(commit=False)
-  	    if new_link.subject==None:
-  	        new_link.subject='Other'
-  	    if form.cleaned_data['hwk_details']:
-  	        new_link.homework=form.cleaned_data['hwk_details'].hwk
-  	    new_link.save()
-  	    for k in form.cleaned_data['klass']:
-  	        new_link.klass.add(k)
-  	        
-  	    return HttpResponseRedirect(reverse('link_view', args=(self.kwargs['class_url'],),))
-
-
-class LinkUpdateView(UpdateView):
+class LinkUpdateView(URLMixin, UpdateView):
     model=Link
-    form_class=Add_Link_Form
+    form_class=Add_LinkForm
     template_name="generic/generic_modify.html"
+    title='Link'
+    named_url='link-update-view'
 
     def get_context_data(self, **kwargs):
-        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
+        klass=Klass.objects.get(name=self.kwargs['class_url'])
         context=super(LinkUpdateView, self).get_context_data(**kwargs)
         context['form'].fields['hwk_details'].queryset=Hwk_Details.objects.filter(klass=klass).exclude(due_date__date__lt=(date.today())).prefetch_related().order_by('due_date')
-        context['klass']=klass
-        context['next']=self.request.path
-        context['title']='Links'
         return context
     
     def get_initial(self, **kwargs):
 	    initial=super(LinkUpdateView, self).get_initial()
-	    klass_list=[]
-	    a=self.object.klass
-	    for k in self.object.klass.all():
-	        klass_list.append(k)
-	    initial['klass']=klass_list 
 	    
 	    if self.object.homework:
 	        homework=self.object.homework
-	        klass=Klass.objects.get(klass_name=self.kwargs['class_url'])
-	        initial['hwk_details']=self.object.homework.hwk_details_set.filter(klass=klass)
-	    
+	        klass=Klass.objects.get(name=self.kwargs['class_url'])
+	        initial['hwk_details']=Hwk_Details.objects.get(homework=self.object.homework, klass=klass)
 	    return initial
 	
     def form_valid(self, form):
@@ -109,10 +84,13 @@ class LinkUpdateView(UpdateView):
             if mod_link.subject==None:
                 mod_link.subject='Other'
             if form.cleaned_data['hwk_details']:
-                mod_link.homework=form.cleaned_data['hwk_details'].hwk
+                mod_link.homework=form.cleaned_data['hwk_details'].homework
+            
+            mod_link.klass.clear()
             for k in form.cleaned_data['klass']:
                 mod_link.klass.add(k) 
-                mod_link.save()
+            
+            mod_link.save()
         
-        return HttpResponseRedirect(reverse('link_view', args=(self.kwargs['class_url'],),))
+        return HttpResponseRedirect(reverse('link-list-view', args=(self.kwargs['class_url'],)))
 

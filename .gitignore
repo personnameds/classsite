@@ -1,0 +1,6 @@
+static/
+migrations/
+/migrations/
+static_root/
+env/
+/media_root/

@@ -1,8 +1,31 @@
-{% extends "base.html" %}
-
-{% block main_content %}
-
-        <h1>Welcome to {{user.student.klass.klass_name|upper}}'s Website</h1>
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Login to KKSA.ca</title>
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'lib/styles.css' %}" />
+		<script type="text/javascript" src="{% static 'lib/jquery-1.10.1.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery-ui-1.10.3.custom.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
+		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
+	</head>
+	<body>
+		<div id="container">
+			<div id="register">
+			    <h1>Welcome to {{school|upper}}'s Website</h1>
 	
-  		Your username is: {{user.username}} <br>
-{% endblock %}
+                <p>Your username is: {{user.username}}</p>
+
+                <p>I hope you remember your password. </p>
+                
+                <div class="form_input"> 
+				    <input type="button" value="Get Started" onclick="location.href='/'">
+			    </div>
+			</div>
+		</div>
+	</body>
+</html>
+
+
+

@@ -4,27 +4,26 @@
 {% block main_content %}
 	<div class="main">
 		<h1>Links</h1>
-        {% if perms.classlists.is_kksastaff %}
-			<a href="/{{klass.klass_name}}/links/add/"><div class="add_main_button"></div></a>
+        {% if perms.links.add_link %}
+			<a href="{%url 'link-create-view' klass.name %}"><div class="add_main_button"></div></a>
 		{% endif %}
 		<div class="clearer"></div>		
 		
-
-            {% for l,d in combo_list %}
-		        {% ifchanged l.subject %}
+            {% for link in link_list %}
+		        {% ifchanged link.subject %}
 		            <br>
-		            <div class="doclink_subject">{{l.subject}}</div>
+		            <div class="doclink_subject">{{link.subject}}</div>
 		        {% endifchanged %}
                         <div class="doclink">
-                            <a href="{{l.link}}">{{l.description}}
+                            <a href="{{link.link}}">{{link.description}}
                         </a></div>
                         <div class="doclink_homework">    
-                            {% if d %}
-                                for {{d.assigned_work}}
+                            {% if link.homework %}
+                                for {{link.homework.work}}
                             {% endif %}
                         </div>
-                        {% if perms.classlists.is_kksastaff %}
-                            <div class="doclink_change"><a href="modify/{{l.id}}">Edit</a></div>
+                        {% if perms.links.add_link %}
+                            <div class="doclink_change"><a href="{%url 'link-update-view' klass.name link.id %}">Edit</a></div>
                         {% endif %}
             <div class="clearer"></div>	
             {%endfor%}

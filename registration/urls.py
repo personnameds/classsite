@@ -1,10 +1,8 @@
-from django.conf.urls import patterns, include, url
-from registration.views import LoginUserView, RegistrationFormView, WelcomeView
-from django.contrib.auth.decorators import login_required
+from django.conf.urls import url
+from registration.views import RegistrationFormView, WelcomeView, RegisterStaffFormView
 
-urlpatterns = patterns('',
-    url(r'^login/$',(LoginUserView.as_view())),
-    url(r'^logout/$','registration.views.LogoutUserView'),
-    url(r'^newuser/$',(RegistrationFormView.as_view())),	
-  	url(r'^newuser/welcome/$',WelcomeView.as_view(), name='welcome-view'),	  	
-	)
+urlpatterns = [
+    url(r'^newuser/$',RegistrationFormView.as_view(), name='registration-view'),
+    url(r'^newstaff/$',RegisterStaffFormView.as_view(), name='registration-staff-view'),   	
+  	url(r'^welcome/$',WelcomeView.as_view(), name='welcome-view'),	
+ 	]

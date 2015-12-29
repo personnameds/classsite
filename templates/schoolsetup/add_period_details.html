@@ -1,0 +1,32 @@
+{% extends "setup_base.html" %}
+
+{% block main_content %}
+
+
+	<div class="main">
+		<h1">Schedule Setup</h1>
+		<div class="clearer"></div>		
+		
+		<div class='form_error'>{{form.message.errors.as_text}}</div>
+		<form action"." method="POST">{%csrf_token%}
+	{#	<form action="{% url 'period-details-create-view' setup_id %}" method="POST">{%csrf_token%} #}
+		
+			{{form.management_form}}
+			<br>The details you add here are how it will look in the schedule
+			<br>Period name examples: Period 1, Lunch, After School, it can also be left blank
+			<br>Times can be left blank or should look like 12:35 or 1:15
+			<br>You need to enter all or change all, you cannot do some partially
+			<br>
+			{% for f in form %}
+			    <br>
+			    Period {{forloop.counter}}: {{f.as_table}}
+			{% endfor %}
+			<div class="form_input">
+				<input type="submit" value="Save">
+				<input type="button" value="Cancel" onclick="location.href='/setup'">
+			</div>
+		</form>
+	</div>
+
+
+{% endblock %}

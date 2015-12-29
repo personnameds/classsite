@@ -1,0 +1,35 @@
+{% extends "setup_base.html" %}
+
+{% block main_content %}
+
+				<ul id="posts">
+				<li class="post">
+                    {{school_name}} Schedule Setups:
+                </li>
+            
+                {%if schedule_list %}
+                    {% for schedule, details in schedule_list %}
+                    <li class="post">
+                        <br>Schedule Name:{{schedule.name}}
+                        <br>&nbsp;&nbsp;&nbsp;&nbsp;Periods in a Day:{{schedule.periods_in_day}}
+                        <br>Period Details:
+                            {% for d in details %}
+                                <br>&nbsp;&nbsp;&nbsp;&nbsp;{{d.name}} : {{d.start_time}} to {{d.end_time}}
+                            {% endfor %}
+                        <br><a href="{% url 'schedule-setup-update-view' schedule.pk %}">Change/Delete Schedule Setup</a>
+                        <br>
+                    </li>
+                    {% endfor %}
+                    <li class="post">
+                        <a href="{% url 'schedule-setup-create-view' %}">Add another Schedule Setup</a>
+                    </li>
+                {% else %}
+                    <li class="post">
+                    <br>None
+                    <br><a href="{% url 'schedule-setup-create-view' %}">Add a Schedule Setup</a>
+                    </li>
+                {% endif %}
+
+			    </ul>
+
+{% endblock %}

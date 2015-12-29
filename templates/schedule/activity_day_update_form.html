@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+
+{% block main_content %}
+	<div class="main">
+		<h1>Change Schedule for Day {{day_no.day_name}}</h1>
+		<p>This will set the new day schedule as a permanent change</p>
+		<form action="." method="POST">{%csrf_token%}		
+			{{formset.management_form}}
+			{% for detail,form in form_with_details %}
+			    {{detail.name}}{{form}}
+			{% endfor %}
+			<div class="form_input"> 
+					<input type="submit" name="temp/perm" value="Permanent">
+					<input type="button" value="Cancel" onclick="location.href='/{{klass.name}}'">
+			</div>
+		</form>
+	</div>
+
+{% endblock %}

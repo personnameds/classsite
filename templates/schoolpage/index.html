@@ -2,11 +2,12 @@
 <html>
 	<head>
 		<title>Welcome to KKSA.ca!</title>
-		<link rel="stylesheet" href="{{STATIC_URL}}lib/index_styles.css" />
-		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery-1.10.1.min.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery-ui-1.10.3.custom.min.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}lib/jquery.timer.js"></script>
-		<script type="text/javascript" src="{{STATIC_URL}}lib/scripts.js"></script>
+		{% load staticfiles %}
+		<link rel="stylesheet" href="{% static 'lib/index_styles.css' %}" />
+		<script type="text/javascript" src="{% static 'lib/jquery-1.11.3.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery-ui-1.10.3.custom.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
 		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
 	</head>
 	<body>
@@ -14,9 +15,13 @@
 			<h2>Navigation</h2>
 			<h3>Classes:</h3>
 			<ul>
-				{% for k in klass_list %}
-				    <li><a href="{{k.klass_name}}">{{k.klass_name}}</a></li>
+				{% for klass in klass_list %}
+				    <li><a href="{%url 'classpage-list-view' klass.url %}">{{klass.name}}</a></li>
 				{% endfor %}
+				{% if perms.schoolsetup.add_school_setup %}
+				    <li><a href="{% url 'admin:index' %}">Admin</a></li>
+			        <li><a href="{% url 'school-setup-view' %}">Setup</a></li>
+				{% endif %}
 			</ul>
 			<h3>References:</h3>
 			<ul>
@@ -29,18 +34,20 @@
 			<div id="account">
 		        {% if user.is_authenticated %}
 		            Hi
-       		        {%if user.kksa_staff %}
-                        {{user.kksa_staff.teacher_name }}
-                        <a href="add/"><div class="add_button"></div></a>
+       		        {%if user.school_staff %}
+                        {{user.school_staff.teacher_name }}
             	    {%elif user.first_name %}
                         {{ user.first_name }}
             	    {%else%}
             			{{ user.username }}
             		{%endif%}
+            		{% if perms.schoolpage.add_schoolpage %}
+            		    <a href="add/"><div class="add_button"></div></a>
+            		{% endif %}
             		welcome to KKSA! - 
-       		         <a href="/registration/logout/">Logout</a>
+       		         <a href="/logout/">Logout</a>
                 {% else %}
-            	    Welcome to KKSA! - <a href="/registration/login/?next={{next}}">Login</a>
+            	    Welcome to KKSA! - <a href="/login/?next={{request.path}}">Login</a>
                 {% endif %} 			
 
 			</div>
@@ -57,7 +64,7 @@
 					<br>
 					<span class="date">
                         {{entry.date|date:"F j, Y"}} - 
-                        {{entry.entered_by.kksa_staff.teacher_name}}
+                        {{entry.entered_by.school_staff.teacher_name}}
 			            {% ifequal entry.entered_by user %}
 			                <a href="modify/{{entry.id}}">Edit</a>
 			            {% endifequal %}
@@ -65,14 +72,8 @@
 				</li>
 				{%endfor%}
 			</ul>
-			
-			
-
-			
 			<div id="footer">
 				<span class="credit2">Django Web Development: S. Sanyal</span>
-				<span class="credit1"><a href='http://sasha.yaro.cc' target='_blank'>HTML/CSS Design and Development: Sasha Y.</a></span>
-
 			</div>
 		</div>
 	</body>

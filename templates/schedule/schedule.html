@@ -20,121 +20,32 @@
 			<div class="pertime_head">Period</div>
 			<div class="pertime_head">Time</div>
 			
-			{% for day, week in list %}
-				{% if perms.classlists.is_kksastaff %}
+			{% for w in week %}
+				{% if perms.schedule.change_period_activity %}                              
+					    <a href="{%url 'activity-day-update' klass.name w.day_no.pk %}">				
+						    <div class='weekday'>Day {{w.day_no.day_name}}</div>			
+					    </a>                                                                
+				{% else %}                                                                  
+					<div class='weekday'>Day {{w.day_no.day_name}}</div>
+				{% endif %}                                                                 
+			{% endfor %}
+			<div class="clearer"></div>
+			
+			{% for detail, activity in periods %}
+			    <div class="pertime">{{detail.name}}</div>
+				<div class="pertime">{{detail.start_time}} - {{detail.end_time}}</div>
+				{% for act, day_no in activity %}
+                    {% if perms.schedule.add_period_activity %}
+                        <a href="{%url 'activity-update-view' klass.name detail.pk act.pk %}">
+                            <div class='per_day'>{{act.activity}}</div>
+                        </a>
+                    {% else %}
+                        <div class='per_day'>{{act.activity}}</div>
+                    {% endif %}
+				{% endfor %}
+			<div class="clearer"></div>			
+			{% endfor %}
 
-					    <a href="/{{klass.klass_name}}/schedule/modify/{{day.id}}/{{week.id}}">					
-						    <div class='weekday'>Day {{day.day_name|slice:":1"}}</div>			
-					    </a>
-
-				{% else %}
-					<div class='weekday'>Day {{day.day_name|slice:":1"}}</div>
-				{% endif %}
-			{% endfor %}
-			<div class="clearer"></div>
-			
-			<div class="pertime">Before School</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.before}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-			
-			<div class="pertime">Period 1</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-						8:40<br>-9:40
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.p1}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-			
-			<div class="pertime">Period 2</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-						9:42<br>-10:32
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.p2}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-			
-			<div class="pertime">Period 3</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-						10:34<br>-11:14
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.p3}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-
-			<div class="pertime">Lunch</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-						11:14<br>-12:14
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.lunch}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-			
-			<div class="pertime">Period 4</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-						12:19<br>-1:19
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.p4}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-
-			<div class="pertime">Period 5</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-						1:21<br>-2:11
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.p5}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-			
-			<div class="pertime">Period 6</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-						2:13<br>-2:53
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.p6}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-			
-			<div class="pertime">After School</div>
-			{% for day in days %}
-				{% if forloop.first %}
-					<div class="pertime">
-					</div>
-				{%endif%}
-				<div class='per_day'>{{day.after}}</div>
-			{% endfor %}
-			<div class="clearer"></div>
-			
-			</div>
-			
-			
-		<div class="clearer"></div>
-		</div>		
 	
 {% endblock %}
 
