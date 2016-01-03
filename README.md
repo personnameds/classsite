@@ -38,6 +38,7 @@ SchoolSetup
 
     
 Schoolpage
+    Modify and Add are messy
 
 Contact
     Emails come from KKSA and say KKSA
