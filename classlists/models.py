@@ -6,7 +6,7 @@ class Klass(models.Model):
 	url=models.CharField(max_length=4, verbose_name='Class Url', unique=True, help_text="Keep it 4 letters and lower case")
 	code=models.CharField(max_length=10, verbose_name='Class Code',help_text="Code for students to register with class")
 	schedule=models.ForeignKey('schedule.Schedule_Setup')
-	teachers=models.ManyToManyField('School_Staff')
+	teachers=models.ManyToManyField('School_Staff',blank=True)
 	#banner
 	
 	class Meta:

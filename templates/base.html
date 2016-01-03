@@ -2,10 +2,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>KKSA {{klass.name|upper}}</title>
+		<title>{{school_name}} {{klass.name|upper}}</title>
 		
 		<link rel="stylesheet" href="{% static 'lib/styles.css' %}" />
-		<script type="text/javascript" src="{% static 'lib/jquery-1.11.3.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery-1.10.1.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/jquery-ui-1.10.3.custom.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
@@ -33,9 +33,6 @@
 					{% if user.school_staff %}
 					    <li><a href="{%url 'classlists-view' klass.name %}">{{klass.name}}</a></li>
 			        {% endif %}
-					{% if user.is_staff %}
-						<li><a href="{%url 'school-setup-view' %}">Setup</a></li>
-					{%endif%}
 														
        		        {% if user.is_authenticated %}
        		            {#NEED TO ADD SOMETIME #}

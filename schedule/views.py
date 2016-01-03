@@ -40,6 +40,7 @@ class ScheduleView(URLMixin, TemplateView):
 	        week.append(Kalendar.objects.get(id=(week[0].id+i)))
 	        
 	    friday=week[4].date
+	    
 
 	    ##clean up non-permanents from last week
 	    if date.today().weekday()<5:

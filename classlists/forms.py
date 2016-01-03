@@ -30,7 +30,7 @@ class School_StaffForm(forms.Form):
     
     staff_code=forms.CharField(
                         label="Staff Code",
-                        help_text='Your website admininstrator it',
+                        help_text='Your website admininstrator has it',
                         error_messages={"required":"You can't register without it."},
                         widget=forms.PasswordInput
 	                    )

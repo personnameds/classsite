@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from classlists.models import Klass
+from django.conf import settings
 
 ### Want to reverse or resolve the namedurl for the classbased view to use in action form
 ### so named url in action of form
@@ -17,4 +18,11 @@ class URLMixin(object):
 		context=super(URLMixin, self).get_context_data(**kwargs)
 		context['klass']=self.get_klass()
 		context['next']=self.get_next()
+		context['school_name']='Queen Victoria'
+		return context
+
+class SchoolNameMixin(object):
+	def get_context_data(self, **kwargs):
+		context=super(SchoolNameMixin, self).get_context_data(**kwargs)
+		context['school_name']=settings.SCHOOL
 		return context

@@ -42,7 +42,7 @@ class Kalendar_SetupForm(ModelForm):
     class Meta:
         model=Kalendar_Setup
         fields=['first_day_class','days_in_cycle']
-        widgets={'first_day_class': SelectDateWidget}
+        widgets={'first_day_class': SelectDateWidget(years=range(2015,2020))}
 
 class Change_Day_NoForm(ModelForm):
     date_from=ModelChoiceField(label='Date from:', empty_label=None, queryset=Kalendar.objects.all())

@@ -21,14 +21,14 @@ class ContactFormView(URLMixin, FormView):
 	    return initial
 
 	def form_valid(self, form):
-	    sender_name=form.cleaned_data['name']+' sent via KKSA.ca'
+	    sender_name=form.cleaned_data['name']+' sent via QVic.ca'
 	    subject=form.cleaned_data['subject']
 	    message=form.cleaned_data['message']+"\n\n"+sender_name
 	    sender_email=form.cleaned_data['email']
 	    staff=form.cleaned_data['staff']
 	    recipient=[staff.user.email,]
 
-	    email=EmailMessage(subject, message, 'kksa@kksa.ca',
+	    email=EmailMessage(subject, message, 'qvic@qvic.ca',
 	                    recipient, headers={'Reply-To':sender_email})
 	    email.send()
 

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Welcome to KKSA.ca!</title>
+		<title>Welcome to {{school_name}}'s website!</title>
 		{% load staticfiles %}
 		<link rel="stylesheet" href="{% static 'lib/index_styles.css' %}" />
-		<script type="text/javascript" src="{% static 'lib/jquery-1.11.3.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'lib/jquery-1.10.1.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/jquery-ui-1.10.3.custom.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
@@ -25,8 +25,7 @@
 			</ul>
 			<h3>References:</h3>
 			<ul>
-				<li><a href="http://schoolweb.tdsb.on.ca/karenkain/Home.aspx">About KKSA</a></li>
-				<li><a href="http://schoolweb.tdsb.on.ca/karenkain/Admissions.aspx">Admissions</a></li>
+				<li><a href="http://schoolweb.tdsb.on.ca/queenvictoria/Home.aspx">About Queen Victoria</a></li>
 			</ul>
 		</div>
 		<div id="container">
@@ -44,10 +43,10 @@
             		{% if perms.schoolpage.add_schoolpage %}
             		    <a href="add/"><div class="add_button"></div></a>
             		{% endif %}
-            		welcome to KKSA! - 
+            		welcome to {{school_name}}'s website! - 
        		         <a href="/logout/">Logout</a>
                 {% else %}
-            	    Welcome to KKSA! - <a href="/login/?next={{request.path}}">Login</a>
+            	    Welcome to {{school_name}}'s website! - <a href="/login/?next={{request.path}}">Login</a>
                 {% endif %} 			
 
 			</div>

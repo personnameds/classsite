@@ -6,6 +6,7 @@ from classlists.models import Klass
 from django.core.urlresolvers import reverse
 from datetime import date
 from django.http import HttpResponseRedirect
+from django.conf import settings
 
 class SchoolpageListView(ListView):
 	template_name='schoolpage/index.html'
@@ -18,6 +19,7 @@ class SchoolpageListView(ListView):
 	    klass_list=Klass.objects.all().order_by('name')
 	    context=super(SchoolpageListView, self).get_context_data(**kwargs)
 	    context['klass_list']=klass_list
+	    context['school_name']=settings.SCHOOL
 	    return context
 	    
 class SchoolpageCreateView(CreateView):

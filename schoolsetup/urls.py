@@ -19,6 +19,6 @@ urlpatterns = [
      url(r'^(?i)classes/changeclass/(?P<pk>\d+)/$', permission_required('classlists.change_klass')(KlassUpdateView.as_view()), name='class-update-view'),
      url(r'^(?i)staff/$', permission_required('classlists.add_school_staff')(StaffSetupView.as_view()), name='staff-setup-view'),
      url(r'^(?i)staff/addcode/$', permission_required('classlists.add_staffcode')(StaffCodeCreateView.as_view()), name='staffcode-create-view'),
-     url(r'^(?i)staff/changecode/(?P<pk>\w+)/$', permission_required('classlists.change_staffcode')(StaffCodeUpdateView.as_view()), name='staffcode-update-view'),
+     url(r'^(?i)staff/changecode/(?P<pk>[\w ]+)/$', permission_required('classlists.change_staffcode')(StaffCodeUpdateView.as_view()), name='staffcode-update-view'),
      url(r'^(?i)staff/addstaff/$', permission_required('classlists.add_school_staff')(StaffCreateView.as_view()), name='staff-create-view'),
      ]

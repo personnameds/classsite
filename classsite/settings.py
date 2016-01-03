@@ -18,15 +18,17 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
+SECRET_DIRECTORY=os.path.join(BASE_DIR,'classsite')+'/SECRET_KEY'
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%tyv#1qw2x+$$6ywc-ds_8crvq3n^oxrjcfe!2hkpj^_^r)l=8'
+with open(SECRET_DIRECTORY) as f:
+    SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS=[]
+ALLOWED_HOSTS=['.mrsanyal.com','.qvic.ca']
 
+ADMINS = (('Mr. Sanyal','mistersanyal@gmail.com'),)
 
 # Application definition
 
@@ -88,10 +90,11 @@ WSGI_APPLICATION = 'classsite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'classsite',
-        'USER':'root',
-        'PASSWORD': '',
-        'HOST':'',
+        'NAME': 'qvdatabase',
+        'USER':'qvsite',
+        'PASSWORD': '1PrtocltK7kO',
+        'HOST':'localhost',
+        'PORT':'3306',
     }
 }
 
@@ -110,17 +113,23 @@ USE_TZ = True
 
 #Static files (CSS, JavaScript, Images)
 #https://docs.djangoproject.com/en/1.8/howto/static-files/
-STATICFILES_DIR=(os.path.join(BASE_DIR, 'static'),)
-STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
+STATICFILES_DIR='/home/sudeepsanyal/webapps/qv_static/'
+MEDIA_ROOT = '/home/sudeepsanyal/webapps/qv_media/'
 STATIC_URL = '/static/'
 MEDIA_URL='/media/'
 
 LOGIN_REDIRECT_URL='/'
 LOGIN_URL='/login/'
-SCHOOL='KKSA'
+SCHOOL='Queen Victoria'
 REGISTRATION_STATUS=True
 
-EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST='127.0.0.1'
-EMAIL_PORT=2525
+EMAIL_HOST='smtp.webfaction.com'
+EMAIL_HOST_USER='qvic'
+EMAIL_HOST_PASSWORD='assandra3#'
+DEFAULT_FROM_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
+SERVER_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
+
+try:
+    from classsite.settings_local import *
+except ImportError:
+    pass

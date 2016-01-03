@@ -1,5 +1,10 @@
 classite v7
 
+Deployment
+    -learn and check email stuff
+    -memcached
+    -cron job
+
 Schedule 
     -update whole day only works as permanent change
 	-look ahead
@@ -34,6 +39,9 @@ SchoolSetup
     
 Schoolpage
 
+Contact
+    Emails come from KKSA and say KKSA
+    Email comes form is hardcoded in
 
 
 
