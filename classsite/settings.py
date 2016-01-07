@@ -24,7 +24,7 @@ with open(SECRET_DIRECTORY) as f:
     SECRET_KEY = f.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS=['.mrsanyal.com','.qvic.ca']
 

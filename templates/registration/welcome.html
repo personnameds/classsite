@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Login to KKSA.ca</title>
+		<title>Login to {{school_name}}</title>
 		{% load staticfiles %}
 		<link rel="stylesheet" href="{% static 'lib/styles.css' %}" />
 		<script type="text/javascript" src="{% static 'lib/jquery-1.10.1.min.js' %}"></script>
@@ -13,7 +13,7 @@
 	<body>
 		<div id="container">
 			<div id="register">
-			    <h1>Welcome to {{school|upper}}'s Website</h1>
+			    <h1>Welcome to {{school_name}}|upper}}'s Website</h1>
 	
                 <p>Your username is: {{user.username}}</p>
 

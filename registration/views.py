@@ -7,9 +7,10 @@ from registration.forms import Registration_Form
 from classlists.forms import School_StaffForm
 from classlists.models import Klass, Student, School_Staff
 from django.core.urlresolvers import reverse
-from classsite import settings
+from django.conf import settings
+from classsite.views import SchoolNameMixin
 
-class RegisterStaffFormView(FormView):
+class RegisterStaffFormView(SchoolNameMixin, FormView):
     form_class=School_StaffForm
     template_name='registration/registration_form.html'
     named_url='registration-staff-view'
@@ -57,7 +58,7 @@ class RegisterStaffFormView(FormView):
         return HttpResponseRedirect(reverse('welcome-view'))  
 
 
-class RegistrationFormView(FormView):
+class RegistrationFormView(SchoolNameMixin, FormView):
     form_class=Registration_Form
     template_name='registration/registration_form.html'
     named_url='registration-view'
@@ -103,14 +104,13 @@ class RegistrationFormView(FormView):
         
         return HttpResponseRedirect(reverse('welcome-view'))     
 
-class WelcomeView(TemplateView):
+class WelcomeView(SchoolNameMixin, TemplateView):
     template_name='registration/welcome.html'
 
     def get_context_data(self, **kwargs):
         user=self.request.user
         context=super(WelcomeView, self).get_context_data(**kwargs)
         context['user']=user
-        context['school']=settings.SCHOOL
         return context  
         
         
