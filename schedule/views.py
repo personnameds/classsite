@@ -43,8 +43,7 @@ class ScheduleView(URLMixin, TemplateView):
 	    
 
 	    ##clean up non-permanents from last week
-	    if date.today().weekday()<5:
-	        Period_Activity.objects.filter(org=False, del_date__lt=monday).delete()
+	    Period_Activity.objects.filter(org=False, del_date__lt=monday).delete()
 
 	    for p in range(periods_in_day):
 	        per_detail=Period_Details.objects.get(setup=setup, number=p+1)
