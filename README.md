@@ -40,7 +40,6 @@ Schoolpage
     Modify and Add are messy
 
 Contact
-    Emails come from KKSA and say KKSA
     Email comes form is hardcoded in
 
 

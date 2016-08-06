@@ -24,7 +24,7 @@
 				    {% endif %}
 				{% endif %}
 				
-				<form method="post" action="{%url 'django.contrib.auth.views.login' %}">{%csrf_token%}
+				<form method="post" action="{%url 'login-view' %}">{%csrf_token%}
 					<label>Username:</label>
 					<input style="margin: 3px auto; text-align: left;" id="username" type="text" name="username">
 					<label>Password:</label>

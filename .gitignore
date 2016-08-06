@@ -6,3 +6,4 @@ env/
 /media_root/
 SECRET_KEY
 settings_local.py
+*.pyc

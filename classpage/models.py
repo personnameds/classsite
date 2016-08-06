@@ -9,6 +9,8 @@ class Classpage(models.Model):
     date=models.DateField()
     klass=models.ManyToManyField('classlists.Klass', verbose_name='Class')
     entered_by=models.ForeignKey(User)
+    image=models.ImageField(upload_to='classpage', blank=True, )
+
 
     def klass_display(self):
     	return ", ".join([k.name for k in self.klass.all()])
@@ -36,4 +38,4 @@ class Classpage_Form(ModelForm):
 
     class Meta:
         model=Classpage
-        fields =['message']
+        fields =['message', 'image']

@@ -11,6 +11,9 @@
 	<ul id="posts">
 	    {% for entry in classpage_list %}
 	    <li class="post">
+	        {% if entry.image %}
+	            <div><img src="{{ entry.image.url}}"></div>
+	        {% endif %}
 			<span>{{entry.message}}</span><br>
             <span class="date">
                 {{entry.date|date:"F j, Y"}} - 

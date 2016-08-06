@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from .views import KalendarListView, DayNoUpdateView, EventCreateView, EventUpdateView
 from django.contrib.auth.decorators import login_required
 
