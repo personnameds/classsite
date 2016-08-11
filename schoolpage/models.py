@@ -6,6 +6,7 @@ class Schoolpage(models.Model):
     message=models.TextField()
     date=models.DateField(blank=True, null=True)
     entered_by=models.ForeignKey(User, blank=True, null=True)
+    image=models.ImageField(upload_to='schoolpage', blank=True,)
 
     class Meta:
         verbose_name='School Message'
@@ -18,3 +19,4 @@ class Schoolpage(models.Model):
     	else:
     		return self.entered_by.first_name
     entered_by_display.short_description='Entered By'
+

@@ -18,7 +18,8 @@ class URLMixin(object):
 		context=super(URLMixin, self).get_context_data(**kwargs)
 		context['klass']=self.get_klass()
 		context['next']=self.get_next()
-		context['school_name']='Queen Victoria'
+		#Do I need school_name?
+		#context['school_name']=settings.SCHOOL
 		return context
 
 class SchoolNameMixin(object):

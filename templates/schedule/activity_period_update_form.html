@@ -9,7 +9,7 @@
 		<form action="." method="POST">{%csrf_token%}		
 			{{form.as_p}}
 			<div class="form_input"> 
-					<input type="submit" name="temp/perm" value="Temporary">
+					<input type="submit" name="temp/perm" value="This Week">
 					<input type="submit" name="temp/perm" value="Permanent">
 					<input type="button" value="Cancel" onclick="location.href='/{{klass.name}}'">
 			</div>

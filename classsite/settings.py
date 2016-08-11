@@ -129,6 +129,9 @@ EMAIL_HOST_PASSWORD='assandra3#'
 DEFAULT_FROM_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
 SERVER_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
 
+#SESSION_COOKIE_SECURE = True
+
+
 try:
     from classsite.settings_local import *
 except ImportError:

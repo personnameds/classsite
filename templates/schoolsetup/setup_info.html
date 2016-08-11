@@ -16,7 +16,7 @@
                     Schedule Information:
                     {% if kalendar %}
                         {%if schedule_setups %}
-                            <br>&nbsp;&nbsp;&nbsp;&nbsp;The following schedule{{schedule_setups |pluralize}} have been setup:
+                            <br>&nbsp;&nbsp;&nbsp;&nbsp;The following schedule{{schedule_setups |pluralize}} ha{{schedule_setups|pluralize:"s,ve"}} been setup:
                             {% for schedule_setup in schedule_setups %}
                                 <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{schedule_setup.name}}
                             {% endfor %}
@@ -29,7 +29,7 @@
                 </li>    
                 <li class="post">
                     Classes:
-                    <br>&nbsp;&nbsp;&nbsp;&nbsp;{{klass_count}} class{{klass_count|pluralize:"es"}} have been setup.
+                    <br>&nbsp;&nbsp;&nbsp;&nbsp;{{klass_count}} class{{klass_count|pluralize:"es"}} ha{{klass_count|pluralize:"s,ve"}} been setup.
                 </li>
                  <li class="post">
                     Staff List:

@@ -19,7 +19,7 @@ class ClasspageListView(URLMixin, ListView):
 class ClasspageCreateView(URLMixin, CreateView):
 	model=Classpage
 	form_class=Classpage_Form
-	template_name='generic/generic_form.html'
+	template_name='generic/doc_form.html'
 	title='Class Message'
 	named_url='classpage-create-view'
 	
@@ -41,7 +41,7 @@ class ClasspageCreateView(URLMixin, CreateView):
 class ClasspageUpdateView(URLMixin, UpdateView):
     model=Classpage
     form_class=Classpage_Form
-    template_name="generic/generic_modify.html"
+    template_name="generic/modify_doc_form.html"
     title='Class Message'
     named_url='classpage-update-view'
     

@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from .views import ScheduleView, ActivityUpdateView, ActivityDayUpdateView
 from django.contrib.auth.decorators import permission_required
 
