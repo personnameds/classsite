@@ -7,7 +7,6 @@
 		<link rel="stylesheet" href="{% static 'lib/styles.css' %}" />
 		<script type="text/javascript" src="{% static 'lib/jquery-1.10.1.min.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/jquery-ui-1.10.3.custom.min.js' %}"></script>
-		<script type="text/javascript" src="{% static 'lib/jquery.timer.js' %}"></script>
 		<script type="text/javascript" src="{% static 'lib/scripts.js' %}"></script>
 		<link href='http://fonts.googleapis.com/css?family=Raleway:200,400' rel='stylesheet' type='text/css' />
 	    {%block head_content%}{%endblock%}
@@ -24,7 +23,12 @@
 				<ul>
 					<li id="current"><a href="{%url 'schoolpage-list-view' %}">Home</a></li>
 					<li><a href="{%url 'homework-list-view' klass.name %}">Homework</a></li>
-					<li><a href="{%url 'kalendar-list-view' klass.name %}">Calendar</a></li>
+					<li><a href="{%url 'kalendar-list-view' klass.name %}">Calendars</a>  
+					    <ul>
+					        <li><a href="{%url 'kalendar-list-view' klass.name %}">Class</a></li>
+					        <li><a href="{%url 'school_kalendar-template-view' klass.name %}">School</a></li>
+					    </ul>
+					<li>
 					<li><a href="{%url 'schedule-view' klass.name %}">Schedule</a></li>
 					<li><a href="{%url 'document-list-view' klass.name %}">Documents</a></li>
 					<li><a href="{%url 'link-list-view' klass.name %}">Links</a></li>

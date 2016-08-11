@@ -7,8 +7,9 @@ from django.core.urlresolvers import reverse
 from datetime import date
 from django.http import HttpResponseRedirect
 from django.conf import settings
+from classsite.views import SchoolNameMixin
 
-class SchoolpageListView(ListView):
+class SchoolpageListView(SchoolNameMixin, ListView):
 	template_name='schoolpage/index.html'
 	context_object_name='schoolpage_list'
 	
@@ -19,13 +20,18 @@ class SchoolpageListView(ListView):
 	    klass_list=Klass.objects.all().order_by('name')
 	    context=super(SchoolpageListView, self).get_context_data(**kwargs)
 	    context['klass_list']=klass_list
-	    context['school_name']=settings.SCHOOL
 	    return context
-	    
-class SchoolpageCreateView(CreateView):
+
+class SchoolpageCreateView(SchoolNameMixin, CreateView):
 	model=Schoolpage
 	template_name='schoolpage/add_schoolpage.html'
-	fields=['message']
+	fields=['message','image']
+
+	def get_context_data(self, **kwargs):
+	    klass_list=Klass.objects.all().order_by('name')
+	    context=super(SchoolpageCreateView, self).get_context_data(**kwargs)
+	    context['klass_list']=klass_list
+	    return context
 
 	def form_valid(self, form):
 	    new_schoolpage=form.save(commit=False)
@@ -34,11 +40,18 @@ class SchoolpageCreateView(CreateView):
 	    new_schoolpage.save()
 	    return HttpResponseRedirect(reverse('schoolpage-list-view'))
 
-class SchoolpageUpdateView(UpdateView):
+
+class SchoolpageUpdateView(SchoolNameMixin, UpdateView):
     model=Schoolpage
     template_name="schoolpage/modify_schoolpage.html"
-    fields=['message']
+    fields=['message','image']
     
+    def get_context_data(self, **kwargs):
+	    klass_list=Klass.objects.all().order_by('name')
+	    context=super(SchoolpageUpdateView, self).get_context_data(**kwargs)
+	    context['klass_list']=klass_list
+	    return context
+
     def form_valid(self, form):
         new_schoolpage=form.save(commit=False)
         if self.request.POST['mod/del']=='Delete':

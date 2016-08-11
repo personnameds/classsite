@@ -1,6 +1,7 @@
+from django.views.generic.base import TemplateView
 from django.views.generic import ListView
 from django.views.generic.edit import UpdateView, CreateView
-from classsite.views import URLMixin
+from classsite.views import URLMixin, SchoolNameMixin
 from .models import Kalendar, Day_No, Kalendar_Setup, Change_Day_NoForm, Event_Form, Event
 from datetime import date, timedelta
 from classlists.models import Klass 
@@ -82,6 +83,10 @@ class KalendarListView(URLMixin, ListView):
             context['prev_year']=year-1
             
         return context
+
+class SchoolKalendarTemplateView(URLMixin, SchoolNameMixin, TemplateView): 
+    template_name="kalendar/school_kalendar.html"
+
 
 class DayNoUpdateView(URLMixin, UpdateView):
     form_class=Change_Day_NoForm

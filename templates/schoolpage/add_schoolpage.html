@@ -8,14 +8,13 @@
 		
 		<div class='form_error'>{{form.message.errors.as_text}}</div>
 
-		<form action="{% url 'schoolpage-create-view' %}" method="POST">{%csrf_token%}
-			<div class="form_label">Message:</div><div class="form_element">{{form.message}}</div>
-			<div class="form_input">
-				<input type="submit" value="Save">
+		<form action="{% url 'schoolpage-create-view' %}" method="POST" enctype="multipart/form-data">{%csrf_token%}
+			{{form.as_p}}
+			<div class="form_input"> 
+				<input type="submit" value="Add">
 				<input type="button" value="Cancel" onclick="location.href='/'">
 			</div>
 		</form>
 	</div>
 
 {% endblock %}
-

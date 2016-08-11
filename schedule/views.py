@@ -50,6 +50,11 @@ class ScheduleView(URLMixin, TemplateView):
 	        per_activity=[]
 	        for i in range(5):   
 	            ##gets period_activities for klass, details and day_no and if org_date is on or before Friday of this week 
+	            a=klass
+	            b=per_detail
+	            c=week[i].day_no
+	            d=del_date__lte=friday
+	            z=Period_Activity.objects.get(klass=klass, details=per_detail, day_no=week[i].day_no, del_date__lte=friday)
 	            per_activity.append((Period_Activity.objects.get(klass=klass, details=per_detail, day_no=week[i].day_no, del_date__lte=friday),week[i].day_no))
 	        periods[p]=(per_detail, per_activity)
 
@@ -71,7 +76,7 @@ class ActivityUpdateView(URLMixin, UpdateView):
         ## Perm to Perm and Temp to Temp taken care of with simple save
         
         ## Perm to Temp
-        if perm=='Temporary' and old_activity.org==True:
+        if perm=='This Week' and old_activity.org==True:
             
             ##date should be Monday of next week
             next_monday=get_monday()+timedelta(days=+7)
@@ -107,7 +112,7 @@ class ActivityDayUpdateView(URLMixin, FormView):
         klass=Klass.objects.get(name=self.kwargs['class_url'])
         extra=klass.schedule.periods_in_day
         return formset_factory(Day_ActivityForm, extra=extra)
-
+    
     def get_context_data(self, **kwargs):
         context=super(ActivityDayUpdateView, self).get_context_data(**kwargs)
 
@@ -129,18 +134,17 @@ class ActivityDayUpdateView(URLMixin, FormView):
         day_no=Day_No.objects.get(day_name=self.kwargs['dayno_pk'])
         setup=klass.schedule
         
-        #Erase all temp day's
-        Period_Activity.objects.filter(org=False, day_no=day_no, klass=klass).delete()
-
         i=0
         for f in form:
             i+=1
             details=Period_Details.objects.get(setup=setup,number=i)
-            new_activity=Period_Activity.objects.get(day_no=day_no,details=details)
             form_activity=f.save(commit=False)
-            new_activity.activity=form_activity.activity
-            new_activity.del_date=date.today()
-            new_activity.save()
+            if form_activity.activity != '':
+                Period_Activity.objects.filter(org=False, day_no=day_no, details=details, klass=klass).delete()
+                new_activity=Period_Activity.objects.get(day_no=day_no,details=details,klass=klass)
+                new_activity.activity=form_activity.activity
+                new_activity.del_date=date.today()
+                new_activity.save()
  
         return HttpResponseRedirect(reverse('schedule-view', args=(self.kwargs['class_url'],)))
            
