@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView
-from .models import Document, Add_DocumentForm
+from .models import Document, Add_DocumentForm, Update_DocumentForm
 from classsite.views import URLMixin
 from django.shortcuts import get_object_or_404
 from classlists.models import Klass
@@ -48,7 +48,7 @@ class DocumentCreateView(URLMixin, CreateView):
 
 class DocumentUpdateView(URLMixin, UpdateView):
     model=Document
-    form_class=Add_DocumentForm
+    form_class=Update_DocumentForm
     template_name="documents/modify_doc.html"
     title='Document'
     

@@ -23,13 +23,6 @@ SECRET_DIRECTORY=os.path.join(BASE_DIR,'classsite')+'/SECRET_KEY'
 with open(SECRET_DIRECTORY) as f:
     SECRET_KEY = f.read().strip()
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS=['.mrsanyal.com','.qvic.ca']
-
-ADMINS = (('Mr. Sanyal','mistersanyal@gmail.com'),)
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -84,20 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'classsite.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'qvdatabase',
-        'USER':'qvsite',
-        'PASSWORD': '1PrtocltK7kO',
-        'HOST':'localhost',
-        'PORT':'3306',
-    }
-}
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -111,26 +90,8 @@ USE_L10N = True
 
 USE_TZ = True
 
-#Static files (CSS, JavaScript, Images)
-#https://docs.djangoproject.com/en/1.8/howto/static-files/
-STATICFILES_DIR='/home/sudeepsanyal/webapps/qv_static/'
-MEDIA_ROOT = '/home/sudeepsanyal/webapps/qv_media/'
-STATIC_URL = '/static/'
-MEDIA_URL='/media/'
-
 LOGIN_REDIRECT_URL='/'
 LOGIN_URL='/login/'
-SCHOOL='Queen Victoria'
-REGISTRATION_STATUS=True
-
-EMAIL_HOST='smtp.webfaction.com'
-EMAIL_HOST_USER='qvic'
-EMAIL_HOST_PASSWORD='assandra3#'
-DEFAULT_FROM_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
-SERVER_EMAIL='sudeepsanyal@sudeepsanyal.webfactional.com'
-
-#SESSION_COOKIE_SECURE = True
-
 
 try:
     from classsite.settings_local import *

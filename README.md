@@ -1,6 +1,5 @@
 classite v7
 
-
 Deployment Setup    
     1. Staff_Group 
         Create and add
@@ -13,7 +12,8 @@ Deployment Setup
         Reference to School Website
     4. Contact - views.py
         Change email address
-    5. Update Google Calendar Address for School Calendar
+    5. Update  - school_kalendar.html
+        Change Google Calendar Address for School Calendar
     
 
 Registration -Aug 7
@@ -24,6 +24,7 @@ Deployment
     -learn and check email stuff
     -memcached
     -cron job
+    -Session_cookie_secure
 
 Schedule -Aug 10
     -update whole day only works as permanent change

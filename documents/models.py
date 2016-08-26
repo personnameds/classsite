@@ -79,3 +79,40 @@ class Add_DocumentForm(ModelForm):
             }
         fields=['attached_file','description','subject','klass']
 
+class Update_DocumentForm(ModelForm):
+    hwk_details=ModelChoiceField(
+            queryset=Hwk_Details.objects.all(),
+            label='Related Homework:',
+            required=False,
+            )
+    
+    klass=ModelMultipleChoiceField(
+            queryset=Klass.objects.all(),
+            widget=CheckboxSelectMultiple(),
+            label='Classes:',
+            required=True,
+            error_messages={'required':'Please choose at least one class'},
+            )
+    
+    def clean(self):
+        cleaned_data=super(Update_DocumentForm, self).clean()
+        detail=cleaned_data.get('hwk_details')
+        klass=cleaned_data.get('klass')
+        
+        if not klass:
+            raise ValidationError('Choose at least one class')
+        
+        if detail:
+            homework=detail.homework
+            for k in klass:
+                if not homework.hwk_details_set.filter(klass=k):
+                    raise ValidationError(k.name+' does not have that for homework.')
+        return self.cleaned_data
+        
+    class Meta:
+        model=Document
+        widgets={
+            'description':TextInput(attrs={'size':'30'}),
+            }
+        fields=['description','subject','klass']
+
